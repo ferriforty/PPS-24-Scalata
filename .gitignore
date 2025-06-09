@@ -48,3 +48,7 @@ build/
 
 ### xlsx temporary file ###
 ~$*
+
+### jekyll ###
+/docs/_site/
+/docs/.jekyll-cache/
