@@ -1,3 +1,11 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
+gem "jekyll"
+gem "csv"
+gem "just-the-docs"
+gem "base64"
+gem "bigdecimal"
+gem "logger"
+gem "rexml"
+gem "fiddle"
+gem "sass-embedded", "~> 1.58.0"
 
-gem 'jekyll'

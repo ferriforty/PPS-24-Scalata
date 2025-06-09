@@ -1,8 +1,9 @@
 ---
-title: Home
+title: "Home"
+layout: default
 nav_order: 1
 ---
 
-# Welcome to Your Project Documentation
+# Welcome to Scalata
 
-Start documenting here!
+This is the documentation for the PPS 24 project.
