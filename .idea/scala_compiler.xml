@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="PPS-24-Scalata,PPS-24-Scalata.main,PPS-24-Scalata.test" />
+  </component>
+</project>
