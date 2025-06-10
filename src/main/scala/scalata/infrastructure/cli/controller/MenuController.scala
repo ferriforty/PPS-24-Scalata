@@ -2,6 +2,6 @@ package scalata.infrastructure.cli.controller
 
 import scalata.domain.util.GameControllerState
 
-class GameController extends Controller:
+class MenuController extends Controller:
   override def start(): GameControllerState =
-    GameControllerState.GameOver
+    GameControllerState.ChampSelect
