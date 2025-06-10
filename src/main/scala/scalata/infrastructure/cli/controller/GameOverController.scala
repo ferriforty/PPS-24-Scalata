@@ -4,4 +4,4 @@ import scalata.domain.util.GameControllerState
 
 class GameOverController extends Controller:
   override def start(): GameControllerState =
-    GameControllerState.Menu
+    GameControllerState.GameOver

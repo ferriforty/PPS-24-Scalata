@@ -19,4 +19,4 @@ class GameEngine:
         gameLoop(GameController().start())
 
       case GameControllerState.GameOver =>
-        gameLoop(GameOverController().start())
+        GameOverController().start()
