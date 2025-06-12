@@ -1,7 +1,7 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.domain.util.GameControllerState
+import scalata.domain.util.{GameControllerState, GameResult}
 
 trait Controller:
-  def start(): GameControllerState
+  def start(): GameResult[GameControllerState]
   

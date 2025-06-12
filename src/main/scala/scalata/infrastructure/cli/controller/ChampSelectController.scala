@@ -1,7 +1,7 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.domain.util.GameControllerState
+import scalata.domain.util.{GameControllerState, GameResult}
 
 class ChampSelectController extends Controller:
-  override def start(): GameControllerState =
-    GameControllerState.GameRunning
+  override def start(): GameResult[GameControllerState] =
+    GameResult.success(GameControllerState.GameRunning)

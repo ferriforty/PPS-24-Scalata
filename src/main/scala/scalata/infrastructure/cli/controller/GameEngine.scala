@@ -1,22 +1,31 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.domain.util.GameControllerState
+import scalata.application.services.GamePhaseService
+import scalata.domain.util.{GameControllerState, GameResult}
 
 import scala.annotation.tailrec
 
 class GameEngine:
 
   @tailrec
-  final def gameLoop(engineState: GameControllerState = GameControllerState.Menu): Unit =
-    engineState match
+  final def gameLoop(gamePhaseService: GamePhaseService = GamePhaseService()): Unit =
+    gamePhaseService.getCurrentPhase match
       case GameControllerState.Menu =>
-        gameLoop(MenuController().start())
+        MenuController().start() match
+          case GameResult.Success(x, _) => gameLoop(gamePhaseService.transitionTo(x))
+          case GameResult.Error(_, message) => println(message)
 
       case GameControllerState.ChampSelect =>
-        gameLoop(ChampSelectController().start())
+        ChampSelectController().start() match
+          case GameResult.Success(x, _) => gameLoop(gamePhaseService.transitionTo(x))
+          case GameResult.Error(_, message) => println(message)
 
       case GameControllerState.GameRunning =>
-        gameLoop(GameController().start())
+        GameController().start() match
+          case GameResult.Success(x, _) => gameLoop(gamePhaseService.transitionTo(x))
+          case GameResult.Error(_, message) => println(message)
 
       case GameControllerState.GameOver =>
-        GameOverController().start()
+        GameOverController().start() match
+          case GameResult.Success(x, _) => gameLoop(gamePhaseService.transitionTo(x))
+          case GameResult.Error(_, message) => println(message)
