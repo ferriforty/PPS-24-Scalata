@@ -9,17 +9,17 @@ import scala.annotation.tailrec
 class MenuController(inputSource: () => String = () => MenuView.getInput) extends Controller:
   override def start(): GameResult[GameControllerState] =
     MenuView.display()
-    GameStartUseCase().newGame(processMenuInput())
+    GameStartUseCase().newGame(processInput())
 
   @tailrec
-  private def processMenuInput(): Boolean =
+  private def processInput(): Boolean =
     inputSource().split("\\s+").toList match
       case "y" :: Nil =>
         println("Enjoy :)")
         true
       case "n" :: Nil =>
-        println("Why did you open ittt!! \n  Bye Bye :( ")
+        println("Bye Bye :( ")
         false
       case _ =>
-        println("Try again you silly!")
-        processMenuInput()
+        println("Try again!")
+        processInput()

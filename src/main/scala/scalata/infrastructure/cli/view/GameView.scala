@@ -5,6 +5,6 @@ trait GameView:
 
   def getInput: String = scala.io.StdIn.readLine().trim
 
-  def displayError(message: String): Unit =     println(s"❌ Error: $message")
+  def displayError(message: String): Unit = println(s"❌ Error: $message")
 
   def clearScreen(): Unit = print("\u001b[2J\u001b[H")
