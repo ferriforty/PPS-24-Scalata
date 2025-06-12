@@ -1,10 +1,11 @@
 package scalata.domain.util
 
-enum GameControllerState:
-  case Menu
-  case ChampSelect
-  case GameRunning
-  case GameOver
+sealed trait GameControllerState
+object GameControllerState:
+  case object Menu extends GameControllerState
+  case object ChampSelect extends GameControllerState
+  case object GameRunning extends GameControllerState
+  case object GameOver extends GameControllerState
 
 sealed trait Direction:
   def getOpposite: Direction =
