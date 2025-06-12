@@ -6,23 +6,23 @@ enum GameControllerState:
   case GameRunning
   case GameOver
 
-enum Direction:
-  case North
-  case South
-  case West
-  case East
-
+sealed trait Direction:
   def getOpposite: Direction =
     this match
-      case North => South
-      case South => North
-      case West => East
-      case East => West
+      case Direction.North => Direction.South
+      case Direction.South => Direction.North
+      case Direction.West => Direction.East
+      case Direction.East => Direction.West
+
+  def fromString(s: String): Option[Direction] = s.toLowerCase match
+    case "n" | "north" => Some(Direction.North)
+    case "s" | "south" => Some(Direction.South)
+    case "w" | "west" => Some(Direction.West)
+    case "e" | "east" => Some(Direction.East)
+    case _ => None
 
 object Direction:
-  def fromString(s: String): Option[Direction] = s.toLowerCase match
-    case "n" | "north" => Some(North)
-    case "s" | "south" => Some(South)
-    case "w" | "west" => Some(West)
-    case "e" | "east" => Some(East)
-    case _ => None
+  case object North extends Direction
+  case object South extends Direction
+  case object West extends Direction
+  case object East extends Direction
