@@ -34,5 +34,3 @@ class GameResultTest extends AnyFlatSpec with Matchers:
         error shouldBe gameError
         message shouldBe "invalid input"
       case _ => fail("Expected Error")
-
-

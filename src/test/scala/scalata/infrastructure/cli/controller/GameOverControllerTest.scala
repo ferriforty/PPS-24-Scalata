@@ -8,6 +8,6 @@ class GameOverControllerTest extends AnyFlatSpec with Matchers:
 
   "GameOver" should "Return GameOver State" in:
     GameOverController().start() match
-      case GameResult.Success(value, message) => value shouldBe GameControllerState.GameOver
+      case GameResult.Success(value, message) =>
+        value shouldBe GameControllerState.GameOver
       case GameResult.Error(error, message) => ()
-

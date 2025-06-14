@@ -1,6 +1,8 @@
 package scalata.infrastructure.cli.view
 
 trait GameView:
+  def textToDisplay: String
+
   def display(): Unit
 
   def getInput: String = scala.io.StdIn.readLine().trim

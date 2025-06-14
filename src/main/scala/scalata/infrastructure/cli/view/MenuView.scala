@@ -2,9 +2,12 @@ package scalata.infrastructure.cli.view
 
 object MenuView extends GameView:
 
+  override def textToDisplay: String =
+    """ -> Welcome to Scalata <-
+      | --> This Menu is useless <--
+      | --> Do you want to play? <--
+      | ---> [y/n] <---""".stripMargin
+
   override def display(): Unit =
     this.clearScreen()
-    println(" -> Welcome to DungeonUnderYou <-")
-    println(" --> This Menu is useless <--")
-    println(" --> Do you want to play? <--")
-    println(" ---> [y/n] <---")
+    println(textToDisplay)

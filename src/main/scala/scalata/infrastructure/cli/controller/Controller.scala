@@ -4,4 +4,3 @@ import scalata.domain.util.{GameControllerState, GameResult}
 
 trait Controller:
   def start(): GameResult[GameControllerState]
-  

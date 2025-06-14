@@ -11,4 +11,3 @@ class GameErrorTest extends AnyFlatSpec with Matchers:
     error.message shouldBe "Invalid Input s"
     error.errorCode shouldBe "INVALID_INPUT"
     error shouldBe a[GameError]
-

@@ -6,7 +6,8 @@ import scalata.infrastructure.cli.view.MenuView
 
 import scala.annotation.tailrec
 
-class MenuController(inputSource: () => String = () => MenuView.getInput) extends Controller:
+class MenuController(inputSource: () => String = () => MenuView.getInput)
+    extends Controller:
   override def start(): GameResult[GameControllerState] =
     MenuView.display()
     GameStartUseCase().newGame(processInput())
