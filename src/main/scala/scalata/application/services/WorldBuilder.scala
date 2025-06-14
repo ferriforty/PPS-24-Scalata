@@ -7,8 +7,8 @@ final case class WorldBuilder(
     player: Option[Player]
 ):
 
-  def withPlayer(player: Player): WorldBuilder =
-    copy(player = Some(player))
+  def withPlayer(player: Option[Player]): WorldBuilder =
+    copy(player)
 
   def build(difficulty: Int): World =
     FloorGenerator.generateFloor(
