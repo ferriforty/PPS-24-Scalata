@@ -1,9 +1,9 @@
 package scalata.domain.util
 
 case class Point2D(
-                    x: Int,
-                    y: Int
-                  ):
+    x: Int,
+    y: Int
+):
   def ==(other: Point2D): Boolean =
     this.x == other.x && this.y == other.y
 

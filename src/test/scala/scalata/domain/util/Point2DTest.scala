@@ -34,8 +34,10 @@ class Point2DTest extends AnyFlatSpec with Matchers:
     val range = from.rangeTo(to)
 
     range should contain theSameElementsAs List(
-      Point2D(1, 1), Point2D(1, 2),
-      Point2D(2, 1), Point2D(2, 2)
+      Point2D(1, 1),
+      Point2D(1, 2),
+      Point2D(2, 1),
+      Point2D(2, 2)
     )
 
   "Point2D moveBy" should "move point by offsets" in:

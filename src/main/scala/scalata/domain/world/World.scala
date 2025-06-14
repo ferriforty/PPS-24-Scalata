@@ -4,10 +4,10 @@ import scalata.domain.entities.Player
 import scalata.domain.util.Direction
 
 final case class World(
-                      player: Player,
-                      difficulty: Int = 1,
-                      rooms: Map[Int, Room]
-                      ):
+    player: Player,
+    difficulty: Int = 1,
+    rooms: Map[Int, Room]
+):
 
   def getRoom(id: Int): Option[Room] = rooms.get(id)
 
