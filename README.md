@@ -18,8 +18,7 @@ To build and serve the documentation locally, follow these steps:
 
 ### Code Coverage
 
-[![codecov](https://codecov.io/gh/ferriforty/PPS-24-Scalata/graph/badge.svg?token=PA2QW5EJU8)]
-(https://codecov.io/gh/ferriforty/PPS-24-Scalata)
+[![codecov](https://codecov.io/gh/ferriforty/PPS-24-Scalata/graph/badge.svg?token=PA2QW5EJU8)](https://codecov.io/gh/ferriforty/PPS-24-Scalata)
 
 ---
 
