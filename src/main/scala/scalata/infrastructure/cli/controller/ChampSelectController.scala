@@ -7,8 +7,9 @@ import scalata.infrastructure.cli.view.ChampSelectView
 
 import scala.annotation.tailrec
 
-class ChampSelectController(inputSource: () => String = () => ChampSelectView.getInput)
-  extends Controller:
+class ChampSelectController(
+    inputSource: () => String = () => ChampSelectView.getInput
+) extends Controller:
 
   override def start(): GameResult[(GameControllerState, Option[Player])] =
     ChampSelectView.display()

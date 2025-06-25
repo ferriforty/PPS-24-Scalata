@@ -8,4 +8,3 @@ object ChampSelectView extends GameView:
       | ---> [M]age(ranged) <---
       | ---> [B]arbarian(melee) <---
       | ---> [A]ssassin(stealth) <---""".stripMargin
-    

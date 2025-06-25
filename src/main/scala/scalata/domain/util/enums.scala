@@ -5,16 +5,16 @@ sealed trait PlayerClasses:
 
   def reach: Int =
     this match
-      case PlayerClasses.Mage => 2
+      case PlayerClasses.Mage      => 2
       case PlayerClasses.Barbarian => 1
-      case PlayerClasses.Assassin => 1
+      case PlayerClasses.Assassin  => 1
 
   def visibility: Int =
     this match
-      case PlayerClasses.Mage => 5
+      case PlayerClasses.Mage      => 5
       case PlayerClasses.Barbarian => 6
-      case PlayerClasses.Assassin => 3
-  
+      case PlayerClasses.Assassin  => 3
+
 object PlayerClasses:
   case object Mage extends PlayerClasses
   case object Barbarian extends PlayerClasses

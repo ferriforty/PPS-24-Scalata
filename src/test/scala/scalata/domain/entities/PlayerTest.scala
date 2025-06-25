@@ -8,9 +8,8 @@ import scalata.domain.util.{GameResult, PlayerClasses}
 
 class PlayerTest extends AnyFlatSpec with Matchers:
 
-  "Player" should "be movable" in :
+  "Player" should "be movable" in:
     val player = PlayerFactory().createPlayer(PlayerClasses.Mage) match
       case GameResult.Success(p, _) => p
-      case _ => ()
+      case _                        => ()
     player shouldBe a[Movable]
-

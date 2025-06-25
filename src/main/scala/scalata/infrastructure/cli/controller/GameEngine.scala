@@ -13,10 +13,10 @@ class GameEngine:
       worldBuilder: WorldBuilder = WorldBuilder(None)
   ): Unit =
     val controller = gamePhaseService.getCurrentPhase match
-      case GameControllerState.Menu => MenuController()
+      case GameControllerState.Menu        => MenuController()
       case GameControllerState.ChampSelect => ChampSelectController()
       case GameControllerState.GameRunning => GameController()
-      case GameControllerState.GameOver => GameOverController()
+      case GameControllerState.GameOver    => GameOverController()
 
     controller.start() match
       case GameResult.Success((nextPhase, player), _) =>
