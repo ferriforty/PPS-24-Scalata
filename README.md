@@ -16,6 +16,10 @@ To build and serve the documentation locally, follow these steps:
 
 4. Open your browser and go to [http://localhost:4000](http://localhost:4000) to view the documentation.
 
+### Code Coverage
+
+[![codecov](https://codecov.io/gh/ferriforty/PPS-24-Scalata/graph/badge.svg?token=PA2QW5EJU8)](https://codecov.io/gh/ferriforty/PPS-24-Scalata)
+
 ---
 
 Make sure you have Ruby and Bundler installed on your system before running these commands.
