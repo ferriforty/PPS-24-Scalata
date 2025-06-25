@@ -9,10 +9,11 @@ class ChampSelectUseCase:
                  input: PlayerClasses
                  ): GameResult[(GameControllerState, Option[Player])] =
 
+    val player = PlayerFactory().createPlayer(input) match
+      case GameResult.Success(p, _) => p
+      case GameResult.Error(_, message) => throw new IllegalStateException(message)
+
     GameResult.success(
       GameControllerState.GameRunning,
-      Some(PlayerFactory().createPlayer(input))
+      Some(player)
     )
-
-
-
