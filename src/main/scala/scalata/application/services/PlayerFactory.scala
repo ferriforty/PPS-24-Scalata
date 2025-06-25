@@ -7,8 +7,14 @@ class PlayerFactory:
   def createPlayer(playerClass: PlayerClasses): GameResult[Player] =
     playerClass match
       case PlayerClasses.Mage =>
-        GameResult.success(Player())
+        GameResult.success(Player(
+          role = playerClass,
+        ))
       case PlayerClasses.Barbarian =>
-        GameResult.success(Player())
+        GameResult.success(Player(
+          role = playerClass,
+        ))
       case PlayerClasses.Assassin =>
-        GameResult.success(Player())
+        GameResult.success(Player(
+          role = playerClass,
+        ))
