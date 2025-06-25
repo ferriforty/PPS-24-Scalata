@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/ferriforty/PPS-24-Scalata/compare/v0.1.0...v0.1.1) (2025-06-25)
+
+
+### Bug Fixes
+
+* Changelog error in tag ([687de13](https://github.com/ferriforty/PPS-24-Scalata/commit/687de1372d045c3f0b2a0c4dc65d69d68e6b4676))
+
 # 0.1.0 (2025-06-25)
 
 
