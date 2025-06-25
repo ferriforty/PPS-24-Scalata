@@ -9,5 +9,5 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
   "GameController" should "Return GameOver State" in:
     GameController().start() match
       case GameResult.Success(value, message) =>
-        value shouldBe GameControllerState.GameOver
+        value._1 shouldBe GameControllerState.GameOver
       case GameResult.Error(error, message) => ()

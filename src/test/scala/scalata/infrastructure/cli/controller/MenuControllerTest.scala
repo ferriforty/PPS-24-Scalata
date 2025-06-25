@@ -8,12 +8,12 @@ class MenuControllerTest extends AnyFlatSpec with Matchers:
 
   "MenuController" should "Return ChampSelect State with y" in:
     MenuController(() => "y").start() match
-      case GameResult.Success(value, message) =>
-        value shouldBe GameControllerState.ChampSelect
-      case GameResult.Error(error, message) => ()
+      case GameResult.Success(value, _) =>
+        value._1 shouldBe GameControllerState.ChampSelect
+      case GameResult.Error(_, _) => ()
 
   "MenuController" should "Return GameOver State with n" in:
     MenuController(() => "n").start() match
-      case GameResult.Success(value, message) => ()
-      case GameResult.Error(error, message)   =>
+      case GameResult.Success(value, _) => ()
+      case GameResult.Error(error, _)   =>
         error shouldBe GameError.GameOver()

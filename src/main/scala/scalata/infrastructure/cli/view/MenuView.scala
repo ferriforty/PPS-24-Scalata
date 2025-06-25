@@ -7,7 +7,3 @@ object MenuView extends GameView:
       | --> This Menu is useless <--
       | --> Do you want to play? <--
       | ---> [y/n] <---""".stripMargin
-
-  override def display(): Unit =
-    this.clearScreen()
-    println(textToDisplay)

@@ -1,6 +1,6 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.GamePhaseService
+import scalata.application.services.{GamePhaseService, WorldBuilder}
 import scalata.domain.util.{GameControllerState, GameResult}
 
 import scala.annotation.tailrec
@@ -9,29 +9,20 @@ class GameEngine:
 
   @tailrec
   final def gameLoop(
-      gamePhaseService: GamePhaseService = GamePhaseService()
+      gamePhaseService: GamePhaseService = GamePhaseService(),
+      worldBuilder: WorldBuilder = WorldBuilder(None)
   ): Unit =
-    gamePhaseService.getCurrentPhase match
-      case GameControllerState.Menu =>
-        MenuController().start() match
-          case GameResult.Success(x, _) =>
-            gameLoop(gamePhaseService.transitionTo(x))
-          case GameResult.Error(_, message) => println(message)
+    val controller = gamePhaseService.getCurrentPhase match
+      case GameControllerState.Menu        => MenuController()
+      case GameControllerState.ChampSelect => ChampSelectController()
+      case GameControllerState.GameRunning => GameController()
+      case GameControllerState.GameOver    => GameOverController()
 
-      case GameControllerState.ChampSelect =>
-        ChampSelectController().start() match
-          case GameResult.Success(x, _) =>
-            gameLoop(gamePhaseService.transitionTo(x))
-          case GameResult.Error(_, message) => println(message)
-
-      case GameControllerState.GameRunning =>
-        GameController().start() match
-          case GameResult.Success(x, _) =>
-            gameLoop(gamePhaseService.transitionTo(x))
-          case GameResult.Error(_, message) => println(message)
-
-      case GameControllerState.GameOver =>
-        GameOverController().start() match
-          case GameResult.Success(x, _) =>
-            gameLoop(gamePhaseService.transitionTo(x))
-          case GameResult.Error(_, message) => println(message)
+    controller.start() match
+      case GameResult.Success((nextPhase, player), _) =>
+        gameLoop(
+          gamePhaseService.transitionTo(nextPhase),
+          Option(player).fold(worldBuilder)(worldBuilder.withPlayer)
+        )
+      case GameResult.Error(_, message) =>
+        println(message)

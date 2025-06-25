@@ -1,6 +1,7 @@
 package scalata.infrastructure.cli.controller
 
 import scalata.application.usecases.GameStartUseCase
+import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult}
 import scalata.infrastructure.cli.view.MenuView
 
@@ -8,7 +9,7 @@ import scala.annotation.tailrec
 
 class MenuController(inputSource: () => String = () => MenuView.getInput)
     extends Controller:
-  override def start(): GameResult[GameControllerState] =
+  override def start(): GameResult[(GameControllerState, Option[Player])] =
     MenuView.display()
     GameStartUseCase().newGame(processInput())
 

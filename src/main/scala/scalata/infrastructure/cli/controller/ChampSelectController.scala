@@ -1,7 +1,32 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.domain.util.{GameControllerState, GameResult}
+import scalata.application.usecases.ChampSelectUseCase
+import scalata.domain.entities.Player
+import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
+import scalata.infrastructure.cli.view.ChampSelectView
 
-class ChampSelectController extends Controller:
-  override def start(): GameResult[GameControllerState] =
-    GameResult.success(GameControllerState.GameRunning)
+import scala.annotation.tailrec
+
+class ChampSelectController(
+    inputSource: () => String = () => ChampSelectView.getInput
+) extends Controller:
+
+  override def start(): GameResult[(GameControllerState, Option[Player])] =
+    ChampSelectView.display()
+    ChampSelectUseCase().champSelect(processInput())
+
+  @tailrec
+  private def processInput(): PlayerClasses =
+    inputSource().split("\\s+").toList match
+      case "m" :: Nil =>
+        println("Abracadabra.")
+        PlayerClasses.Mage
+      case "b" :: Nil =>
+        println("War is the business of barbarians.")
+        PlayerClasses.Barbarian
+      case "a" :: Nil =>
+        println("Nothing is true, everything is permitted.")
+        PlayerClasses.Assassin
+      case _ =>
+        println("Try again!")
+        processInput()
