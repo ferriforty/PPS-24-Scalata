@@ -1,5 +1,25 @@
 package scalata.domain.util
 
+sealed trait PlayerClasses:
+  override def toString: String = "@"
+
+  def reach: Int =
+    this match
+      case PlayerClasses.Mage => 2
+      case PlayerClasses.Barbarian => 1
+      case PlayerClasses.Assassin => 1
+
+  def visibility: Int =
+    this match
+      case PlayerClasses.Mage => 5
+      case PlayerClasses.Barbarian => 6
+      case PlayerClasses.Assassin => 3
+  
+object PlayerClasses:
+  case object Mage extends PlayerClasses
+  case object Barbarian extends PlayerClasses
+  case object Assassin extends PlayerClasses
+
 sealed trait GameControllerState
 object GameControllerState:
   case object Menu extends GameControllerState

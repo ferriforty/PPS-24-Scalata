@@ -3,7 +3,9 @@ package scalata.infrastructure.cli.view
 trait GameView:
   def textToDisplay: String
 
-  def display(): Unit
+  def display(): Unit =
+    this.clearScreen()
+    println(textToDisplay)
 
   def getInput: String = scala.io.StdIn.readLine().trim
 
