@@ -1,7 +1,7 @@
 package scalata.infrastructure.cli.view
 
 trait GameView:
-  def textToDisplay: String
+  def textToDisplay: String = ""
 
   def display(): Unit =
     this.clearScreen()
@@ -11,4 +11,4 @@ trait GameView:
 
   def displayError(message: String): Unit = println(s"❌ Error: $message")
 
-  def clearScreen(): Unit = print("\u001b[2J\u001b[H")
+  private def clearScreen(): Unit = print("\u001b[2J\u001b[H")
