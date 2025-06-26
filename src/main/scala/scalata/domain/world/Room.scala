@@ -3,12 +3,10 @@ package scalata.domain.world
 import scalata.domain.util.{Direction, Point2D}
 
 final case class Room(
-    name: String,
-    id: Int,
+    id: String,
     topLeft: Point2D,
     botRight: Point2D,
-    exits: Map[Direction, Int], // direction -> roomId
-    orientation: (Int, Int)
+    exits: Map[Direction, String] // direction -> roomId
 ):
-  def getNeighbor(direction: Direction): Option[Int] =
+  def getNeighbor(direction: Direction): Option[String] =
     this.exits.get(direction)
