@@ -35,10 +35,8 @@ object FloorGenerator:
       (row, rowIndex) <- matrixRooms.zipWithIndex
       (roomName, colIndex) <- row.zipWithIndex
     yield
-      val startRow = colIndex * areaWidth + Random.between(MIN_PADDING, MAX_PADDING)
-      val endRow = (colIndex + 1) * areaWidth - Random.between(MIN_PADDING, MAX_PADDING)
-      val startCol = rowIndex * areaHeight + Random.between(MIN_PADDING, MAX_PADDING)
-      val endCol = (rowIndex + 1) * areaHeight - Random.between(MIN_PADDING, MAX_PADDING)
+      val (startRow, endRow) = calculateStartEnd(colIndex, areaWidth)
+      val (startCol, endCol) = calculateStartEnd(rowIndex, areaHeight)
 
       //val connections = getConnections(matrixRooms, rowIndex, colIndex)
 
@@ -51,3 +49,9 @@ object FloorGenerator:
         Map.empty
       )
     ).toMap
+
+  private def calculateStartEnd(index: Int, size: Int): (Int, Int) = {
+    val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
+    val end = (index + 1) * size - Random.between(MIN_PADDING, MAX_PADDING)
+    (start, end)
+  }
