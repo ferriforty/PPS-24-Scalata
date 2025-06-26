@@ -49,12 +49,6 @@ and any obstacles are addressed promptly.
 **Test-Driven Development (TDD)** is applied wherever possible to integrate testing early in the process and to 
 minimize maintenance costs and risk.
 
-The **Red-Green-Refactor (RGR)** cycle is followed:
-
-1. **Red**: Write a failing test for the desired functionality.
-2. **Green**: Implement code to pass the test.
-3. **Refactor**: Clean up and improve the codebase.
-
 **Tools used for TDD**:
 
 - **ScalaTest** for writing unit tests in Scala
