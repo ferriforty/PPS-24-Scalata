@@ -1,11 +1,12 @@
 package scalata.application.usecases
 
-import scalata.domain.entities.Player
+import scalata.application.services.WorldBuilder
 import scalata.domain.util.{GameControllerState, GameError, GameResult}
 
 class GameStartUseCase:
   def newGame(
-      input: Boolean
-  ): GameResult[(GameControllerState, Option[Player])] =
-    if input then GameResult.success(GameControllerState.ChampSelect, None)
+      input: Boolean,
+      worldBuilder: WorldBuilder
+  ): GameResult[(GameControllerState, WorldBuilder)] =
+    if input then GameResult.success(GameControllerState.ChampSelect, worldBuilder)
     else GameResult.error(GameError.GameOver(), "game over")

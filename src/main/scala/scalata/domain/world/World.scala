@@ -9,6 +9,10 @@ final case class World(
     rooms: Map[Int, Room]
 ):
 
+  def getDifficulty: Int = difficulty
+
+  def getPlayer: Player = player
+
   def getRoom(id: Int): Option[Room] = rooms.get(id)
 
   def updateRoom(room: Room): World =

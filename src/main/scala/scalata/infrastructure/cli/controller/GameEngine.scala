@@ -18,11 +18,11 @@ class GameEngine:
       case GameControllerState.GameRunning => GameController()
       case GameControllerState.GameOver    => GameOverController()
 
-    controller.start() match
-      case GameResult.Success((nextPhase, player), _) =>
+    controller.start(worldBuilder) match
+      case GameResult.Success((nextPhase, w), _) =>
         gameLoop(
           gamePhaseService.transitionTo(nextPhase),
-          Option(player).fold(worldBuilder)(worldBuilder.withPlayer)
+          w
         )
       case GameResult.Error(_, message) =>
         println(message)

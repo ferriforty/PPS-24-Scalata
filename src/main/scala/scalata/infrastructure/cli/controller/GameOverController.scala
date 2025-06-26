@@ -1,8 +1,8 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.domain.entities.Player
+import scalata.application.services.WorldBuilder
 import scalata.domain.util.{GameControllerState, GameError, GameResult}
 
 class GameOverController extends Controller:
-  override def start(): GameResult[(GameControllerState, Option[Player])] =
+  override def start(worldBuilder: WorldBuilder): GameResult[(GameControllerState, WorldBuilder)] =
     GameResult.Error(GameError.GameOver(), "Game Over")
