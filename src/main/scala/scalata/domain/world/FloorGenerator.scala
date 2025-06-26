@@ -1,7 +1,7 @@
 package scalata.domain.world
 
 import scalata.domain.entities.Player
-import scalata.domain.util.{MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
+import scalata.domain.util.{Direction, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
 
 import scala.util.Random
 
@@ -17,7 +17,7 @@ object FloorGenerator:
     World(
       player,
       difficulty,
-      Map.empty,
+      rooms,
       matrixRooms
     )
 
@@ -30,7 +30,6 @@ object FloorGenerator:
 
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
     val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
-
     (for
       (row, rowIndex) <- matrixRooms.zipWithIndex
       (roomName, colIndex) <- row.zipWithIndex
@@ -38,17 +37,35 @@ object FloorGenerator:
       val (startRow, endRow) = calculateStartEnd(colIndex, areaWidth)
       val (startCol, endCol) = calculateStartEnd(rowIndex, areaHeight)
 
-      //val connections = getConnections(matrixRooms, rowIndex, colIndex)
-
+      val connections = getConnections(matrixRooms, rowIndex, colIndex)
       roomName -> Room(
         roomName,
         Point2D(startRow, startCol),
         Point2D(endRow, endCol),
         // TODO List.empty,
         // TODO List.empty,
-        Map.empty
+        connections
       )
     ).toMap
+
+  private def getConnections(
+                              matrixRooms: List[List[String]],
+                              row: Int,
+                              col: Int
+                            ): Map[Direction, String] =
+    Direction.values.flatMap(
+      _ match
+        case Direction.West if col > 0 =>
+          matrixRooms(row).lift(col - 1).map(Direction.West -> _)
+        case Direction.East =>
+          matrixRooms(row).lift(col + 1).map(Direction.East -> _)
+        case Direction.North if row > 0 =>
+          matrixRooms.lift(row - 1).flatMap(_.lift(col)).map(Direction.North -> _)
+        case Direction.South =>
+          matrixRooms.lift(row + 1).flatMap(_.lift(col)).map(Direction.South -> _)
+        case _ => None
+    ).toMap
+
 
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) = {
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
