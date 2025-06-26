@@ -8,28 +8,31 @@ import scala.util.Random
 object FloorGenerator:
   def generateFloor(player: Player, difficulty: Int, seed: Long): World =
     Random.setSeed(seed)
+    val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
+    val shuffledRooms = Random.shuffle(ROOMS)
 
-    val rooms = generateRooms(1)
+    val matrixRooms: List[List[String]] = roomsArrangement(numRoomsFloor, shuffledRooms)
+    val rooms = generateRooms(difficulty, numRoomsFloor, shuffledRooms, matrixRooms)
 
     World(
       player,
       difficulty,
       Map.empty,
-      List.empty
+      matrixRooms
     )
 
-  private def generateRooms(difficulty: Int): Map[String, Room] =
-
-    val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
-
+  private def generateRooms(
+                             difficulty: Int,
+                             numRoomsFloor: Int,
+                             shuffledRooms: List[String],
+                             matrixRooms: List[List[String]]
+                           ): Map[String, Room] =
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
     val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
 
-    val matrixRooms: List[List[String]] = roomsArrangement(numRoomsFloor)
-
     Map.empty
 
-  private def roomsArrangement(numRoomsFloor: Int): List[List[String]] =
+  private def roomsArrangement(numRoomsFloor: Int, shuffledRooms: List[String]): List[List[String]] =
     val shuffledRooms = Random.shuffle(ROOMS)
 
     (for (i <- 0 until NUM_ROWS_DUNGEON) yield
