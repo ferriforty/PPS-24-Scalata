@@ -20,19 +20,22 @@ object FloorGenerator:
 
   private def generateRooms(difficulty: Int): Map[String, Room] =
 
-    val m = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
+    val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
 
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
-    val areaWidth = WORLD_DIMENSIONS._1 / m
+    val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
 
+    val matrixRooms: List[List[String]] = roomsArrangement(numRoomsFloor)
+
+    Map.empty
+
+  private def roomsArrangement(numRoomsFloor: Int): List[List[String]] =
     val shuffledRooms = Random.shuffle(ROOMS)
 
-    val roomsArrangement: List[List[String]] =
-      (for (i <- 0 until NUM_ROWS_DUNGEON) yield {
-        val startIndex = i * m
-        val numCols = math.min(m, shuffledRooms.length - startIndex)
-        (for (j <- 0 until numCols) yield shuffledRooms(startIndex + j)).toList
-      }).toList
-    println(roomsArrangement)
-    Map.empty
+    (for (i <- 0 until NUM_ROWS_DUNGEON) yield
+      val startIndex = i * numRoomsFloor
+      val numCols = math.min(numRoomsFloor, shuffledRooms.length - startIndex)
+      (for (j <- 0 until numCols) yield shuffledRooms(startIndex + j)).toList
+    ).toList
+
 
