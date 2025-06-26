@@ -6,6 +6,8 @@ final case class Room(
     id: String,
     topLeft: Point2D,
     botRight: Point2D,
+    // TODO items: List[Items],
+    // TODO enemies: List[Enemy],
     exits: Map[Direction, String] // direction -> roomId
 ):
   def getNeighbor(direction: Direction): Option[String] =

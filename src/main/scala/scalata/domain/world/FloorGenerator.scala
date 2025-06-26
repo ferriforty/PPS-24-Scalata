@@ -1,7 +1,7 @@
 package scalata.domain.world
 
 import scalata.domain.entities.Player
-import scalata.domain.util.{NUM_ROWS_DUNGEON, ROOMS, WORLD_DIMENSIONS}
+import scalata.domain.util.{MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
 
 import scala.util.Random
 
@@ -11,7 +11,7 @@ object FloorGenerator:
     val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
     val shuffledRooms = Random.shuffle(ROOMS)
 
-    val matrixRooms: List[List[String]] = roomsArrangement(numRoomsFloor, shuffledRooms)
+    val matrixRooms: List[List[String]] = shuffledRooms.grouped(numRoomsFloor).toList
     val rooms = generateRooms(difficulty, numRoomsFloor, shuffledRooms, matrixRooms)
 
     World(
@@ -27,18 +27,27 @@ object FloorGenerator:
                              shuffledRooms: List[String],
                              matrixRooms: List[List[String]]
                            ): Map[String, Room] =
+
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
     val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
 
-    Map.empty
+    (for
+      (row, rowIndex) <- matrixRooms.zipWithIndex
+      (roomName, colIndex) <- row.zipWithIndex
+    yield
+      val startRow = colIndex * areaWidth + Random.between(MIN_PADDING, MAX_PADDING)
+      val endRow = (colIndex + 1) * areaWidth - Random.between(MIN_PADDING, MAX_PADDING)
+      val startCol = rowIndex * areaHeight + Random.between(MIN_PADDING, MAX_PADDING)
+      val endCol = (rowIndex + 1) * areaHeight - Random.between(MIN_PADDING, MAX_PADDING)
 
-  private def roomsArrangement(numRoomsFloor: Int, shuffledRooms: List[String]): List[List[String]] =
-    val shuffledRooms = Random.shuffle(ROOMS)
+      //val connections = getConnections(matrixRooms, rowIndex, colIndex)
 
-    (for (i <- 0 until NUM_ROWS_DUNGEON) yield
-      val startIndex = i * numRoomsFloor
-      val numCols = math.min(numRoomsFloor, shuffledRooms.length - startIndex)
-      (for (j <- 0 until numCols) yield shuffledRooms(startIndex + j)).toList
-    ).toList
-
-
+      roomName -> Room(
+        roomName,
+        Point2D(startRow, startCol),
+        Point2D(endRow, endCol),
+        // TODO List.empty,
+        // TODO List.empty,
+        Map.empty
+      )
+    ).toMap
