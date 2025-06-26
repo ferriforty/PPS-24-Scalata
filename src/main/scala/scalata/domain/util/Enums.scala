@@ -27,14 +27,7 @@ object GameControllerState:
   case object GameRunning extends GameControllerState
   case object GameOver extends GameControllerState
 
-sealed trait Direction:
-  def getOpposite: Direction =
-    this match
-      case Direction.North => Direction.South
-      case Direction.South => Direction.North
-      case Direction.West  => Direction.East
-      case Direction.East  => Direction.West
-
+object Direction:
   def fromString(s: String): Option[Direction] = s.toLowerCase match
     case "n" | "north" => Some(Direction.North)
     case "s" | "south" => Some(Direction.South)
@@ -42,8 +35,15 @@ sealed trait Direction:
     case "e" | "east"  => Some(Direction.East)
     case _             => None
 
-object Direction:
-  case object North extends Direction
-  case object South extends Direction
-  case object West extends Direction
-  case object East extends Direction
+enum Direction:
+  case North
+  case South
+  case West
+  case East
+
+  def getOpposite: Direction =
+    this match
+      case Direction.North => Direction.South
+      case Direction.South => Direction.North
+      case Direction.West => Direction.East
+      case Direction.East => Direction.West
