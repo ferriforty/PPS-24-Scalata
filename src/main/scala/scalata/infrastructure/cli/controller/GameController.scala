@@ -16,6 +16,11 @@ class GameController extends Controller:
   ): GameResult[(GameControllerState, GameBuilder)] =
     GameRunningUseCase().gameLoop(worldBuilder.build()) match
       case GameResult.Success((diff, player, level), _) =>
-        start(worldBuilder.withDifficulty(diff).withPlayer(Some(player)).withLevel(level))
+        start(
+          worldBuilder
+            .withDifficulty(diff)
+            .withPlayer(Some(player))
+            .withLevel(level)
+        )
       case GameResult.Error(_, _) =>
         GameResult.success(GameControllerState.GameOver, worldBuilder)

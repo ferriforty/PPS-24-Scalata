@@ -14,7 +14,12 @@ import scalata.domain.util.{
 import scala.util.Random
 
 object FloorGenerator:
-  def generateFloor(player: Player, difficulty: Int, seed: Long, level: Int): GameSession =
+  def generateFloor(
+      player: Player,
+      difficulty: Int,
+      seed: Long,
+      level: Int
+  ): GameSession =
     Random.setSeed(seed)
     val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
     val shuffledRooms = Random.shuffle(ROOMS)
@@ -26,7 +31,8 @@ object FloorGenerator:
 
     val startRoom = matrixRooms.head.head
 
-    GameSession(World(
+    GameSession(
+      World(
         player.move(rooms(startRoom).topLeft.moveBy(1, 1)),
         difficulty,
         rooms,
@@ -35,7 +41,8 @@ object FloorGenerator:
       GameState(
         currentRoom = startRoom,
         visitedRooms = Set(startRoom),
-        currentLevel = level)
+        currentLevel = level
+      )
     )
 
   private def generateRooms(
@@ -91,8 +98,7 @@ object FloorGenerator:
       )
       .toMap
 
-  private def calculateStartEnd(index: Int, size: Int): (Int, Int) = {
+  private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
     val end = (index + 1) * size - Random.between(MIN_PADDING, MAX_PADDING)
     (start, end)
-  }

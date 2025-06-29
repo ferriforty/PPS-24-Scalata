@@ -23,24 +23,23 @@ object WorldView extends GameView:
       if world.rooms.values.exists(_.isTopBotBorder(point)) then "-"
       else if world.rooms.values.exists(_.isSideBorder(point)) then "|"
       else
-
-        world.rooms.values.find: room =>
+        world.rooms.values.find(room =>
           room.isInside(point) && state.visitedRooms.contains(room.id)
-        match
+        ) match
           case Some(room) =>
             if world.player.position == point then world.player.role.toString
-            else
-              "." // TODO check enemies and items
+            else "." // TODO check enemies and items
           case None => " "
 
   private def findDoorSymbol(world: World, point: Point2D): Option[String] =
-    world.rooms.values.flatMap(room =>
-      room.exits.collectFirst(_ match
-        case (d, _) if room.getDoorPosition(d) == point =>
-          d match
-            case Direction.West => "<"
-            case Direction.East => ">"
-            case Direction.North => "^"
-            case Direction.South => "v"
+    world.rooms.values
+      .flatMap(room =>
+        room.exits.collectFirst(_ match
+          case (d, _) if room.getDoorPosition(d) == point =>
+            d match
+              case Direction.West  => "<"
+              case Direction.East  => ">"
+              case Direction.North => "^"
+              case Direction.South => "v")
       )
-    ).headOption
+      .headOption

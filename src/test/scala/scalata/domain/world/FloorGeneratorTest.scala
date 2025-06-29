@@ -23,7 +23,8 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
   var gameSession: GameSession = _
 
   before:
-    gameSession = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
+    gameSession =
+      FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
 
   "FloorGenerator" should "maintain correct player state" in:
     gameSession.getWorld.player shouldBe TestPlayer
@@ -31,7 +32,7 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
   "FloorGenerator" should "preserve difficulty level" in:
     gameSession.getWorld.difficulty shouldBe TestDifficulty
 
-  "FloorGenerator" should "preserve level" in :
+  "FloorGenerator" should "preserve level" in:
     gameSession.getGameState.currentLevel shouldBe TestLevel
 
   "FloorGenerator" should "generate correct room matrix structure" in:
@@ -62,6 +63,10 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
         else connections.get(Direction.West) shouldBe None
 
   "FloorGenerator" should "produce deterministic results with same seed" in:
-    val world1 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42, TestLevel).getWorld
-    val world2 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42, TestLevel).getWorld
+    val world1 = FloorGenerator
+      .generateFloor(TestPlayer, TestDifficulty, 42, TestLevel)
+      .getWorld
+    val world2 = FloorGenerator
+      .generateFloor(TestPlayer, TestDifficulty, 42, TestLevel)
+      .getWorld
     world1 shouldBe world2
