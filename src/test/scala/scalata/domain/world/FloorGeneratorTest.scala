@@ -27,7 +27,8 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
       FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
 
   "FloorGenerator" should "maintain correct player state" in:
-    gameSession.getWorld.player shouldBe TestPlayer
+    gameSession.getWorld.player.name shouldBe TestPlayer.name
+    gameSession.getWorld.player.role shouldBe TestPlayer.role
 
   "FloorGenerator" should "preserve difficulty level" in:
     gameSession.getWorld.difficulty shouldBe TestDifficulty
