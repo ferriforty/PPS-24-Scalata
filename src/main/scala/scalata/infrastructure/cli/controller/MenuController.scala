@@ -1,6 +1,6 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.WorldBuilder
+import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameStartUseCase
 import scalata.domain.util.{GameControllerState, GameResult}
 import scalata.infrastructure.cli.view.MenuView
@@ -10,10 +10,10 @@ import scala.annotation.tailrec
 class MenuController(inputSource: () => String = () => MenuView.getInput)
     extends Controller:
   override def start(
-      worldBuilder: WorldBuilder
-  ): GameResult[(GameControllerState, WorldBuilder)] =
+      gameBuilder: GameBuilder
+  ): GameResult[(GameControllerState, GameBuilder)] =
     MenuView.display()
-    GameStartUseCase().newGame(processInput(), worldBuilder)
+    GameStartUseCase().newGame(processInput(), gameBuilder)
 
   @tailrec
   private def processInput(): Boolean =

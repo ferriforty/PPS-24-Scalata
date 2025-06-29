@@ -1,6 +1,6 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.{GamePhaseService, WorldBuilder}
+import scalata.application.services.{GamePhaseService, GameBuilder}
 import scalata.domain.util.{GameControllerState, GameResult}
 
 import scala.annotation.tailrec
@@ -10,7 +10,7 @@ class GameEngine:
   @tailrec
   final def gameLoop(
       gamePhaseService: GamePhaseService = GamePhaseService(),
-      worldBuilder: WorldBuilder = WorldBuilder(None)
+      worldBuilder: GameBuilder = GameBuilder(None)
   ): Unit =
     val controller = gamePhaseService.getCurrentPhase match
       case GameControllerState.Menu        => MenuController()

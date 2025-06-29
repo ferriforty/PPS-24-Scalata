@@ -1,6 +1,6 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.WorldBuilder
+import scalata.application.services.GameBuilder
 import scalata.application.usecases.ChampSelectUseCase
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
@@ -13,8 +13,8 @@ class ChampSelectController(
 ) extends Controller:
 
   override def start(
-      worldBuilder: WorldBuilder
-  ): GameResult[(GameControllerState, WorldBuilder)] =
+      worldBuilder: GameBuilder
+  ): GameResult[(GameControllerState, GameBuilder)] =
     ChampSelectView.display()
     ChampSelectUseCase().champSelect(processInput(), worldBuilder)
 

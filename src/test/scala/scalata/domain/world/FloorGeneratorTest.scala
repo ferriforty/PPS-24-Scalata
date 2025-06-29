@@ -19,29 +19,33 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
   val TestPlayer: Player = Player(role = Mage, position = Point2D(0, 0))
   val TestDifficulty = 1
-  var world: World = _
+  val TestLevel = 1
+  var gameSession: GameSession = _
 
   before:
-    world = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0)
+    gameSession = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
 
   "FloorGenerator" should "maintain correct player state" in:
-    world.player shouldBe TestPlayer
+    gameSession.getWorld.player shouldBe TestPlayer
 
   "FloorGenerator" should "preserve difficulty level" in:
-    world.difficulty shouldBe TestDifficulty
+    gameSession.getWorld.difficulty shouldBe TestDifficulty
+
+  "FloorGenerator" should "preserve level" in :
+    gameSession.getGameState.currentLevel shouldBe TestLevel
 
   "FloorGenerator" should "generate correct room matrix structure" in:
-    world.roomsArrangement should have size NUM_ROWS_DUNGEON
-    world.roomsArrangement.foreach: row =>
+    gameSession.getWorld.roomsArrangement should have size NUM_ROWS_DUNGEON
+    gameSession.getWorld.roomsArrangement.foreach: row =>
       row should have size (ROOMS.length / NUM_ROWS_DUNGEON)
 
   "FloorGenerator" should "calculate valid room boundaries" in:
     val areaWidth = WORLD_DIMENSIONS._1 / (ROOMS.length / NUM_ROWS_DUNGEON)
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
 
-    world.roomsArrangement.zipWithIndex.foreach: (row, rowIdx) =>
+    gameSession.getWorld.roomsArrangement.zipWithIndex.foreach: (row, rowIdx) =>
       row.zipWithIndex.foreach: (roomName, colIdx) =>
-        val room = world.rooms(roomName)
+        val room = gameSession.getWorld.rooms(roomName)
 
         room.topLeft.x should (be >= (colIdx * areaWidth + MIN_PADDING)
           and be <= (colIdx * areaWidth + MAX_PADDING))
@@ -49,15 +53,15 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
           and be <= ((colIdx + 1) * areaWidth - MIN_PADDING))
 
   "FloorGenerator" should "create valid room connections" in:
-    world.roomsArrangement.zipWithIndex.foreach: (row, rowIdx) =>
+    gameSession.getWorld.roomsArrangement.zipWithIndex.foreach: (row, rowIdx) =>
       row.zipWithIndex.foreach: (roomName, colIdx) =>
-        val connections = world.rooms(roomName).exits
+        val connections = gameSession.getWorld.rooms(roomName).exits
 
         if colIdx > 0 then
           connections.get(Direction.West) shouldBe Some(row(colIdx - 1))
         else connections.get(Direction.West) shouldBe None
 
   "FloorGenerator" should "produce deterministic results with same seed" in:
-    val world1 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42)
-    val world2 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42)
+    val world1 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42, TestLevel).getWorld
+    val world2 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42, TestLevel).getWorld
     world1 shouldBe world2

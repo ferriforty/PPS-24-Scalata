@@ -14,7 +14,7 @@ import scalata.domain.util.{
 import scala.util.Random
 
 object FloorGenerator:
-  def generateFloor(player: Player, difficulty: Int, seed: Long): World =
+  def generateFloor(player: Player, difficulty: Int, seed: Long, level: Int): GameSession =
     Random.setSeed(seed)
     val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
     val shuffledRooms = Random.shuffle(ROOMS)
@@ -24,11 +24,18 @@ object FloorGenerator:
     val rooms =
       generateRooms(difficulty, numRoomsFloor, shuffledRooms, matrixRooms)
 
-    World(
-      player,
-      difficulty,
-      rooms,
-      matrixRooms
+    val startRoom = matrixRooms.head.head
+
+    GameSession(World(
+        player,
+        difficulty,
+        rooms,
+        matrixRooms
+      ),
+      GameState(
+        currentRoom = startRoom,
+        visitedRooms = Set(startRoom),
+        currentLevel = level)
     )
 
   private def generateRooms(
