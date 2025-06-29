@@ -10,4 +10,4 @@ final case class Player(
 ) extends Entity
     with Movable:
 
-  override def move(pos: Point2D): Entity = copy(position = pos)
+  override def move(pos: Point2D): Player = copy(position = pos)

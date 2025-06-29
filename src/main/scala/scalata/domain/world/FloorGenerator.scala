@@ -27,7 +27,7 @@ object FloorGenerator:
     val startRoom = matrixRooms.head.head
 
     GameSession(World(
-        player,
+        player.move(rooms(startRoom).topLeft.moveBy(1, 1)),
         difficulty,
         rooms,
         matrixRooms
