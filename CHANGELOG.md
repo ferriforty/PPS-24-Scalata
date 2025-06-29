@@ -1,3 +1,15 @@
+# [0.2.0](https://github.com/ferriforty/PPS-24-Scalata/compare/v0.1.1...v0.2.0) (2025-06-29)
+
+
+### Features
+
+* **gameloop:** Init GameRunning use case for world creation ([63db20d](https://github.com/ferriforty/PPS-24-Scalata/commit/63db20d8de9a4c9505cbf4997f4632ef9206c630))
+* **world:** Add Constants for the world ([3a1823d](https://github.com/ferriforty/PPS-24-Scalata/commit/3a1823df4ae2a46f042e16d89648d9b2527d0dbe))
+* **world:** Add Random Rooms names ([ea732d5](https://github.com/ferriforty/PPS-24-Scalata/commit/ea732d50bbf88296b4ce74ccd1c26ef377b66b83))
+* **world:** Create rooms arrangement for the floor generation ([629f65d](https://github.com/ferriforty/PPS-24-Scalata/commit/629f65de81aaf5b85f4ad4d73608271d25dc0339))
+* **world:** Impl floor generation entirely ([7e2380e](https://github.com/ferriforty/PPS-24-Scalata/commit/7e2380ea927a8b0d4cba16e92f349bd11725966c))
+* **world:** Implement Room utilies and display world ([2a4a822](https://github.com/ferriforty/PPS-24-Scalata/commit/2a4a82281f260cce23d9f90c2f501fdc322faf9d))
+
 ## [0.1.1](https://github.com/ferriforty/PPS-24-Scalata/compare/v0.1.0...v0.1.1) (2025-06-25)
 
 
