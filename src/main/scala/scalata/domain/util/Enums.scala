@@ -45,5 +45,5 @@ enum Direction:
     this match
       case Direction.North => Direction.South
       case Direction.South => Direction.North
-      case Direction.West => Direction.East
-      case Direction.East => Direction.West
+      case Direction.West  => Direction.East
+      case Direction.East  => Direction.West

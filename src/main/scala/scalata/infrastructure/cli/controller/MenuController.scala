@@ -9,7 +9,9 @@ import scala.annotation.tailrec
 
 class MenuController(inputSource: () => String = () => MenuView.getInput)
     extends Controller:
-  override def start(worldBuilder: WorldBuilder): GameResult[(GameControllerState, WorldBuilder)] =
+  override def start(
+      worldBuilder: WorldBuilder
+  ): GameResult[(GameControllerState, WorldBuilder)] =
     MenuView.display()
     GameStartUseCase().newGame(processInput(), worldBuilder)
 

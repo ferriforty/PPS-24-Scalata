@@ -1,7 +1,15 @@
 package scalata.domain.world
 
 import scalata.domain.entities.Player
-import scalata.domain.util.{Direction, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
+import scalata.domain.util.{
+  Direction,
+  MAX_PADDING,
+  MIN_PADDING,
+  NUM_ROWS_DUNGEON,
+  Point2D,
+  ROOMS,
+  WORLD_DIMENSIONS
+}
 
 import scala.util.Random
 
@@ -11,8 +19,10 @@ object FloorGenerator:
     val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
     val shuffledRooms = Random.shuffle(ROOMS)
 
-    val matrixRooms: List[List[String]] = shuffledRooms.grouped(numRoomsFloor).toList
-    val rooms = generateRooms(difficulty, numRoomsFloor, shuffledRooms, matrixRooms)
+    val matrixRooms: List[List[String]] =
+      shuffledRooms.grouped(numRoomsFloor).toList
+    val rooms =
+      generateRooms(difficulty, numRoomsFloor, shuffledRooms, matrixRooms)
 
     World(
       player,
@@ -22,11 +32,11 @@ object FloorGenerator:
     )
 
   private def generateRooms(
-                             difficulty: Int,
-                             numRoomsFloor: Int,
-                             shuffledRooms: List[String],
-                             matrixRooms: List[List[String]]
-                           ): Map[String, Room] =
+      difficulty: Int,
+      numRoomsFloor: Int,
+      shuffledRooms: List[String],
+      matrixRooms: List[List[String]]
+  ): Map[String, Room] =
 
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
     val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
@@ -49,23 +59,30 @@ object FloorGenerator:
     ).toMap
 
   private def getConnections(
-                              matrixRooms: List[List[String]],
-                              row: Int,
-                              col: Int
-                            ): Map[Direction, String] =
-    Direction.values.flatMap(
-      _ match
-        case Direction.West if col > 0 =>
-          matrixRooms(row).lift(col - 1).map(Direction.West -> _)
-        case Direction.East =>
-          matrixRooms(row).lift(col + 1).map(Direction.East -> _)
-        case Direction.North if row > 0 =>
-          matrixRooms.lift(row - 1).flatMap(_.lift(col)).map(Direction.North -> _)
-        case Direction.South =>
-          matrixRooms.lift(row + 1).flatMap(_.lift(col)).map(Direction.South -> _)
-        case _ => None
-    ).toMap
-
+      matrixRooms: List[List[String]],
+      row: Int,
+      col: Int
+  ): Map[Direction, String] =
+    Direction.values
+      .flatMap(
+        _ match
+          case Direction.West if col > 0 =>
+            matrixRooms(row).lift(col - 1).map(Direction.West -> _)
+          case Direction.East =>
+            matrixRooms(row).lift(col + 1).map(Direction.East -> _)
+          case Direction.North if row > 0 =>
+            matrixRooms
+              .lift(row - 1)
+              .flatMap(_.lift(col))
+              .map(Direction.North -> _)
+          case Direction.South =>
+            matrixRooms
+              .lift(row + 1)
+              .flatMap(_.lift(col))
+              .map(Direction.South -> _)
+          case _ => None
+      )
+      .toMap
 
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) = {
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)

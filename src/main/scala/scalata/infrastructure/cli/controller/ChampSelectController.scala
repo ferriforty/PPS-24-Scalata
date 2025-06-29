@@ -12,7 +12,9 @@ class ChampSelectController(
     inputSource: () => String = () => ChampSelectView.getInput
 ) extends Controller:
 
-  override def start(worldBuilder: WorldBuilder): GameResult[(GameControllerState, WorldBuilder)] =
+  override def start(
+      worldBuilder: WorldBuilder
+  ): GameResult[(GameControllerState, WorldBuilder)] =
     ChampSelectView.display()
     ChampSelectUseCase().champSelect(processInput(), worldBuilder)
 

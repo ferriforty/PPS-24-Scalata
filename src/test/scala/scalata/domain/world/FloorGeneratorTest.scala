@@ -5,7 +5,15 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
-import scalata.domain.util.{Direction, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
+import scalata.domain.util.{
+  Direction,
+  MAX_PADDING,
+  MIN_PADDING,
+  NUM_ROWS_DUNGEON,
+  Point2D,
+  ROOMS,
+  WORLD_DIMENSIONS
+}
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
@@ -47,8 +55,7 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
         if colIdx > 0 then
           connections.get(Direction.West) shouldBe Some(row(colIdx - 1))
-        else
-          connections.get(Direction.West) shouldBe None
+        else connections.get(Direction.West) shouldBe None
 
   "FloorGenerator" should "produce deterministic results with same seed" in:
     val world1 = FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 42)

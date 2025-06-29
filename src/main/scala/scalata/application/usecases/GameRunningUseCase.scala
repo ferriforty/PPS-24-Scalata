@@ -9,4 +9,4 @@ class GameRunningUseCase:
   def gameLoop(world: World): GameResult[(Int, Player)] =
 
     GameResult.error(GameError.GameOver(), "")
-    //GameResult.success((world.getDifficulty + 1).min(MAX_DIFFICULTY), world.getPlayer)
+    // GameResult.success((world.getDifficulty + 1).min(MAX_DIFFICULTY), world.getPlayer)
