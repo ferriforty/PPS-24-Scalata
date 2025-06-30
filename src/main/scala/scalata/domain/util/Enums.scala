@@ -28,7 +28,7 @@ sealed trait EnemyClasses:
   override def toString: String =
     this match
       case EnemyClasses.Goblin => "g"
-      case EnemyClasses.Pig => "p"
+      case EnemyClasses.Pig    => "p"
 
 sealed trait GameControllerState
 object GameControllerState:

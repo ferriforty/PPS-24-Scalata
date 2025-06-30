@@ -21,19 +21,21 @@ class PlayerTest extends AnyFlatSpec with Matchers:
     val health = player.health
     val damage = 30
 
-    player.takeDamage(damage).health shouldBe(health - damage)
+    player.takeDamage(damage).health shouldBe (health - damage)
 
-  "Player" should "heal" in :
+  "Player" should "heal" in:
     val player = PlayerFactory().create(PlayerClasses.Mage)
     val health = player.health
     val damage = 70
     val heal = 50
 
     player.heal(heal).health shouldBe player.maxHealth
-    player.takeDamage(damage).heal(heal).health shouldBe(health - damage + heal)
+    player
+      .takeDamage(damage)
+      .heal(heal)
+      .health shouldBe (health - damage + heal)
 
-
-  "Player" should "die" in :
+  "Player" should "die" in:
     val player = PlayerFactory().create(PlayerClasses.Mage)
 
     player.isAlive shouldBe true

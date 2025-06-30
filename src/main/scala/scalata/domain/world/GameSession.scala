@@ -11,5 +11,5 @@ final case class GameSession(
   def getGameState: GameState = this.gameState
 
   def updateWorld(world: World): GameSession = copy(world = world)
-  def updateGameState(gameState: GameState): GameSession = copy(gameState = gameState)
-
+  def updateGameState(gameState: GameState): GameSession =
+    copy(gameState = gameState)

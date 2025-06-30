@@ -27,4 +27,3 @@ final case class Enemy(
 
   override def attack(opponent: Player): Player =
     opponent.takeDamage(attackPower)
-

@@ -31,10 +31,10 @@ final case class Player(
 
   override def attack(opponent: Enemy): Enemy =
     opponent.takeDamage(attackPower)
-    
+
   override def equipWeapon(weapon: Weapon): Player =
     copy(weapon = Some(weapon))
-    
+
   override def addItem(item: Item): Player =
     copy(inventory = inventory :+ item)
 
@@ -49,4 +49,3 @@ final case class Player(
   def reach(): Integer = this.role.reach
 
   def visibility(): Integer = this.role.visibility
-

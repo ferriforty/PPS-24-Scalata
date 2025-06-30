@@ -6,20 +6,22 @@ import scalata.domain.util.Point2D
 import scalata.domain.world.GameSession
 
 final case class Weapon(
-                         override val position: Option[Point2D],
-                         override val name: String,
-                         damage: Int
-                       ) extends Item with Pickable:
+    override val position: Option[Point2D],
+    override val name: String,
+    damage: Int
+) extends Item
+    with Pickable:
 
   private def setPosition(pos: Option[Point2D]): Weapon = copy(position = pos)
 
-  override def interact(gameSession: GameSession): GameSession = pick(this.setPosition(None), gameSession)
+  override def interact(gameSession: GameSession): GameSession =
+    pick(this.setPosition(None), gameSession)
 
   override def spawn(pos: Option[Point2D]): Weapon = setPosition(pos)
 
   override def use(entity: Entity): Entity =
     entity match
       case p: Player => p.equipWeapon(weapon = this)
-      case _ => entity
+      case _         => entity
 
   def attack(playerAttack: Int): Int = this.damage + playerAttack

@@ -12,7 +12,7 @@ class EnemyFactory extends EntityFactory[EnemyFactory, Enemy, EnemyClasses]:
           enemyType = entityType,
           health = 40,
           maxHealth = 40,
-          attackPower = 10,
+          attackPower = 10
         )
       case EnemyClasses.Pig =>
         Enemy(
@@ -20,5 +20,5 @@ class EnemyFactory extends EntityFactory[EnemyFactory, Enemy, EnemyClasses]:
           enemyType = entityType,
           health = 60,
           maxHealth = 60,
-          attackPower = 5,
+          attackPower = 5
         )

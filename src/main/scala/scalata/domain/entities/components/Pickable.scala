@@ -9,10 +9,12 @@ trait Pickable:
     (for
       room <- gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom)
       player = gameSession.getWorld.getPlayer
-    yield
-      gameSession.updateWorld(
-        gameSession
-          .getWorld
-          .updateRoom(room.removeItem(item))
-          .updatePlayer(player.addItem(item))
-      )).getOrElse(throw new IllegalStateException("current Room in game state doesn't exists"))
+    yield gameSession.updateWorld(
+      gameSession.getWorld
+        .updateRoom(room.removeItem(item))
+        .updatePlayer(player.addItem(item))
+    )).getOrElse(
+      throw new IllegalStateException(
+        "current Room in game state doesn't exists"
+      )
+    )
