@@ -1,3 +1,7 @@
 package scalata.domain.entities
 
-trait Entity
+import scalata.domain.util.Point2D
+
+trait Entity:
+  val name: String
+  val position: Point2D

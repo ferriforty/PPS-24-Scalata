@@ -10,17 +10,20 @@ class PlayerFactory:
         Player(
           role = playerClass,
           health = 100,
-          maxHealth = 100
+          maxHealth = 100,
+          attackPower = 10
         )
       case PlayerClasses.Barbarian =>
         Player(
           role = playerClass,
           health = 100,
-          maxHealth = 100
+          maxHealth = 100,
+          attackPower = 15
         )
       case PlayerClasses.Assassin =>
         Player(
           role = playerClass,
           health = 100,
-          maxHealth = 100
+          maxHealth = 100,
+          attackPower = 10
         )

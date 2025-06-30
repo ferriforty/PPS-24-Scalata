@@ -1,17 +1,19 @@
 package scalata.domain.entities
 
-import scalata.domain.entities.components.{Alive, Movable}
+import scalata.domain.entities.components.{Alive, Combatant, Movable}
 import scalata.domain.util.{PlayerClasses, Point2D}
 
 final case class Player(
-    name: String = "Hero",
+    override val name: String = "Hero",
     role: PlayerClasses,
-    health: Int,
-    maxHealth: Int,
-    position: Point2D = Point2D(0, 0)
+    override val health: Int,
+    override val maxHealth: Int,
+    override val position: Point2D = Point2D(0, 0),
+    override val attackPower: Int
 ) extends Entity
     with Movable[Player]
-    with Alive[Player]:
+    with Alive[Player]
+    with Combatant[Enemy]:
 
   override def move(pos: Point2D): Player = copy(position = pos)
 
@@ -22,3 +24,6 @@ final case class Player(
     copy(health = (health + amount).min(maxHealth))
 
   override def isAlive: Boolean = health > 0
+
+  override def attack(opponent: Enemy): Enemy =
+    opponent.takeDamage(attackPower)
