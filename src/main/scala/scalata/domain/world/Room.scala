@@ -1,14 +1,15 @@
 package scalata.domain.world
 
+import scalata.domain.entities.{Enemy, Item}
 import scalata.domain.util.{Direction, Point2D}
 
 final case class Room(
     id: String,
     topLeft: Point2D,
     botRight: Point2D,
-    // TODO items: List[Items],
-    // TODO enemies: List[Enemy],
-    exits: Map[Direction, String] // direction -> roomId
+    exits: Map[Direction, String], // direction -> roomId
+    items: List[Item] = List.empty,
+    enemies: List[Enemy] = List.empty
 ):
   def getNeighbor(direction: Direction): Option[String] =
     this.exits.get(direction)
@@ -33,3 +34,9 @@ final case class Room(
       case Direction.South => Point2D(centerX, botRight.y)
       case Direction.West  => Point2D(topLeft.x, centerY)
       case Direction.East  => Point2D(botRight.x, centerY)
+
+  def withItems(items: List[Item]): Room = copy(items = items)
+
+  def withEnemies(enemies: List[Enemy]): Room = copy(enemies = enemies)
+
+  def removeItem(item: Item): Room = copy(items = items.filterNot(_ == item))

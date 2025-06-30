@@ -1,10 +1,11 @@
 package scalata.domain.entities
 
 import scalata.domain.entities.components.{Alive, Combatant, Movable}
-import scalata.domain.util.Point2D
+import scalata.domain.util.{EnemyClasses, Point2D}
 
 final case class Enemy(
     override val name: String,
+    enemyType: EnemyClasses,
     override val position: Point2D = Point2D(0, 0),
     override val health: Int,
     override val maxHealth: Int,
@@ -13,7 +14,7 @@ final case class Enemy(
     with Alive[Enemy]
     with Movable[Enemy]
     with Combatant[Player]:
-  
+
   override def takeDamage(damage: Int): Enemy =
     copy(health = (health - damage).max(0))
 
