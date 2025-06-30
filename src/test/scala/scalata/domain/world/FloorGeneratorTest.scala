@@ -3,7 +3,7 @@ package scalata.domain.world
 import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.PlayerFactory
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
 import scalata.domain.util.{

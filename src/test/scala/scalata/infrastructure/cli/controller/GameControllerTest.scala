@@ -2,7 +2,8 @@ package scalata.infrastructure.cli.controller
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.{GameBuilder, PlayerFactory}
+import scalata.application.services.GameBuilder
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 

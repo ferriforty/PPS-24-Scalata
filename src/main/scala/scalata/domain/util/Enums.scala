@@ -29,6 +29,16 @@ enum EnemyClasses:
       case EnemyClasses.Goblin => "g"
       case EnemyClasses.Pig    => "p"
 
+enum ItemClasses:
+  case Halberd
+  case Staff
+  case Axe
+  case BigPotion
+  case SmallPotion
+  case Dust
+
+  override def toString: String = "#"
+
 sealed trait GameControllerState
 object GameControllerState:
   case object Menu extends GameControllerState
@@ -56,3 +66,10 @@ enum Direction:
       case Direction.South => Direction.North
       case Direction.West  => Direction.East
       case Direction.East  => Direction.West
+  
+  def doorMat: Point2D =
+    this match
+      case Direction.North => Point2D(0, -1)
+      case Direction.South => Point2D(0, 1)
+      case Direction.West => Point2D(1, 0)
+      case Direction.East => Point2D(-1, 0)

@@ -10,6 +10,7 @@ val MIN_PADDING = 1
 val MAX_DIFFICULTY = 10
 val MIN_ENEMIES = 1.0
 val MAX_ENEMIES = 3.0
+val POTION_WEIGHT = 0.9
 
 def gaussianBetween(from: Double, to: Double, difficulty: Int) =
   val mean = from + (difficulty / MAX_DIFFICULTY) * (to - from)
@@ -19,6 +20,9 @@ def gaussianBetween(from: Double, to: Double, difficulty: Int) =
   val raw = mean + gaussian * stdDev
 
   raw.round.toInt.max(from.toInt).min(to.toInt)
+
+def weightedRandom(p: Double): Boolean =
+  Random.nextDouble() < p
 
 val ROOMS: List[String] = List(
   "Hall of Chains",

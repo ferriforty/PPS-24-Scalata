@@ -1,6 +1,7 @@
 package scalata.application.usecases
 
-import scalata.application.services.{PlayerFactory, GameBuilder}
+import scalata.application.services.GameBuilder
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 

@@ -29,5 +29,5 @@ case class Point2D(
       if j > 0
     yield Point2D(i, j)).toList
 
-  def moveBy(dx: Int, dy: Int): Point2D =
-    Point2D(this.x + dx, this.y + dy)
+  def moveBy(movement: Point2D): Point2D =
+    Point2D(this.x + movement.x, this.y + movement.y)

@@ -1,5 +1,6 @@
-package scalata.application.services
+package scalata.application.services.factories
 
+import scalata.application.services.EntityFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameResult, PlayerClasses}
 

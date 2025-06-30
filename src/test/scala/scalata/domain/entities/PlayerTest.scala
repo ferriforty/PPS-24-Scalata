@@ -2,7 +2,7 @@ package scalata.domain.entities
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.PlayerFactory
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.components.{Alive, Movable}
 import scalata.domain.util.{GameResult, PlayerClasses}
 

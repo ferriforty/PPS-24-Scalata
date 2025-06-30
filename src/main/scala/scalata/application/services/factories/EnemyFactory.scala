@@ -1,5 +1,6 @@
-package scalata.application.services
+package scalata.application.services.factories
 
+import scalata.application.services.EntityFactory
 import scalata.domain.entities.Enemy
 import scalata.domain.util.EnemyClasses
 

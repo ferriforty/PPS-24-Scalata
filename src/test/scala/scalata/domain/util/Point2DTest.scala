@@ -43,6 +43,6 @@ class Point2DTest extends AnyFlatSpec with Matchers:
   "Point2D moveBy" should "move point by offsets" in:
     val point = Point2D(3, 4)
 
-    point.moveBy(2, 3) shouldBe Point2D(5, 7)
-    point.moveBy(-1, -2) shouldBe Point2D(2, 2)
-    point.moveBy(0, 0) shouldBe point
+    point.moveBy(Point2D(2, 3)) shouldBe Point2D(5, 7)
+    point.moveBy(Point2D(-1, -2)) shouldBe Point2D(2, 2)
+    point.moveBy(Point2D(0, 0)) shouldBe point

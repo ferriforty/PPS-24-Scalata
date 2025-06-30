@@ -1,7 +1,7 @@
 package scalata.domain.world
 
-import scalata.application.services.EnemyFactory
-import scalata.domain.entities.{Enemy, Player}
+import scalata.application.services.factories.{EnemyFactory, ItemFactory}
+import scalata.domain.entities.{Enemy, Item, Player}
 import scalata.domain.util.{Direction, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
 
 import scala.util.Random
@@ -26,7 +26,7 @@ object FloorGenerator:
 
     GameSession(
       World(
-        player.move(rooms(startRoom).topLeft.moveBy(1, 1)),
+        player.move(rooms(startRoom).topLeft.moveBy(Point2D(1, 1))),
         difficulty,
         rooms,
         matrixRooms
@@ -65,16 +65,13 @@ object FloorGenerator:
         List.empty
       )
 
-      val enemies = generateEnemies(room, difficulty)
+      val enemies = if room.id == matrixRooms.head.head then List.empty else
+        generateEnemies(room, difficulty)
 
-      roomName -> Room(
-        roomName,
-        Point2D(startRow, startCol),
-        Point2D(endRow, endCol),
-        connections,
-        List.empty,
-        enemies
-      )
+      val items = if room.id == matrixRooms.head.head then List.empty else
+        generateItems(room, difficulty, enemies)
+
+      roomName -> room.withEnemies(enemies).withItems(items)
     ).toMap
 
   private def getConnections(
@@ -103,6 +100,19 @@ object FloorGenerator:
       )
       .toMap
 
+  private def generateItems(room: Room, difficulty: Int, enemies: List[Enemy]): List[Item] =
+
+    val itemPosition = Random
+      .shuffle(for
+        x <- room.topLeft.x + 1 until room.botRight.x
+        y <- room.topLeft.y + 1 until room.botRight.y
+        if !enemies.exists(e => e.position == Point2D(x, y)) &&
+          !room.exits.exists(d => room.getDoorPosition(d._1).moveBy(d._1.doorMat) == Point2D(x, y))
+      yield Point2D(x, y))
+      .head
+
+    List(ItemFactory().createBox(difficulty).spawn(Some(itemPosition)))
+
   private def generateEnemies(room: Room, difficulty: Int): List[Enemy] =
     val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
     val enemiesPosition = Random
@@ -116,7 +126,7 @@ object FloorGenerator:
     enemiesPosition.map(p =>
       EnemyFactory().randomGeneration.move(p)
     ).toList
-  
+
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
     val end = (index + 1) * size - Random.between(MIN_PADDING, MAX_PADDING)
