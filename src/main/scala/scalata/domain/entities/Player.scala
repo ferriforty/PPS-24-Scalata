@@ -8,6 +8,6 @@ final case class Player(
     role: PlayerClasses,
     position: Point2D = Point2D(0, 0)
 ) extends Entity
-    with Movable:
+    with Movable[Player]:
 
   override def move(pos: Point2D): Player = copy(position = pos)
