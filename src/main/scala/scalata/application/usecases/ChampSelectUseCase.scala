@@ -10,10 +10,7 @@ class ChampSelectUseCase:
       worldBuilder: GameBuilder
   ): GameResult[(GameControllerState, GameBuilder)] =
 
-    val player = PlayerFactory().createPlayer(input) match
-      case GameResult.Success(p, _)     => p
-      case GameResult.Error(_, message) =>
-        throw new IllegalStateException(message)
+    val player = PlayerFactory().createPlayer(input)
 
     GameResult.success(
       GameControllerState.GameRunning,

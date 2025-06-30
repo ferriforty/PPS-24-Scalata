@@ -2,7 +2,7 @@ package scalata.infrastructure.cli.controller
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.GameBuilder
+import scalata.application.services.{GameBuilder, PlayerFactory}
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
@@ -10,7 +10,7 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
 
   "GameController" should "Return GameOver State" in:
     GameController().start(worldBuilder =
-      GameBuilder(Some(Player(role = PlayerClasses.Mage)))
+      GameBuilder(Some(PlayerFactory().createPlayer(PlayerClasses.Mage)))
     ) match
       case GameResult.Success(value, message) =>
         value._1 shouldBe GameControllerState.GameOver

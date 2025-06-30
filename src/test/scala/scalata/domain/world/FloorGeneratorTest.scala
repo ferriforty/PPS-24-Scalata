@@ -3,21 +3,14 @@ package scalata.domain.world
 import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import scalata.application.services.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
-import scalata.domain.util.{
-  Direction,
-  MAX_PADDING,
-  MIN_PADDING,
-  NUM_ROWS_DUNGEON,
-  Point2D,
-  ROOMS,
-  WORLD_DIMENSIONS
-}
+import scalata.domain.util.{Direction, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS}
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
-  val TestPlayer: Player = Player(role = Mage, position = Point2D(0, 0))
+  val TestPlayer: Player = PlayerFactory().createPlayer(Mage)
   val TestDifficulty = 1
   val TestLevel = 1
   var gameSession: GameSession = _

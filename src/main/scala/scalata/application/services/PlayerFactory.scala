@@ -4,23 +4,23 @@ import scalata.domain.entities.Player
 import scalata.domain.util.{GameResult, PlayerClasses}
 
 class PlayerFactory:
-  def createPlayer(playerClass: PlayerClasses): GameResult[Player] =
+  def createPlayer(playerClass: PlayerClasses): Player =
     playerClass match
       case PlayerClasses.Mage =>
-        GameResult.success(
-          Player(
-            role = playerClass
-          )
+        Player(
+          role = playerClass,
+          health = 100,
+          maxHealth = 100
         )
       case PlayerClasses.Barbarian =>
-        GameResult.success(
-          Player(
-            role = playerClass
-          )
+        Player(
+          role = playerClass,
+          health = 100,
+          maxHealth = 100
         )
       case PlayerClasses.Assassin =>
-        GameResult.success(
-          Player(
-            role = playerClass
-          )
+        Player(
+          role = playerClass,
+          health = 100,
+          maxHealth = 100
         )
