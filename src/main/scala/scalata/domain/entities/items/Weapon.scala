@@ -21,7 +21,7 @@ final case class Weapon(
 
   override def use(entity: Entity): Entity =
     entity match
-      case p: Player => p.equipWeapon(weapon = this)
+      case p: Player => p.equipWeapon(weapon = this).removeItem(this)
       case _         => entity
 
   def attack(playerAttack: Int): Int = this.damage + playerAttack

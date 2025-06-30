@@ -3,7 +3,12 @@ package scalata.application.services
 import scalata.domain.entities.Enemy
 import scalata.domain.util.EnemyClasses
 
+import scala.util.Random
+
 class EnemyFactory extends EntityFactory[EnemyFactory, Enemy, EnemyClasses]:
+  def randomGeneration: Enemy =
+    create(EnemyClasses.values(Random.nextInt(EnemyClasses.values.length)))
+
   override def create(entityType: EnemyClasses): Enemy =
     entityType match
       case EnemyClasses.Goblin =>

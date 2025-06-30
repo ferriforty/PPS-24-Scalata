@@ -20,11 +20,10 @@ object PlayerClasses:
   case object Barbarian extends PlayerClasses
   case object Assassin extends PlayerClasses
 
-object EnemyClasses:
-  case object Goblin extends EnemyClasses
-  case object Pig extends EnemyClasses
+enum EnemyClasses:
+  case Goblin
+  case Pig
 
-sealed trait EnemyClasses:
   override def toString: String =
     this match
       case EnemyClasses.Goblin => "g"

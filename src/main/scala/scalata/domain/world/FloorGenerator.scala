@@ -1,15 +1,8 @@
 package scalata.domain.world
 
-import scalata.domain.entities.Player
-import scalata.domain.util.{
-  Direction,
-  MAX_PADDING,
-  MIN_PADDING,
-  NUM_ROWS_DUNGEON,
-  Point2D,
-  ROOMS,
-  WORLD_DIMENSIONS
-}
+import scalata.application.services.EnemyFactory
+import scalata.domain.entities.{Enemy, Player}
+import scalata.domain.util.{Direction, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
 
 import scala.util.Random
 
@@ -62,13 +55,25 @@ object FloorGenerator:
       val (startCol, endCol) = calculateStartEnd(rowIndex, areaHeight)
 
       val connections = getConnections(matrixRooms, rowIndex, colIndex)
+
+      val room = Room(
+        roomName,
+        Point2D(startRow, startCol),
+        Point2D(endRow, endCol),
+        connections,
+        List.empty,
+        List.empty
+      )
+
+      val enemies = generateEnemies(room, difficulty)
+
       roomName -> Room(
         roomName,
         Point2D(startRow, startCol),
         Point2D(endRow, endCol),
-        // TODO List.empty,
-        // TODO List.empty,
-        connections
+        connections,
+        List.empty,
+        enemies
       )
     ).toMap
 
@@ -98,6 +103,20 @@ object FloorGenerator:
       )
       .toMap
 
+  private def generateEnemies(room: Room, difficulty: Int): List[Enemy] =
+    val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
+    val enemiesPosition = Random
+      .shuffle(for
+        x <- room.topLeft.x + 1 until room.botRight.x
+        y <- room.topLeft.y + 1 until room.botRight.y
+        if !room.items.exists(i => i.position == Point2D(x, y))
+      yield Point2D(x, y))
+      .take(numEnemies)
+
+    enemiesPosition.map(p =>
+      EnemyFactory().randomGeneration.move(p)
+    ).toList
+  
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
     val end = (index + 1) * size - Random.between(MIN_PADDING, MAX_PADDING)
