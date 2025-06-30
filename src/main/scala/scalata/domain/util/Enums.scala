@@ -20,6 +20,16 @@ object PlayerClasses:
   case object Barbarian extends PlayerClasses
   case object Assassin extends PlayerClasses
 
+object EnemyClasses:
+  case object Goblin extends EnemyClasses
+  case object Pig extends EnemyClasses
+
+sealed trait EnemyClasses:
+  override def toString: String =
+    this match
+      case EnemyClasses.Goblin => "g"
+      case EnemyClasses.Pig => "p"
+
 sealed trait GameControllerState
 object GameControllerState:
   case object Menu extends GameControllerState

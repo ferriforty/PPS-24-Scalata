@@ -10,7 +10,7 @@ import scalata.domain.util.{Direction, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEO
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
-  val TestPlayer: Player = PlayerFactory().createPlayer(Mage)
+  val TestPlayer: Player = PlayerFactory().create(Mage)
   val TestDifficulty = 1
   val TestLevel = 1
   var gameSession: GameSession = _

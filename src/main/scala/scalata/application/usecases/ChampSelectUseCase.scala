@@ -10,7 +10,7 @@ class ChampSelectUseCase:
       worldBuilder: GameBuilder
   ): GameResult[(GameControllerState, GameBuilder)] =
 
-    val player = PlayerFactory().createPlayer(input)
+    val player = PlayerFactory().create(input)
 
     GameResult.success(
       GameControllerState.GameRunning,

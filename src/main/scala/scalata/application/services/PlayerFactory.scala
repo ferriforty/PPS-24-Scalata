@@ -3,8 +3,8 @@ package scalata.application.services
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameResult, PlayerClasses}
 
-class PlayerFactory:
-  def createPlayer(playerClass: PlayerClasses): Player =
+class PlayerFactory extends EntityFactory[PlayerFactory, Player, PlayerClasses]:
+  def create(playerClass: PlayerClasses): Player =
     playerClass match
       case PlayerClasses.Mage =>
         Player(

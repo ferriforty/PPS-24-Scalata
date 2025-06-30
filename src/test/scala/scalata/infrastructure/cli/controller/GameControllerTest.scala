@@ -10,7 +10,7 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
 
   "GameController" should "Return GameOver State" in:
     GameController().start(worldBuilder =
-      GameBuilder(Some(PlayerFactory().createPlayer(PlayerClasses.Mage)))
+      GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
     ) match
       case GameResult.Success(value, message) =>
         value._1 shouldBe GameControllerState.GameOver
