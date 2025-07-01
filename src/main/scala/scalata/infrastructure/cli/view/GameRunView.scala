@@ -73,11 +73,11 @@ object GameRunView extends GameView:
       .headOption
 
   private def getEnemySymbol(room: Room, point: Point2D): Option[String] =
-    room.enemies
-      .find(e => e.isAlive && e.position == point)
+    room.getEnemyAtPosition(point)
+      .filter(_.isAlive)
       .map(_.enemyType.toString)
 
   private def getItemSymbol(room: Room, point: Point2D): Option[String] =
-    room.items
-      .find(i => !i.isPicked && i.position.contains(point))
+    room.getItemAtPosition(point)
+      .filterNot(_.isPicked)
       .map(_.toString)

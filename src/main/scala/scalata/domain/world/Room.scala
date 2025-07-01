@@ -40,3 +40,9 @@ final case class Room(
   def withEnemies(enemies: List[Enemy]): Room = copy(enemies = enemies)
 
   def removeItem(item: Item): Room = copy(items = items.filterNot(_ == item))
+
+  def getEnemyAtPosition(position: Point2D): Option[Enemy] =
+    this.enemies.find(e => e.position == position)
+
+  def getItemAtPosition(position: Point2D): Option[Item] =
+    this.items.find(e => e.position.contains(position))
