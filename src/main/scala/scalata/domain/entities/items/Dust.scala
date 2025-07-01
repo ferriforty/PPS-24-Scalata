@@ -6,7 +6,7 @@ import scalata.domain.util.{ItemClasses, Point2D}
 import scalata.domain.world.GameSession
 
 final case class Dust(
-    override val position: Option[Point2D],
+    override val position: Option[Point2D] = None,
     override val name: String = "Dust",
     override val itemClass: ItemClasses = ItemClasses.Dust
 ) extends Item
@@ -18,5 +18,3 @@ final case class Dust(
     pick(this.setPosition(None), gameSession)
 
   override def spawn(pos: Option[Point2D]): Dust = setPosition(pos)
-
-  override def use(entity: Entity): Entity = entity

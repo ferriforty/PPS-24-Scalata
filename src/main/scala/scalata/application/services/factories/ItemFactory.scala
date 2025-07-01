@@ -2,13 +2,8 @@ package scalata.application.services.factories
 
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Item
-import scalata.domain.entities.items.{Dust, Potion, Weapon}
-import scalata.domain.util.{
-  ItemClasses,
-  POTION_WEIGHT,
-  gaussianBetween,
-  weightedRandom
-}
+import scalata.domain.entities.items.{Dust, ExitDoor, Potion, Sign, Weapon}
+import scalata.domain.util.{ItemClasses, POTION_WEIGHT, gaussianBetween, weightedRandom}
 
 import scala.util.Random
 
@@ -38,40 +33,34 @@ class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
     entityType match
       case ItemClasses.Halberd =>
         Weapon(
-          position = None,
           name = "Halberd",
           damage = 15,
           itemClass = ItemClasses.Halberd
         )
       case ItemClasses.Staff =>
         Weapon(
-          position = None,
           name = "Staff",
           damage = 10,
           itemClass = ItemClasses.Staff
         )
       case ItemClasses.Axe =>
         Weapon(
-          position = None,
           name = "Axe",
           damage = 7,
           itemClass = ItemClasses.Axe
         )
       case ItemClasses.BigPotion =>
         Potion(
-          position = None,
           name = "BigPotion",
           itemClass = ItemClasses.BigPotion,
           amount = 40
         )
       case ItemClasses.SmallPotion =>
         Potion(
-          position = None,
           name = "SmallPotion",
           itemClass = ItemClasses.SmallPotion,
           amount = 20
         )
-      case ItemClasses.Dust =>
-        Dust(
-          position = None
-        )
+      case ItemClasses.Dust => Dust()
+      case ItemClasses.Sign => Sign()
+      case ItemClasses.ExitDoor => ExitDoor()

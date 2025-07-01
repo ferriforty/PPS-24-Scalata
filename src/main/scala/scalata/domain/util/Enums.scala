@@ -36,6 +36,8 @@ enum ItemClasses:
   case BigPotion
   case SmallPotion
   case Dust
+  case Sign
+  case ExitDoor
 
   override def toString: String = "#"
 
