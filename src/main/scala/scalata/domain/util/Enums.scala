@@ -71,7 +71,7 @@ enum Direction:
 
   def doorMat: Point2D =
     this match
-      case Direction.North => Point2D(0, -1)
-      case Direction.South => Point2D(0, 1)
+      case Direction.North => Point2D(0, 1)
+      case Direction.South => Point2D(0, -1)
       case Direction.West  => Point2D(1, 0)
       case Direction.East  => Point2D(-1, 0)

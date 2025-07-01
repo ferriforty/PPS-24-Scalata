@@ -2,18 +2,7 @@ package scalata.domain.world
 
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
-import scalata.domain.util.{
-  Direction,
-  MAX_ENEMIES,
-  MAX_PADDING,
-  MIN_ENEMIES,
-  MIN_PADDING,
-  NUM_ROWS_DUNGEON,
-  Point2D,
-  ROOMS,
-  WORLD_DIMENSIONS,
-  gaussianBetween
-}
+import scalata.domain.util.{Direction, ItemClasses, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
 
 import scala.util.Random
 
@@ -81,10 +70,26 @@ object FloorGenerator:
         else generateEnemies(room, difficulty)
 
       val items =
-        if room.id == matrixRooms.head.head then List.empty
+        if room.id == matrixRooms.head.head then
+          List(
+            ItemFactory()
+              .create(ItemClasses.Sign)
+              .spawn(Some(
+                room
+                  .getDoorPosition(Direction.North)
+                  .moveBy(Direction.North.doorMat)
+              ))
+          )
         else generateItems(room, difficulty, enemies)
 
-      roomName -> room.withEnemies(enemies).withItems(items)
+      roomName -> room
+        .withEnemies(enemies)
+        .withItems:
+          if room.id == matrixRooms.last.last then
+            items.appended(ItemFactory()
+              .create(ItemClasses.ExitDoor)
+              .spawn(Some(room.botRight.moveBy(Point2D(-1, -1)))))
+          else items
     ).toMap
 
   private def getConnections(
