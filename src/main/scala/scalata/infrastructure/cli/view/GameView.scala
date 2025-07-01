@@ -1,7 +1,7 @@
 package scalata.infrastructure.cli.view
 
 trait GameView:
-  def textToDisplay: String = ""
+  val textToDisplay: String = ""
 
   def display(): Unit =
     this.clearScreen()
