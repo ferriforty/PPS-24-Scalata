@@ -20,21 +20,24 @@ class GameController(
 
   @tailrec
   private def gameLoop(gameSession: GameSession): GameResult[(GameControllerState, GameBuilder)] =
+    GameRunView.clearScreen()
     GameRunView.displayGameState(gameSession)
     GameRunView.displayWorld(gameSession)
+
     GameRunningUseCase().execTurn(gameSession, processInput()) match
       case GameResult.Success(gs, _) =>
-        GameRunView.clearScreen()
-        gameLoop(gs)
+        if !gs.getGameState.note.isBlank then
+          gameLoop(gs.updateGameState(gs.getGameState.withNote("")))
+        else gameLoop(gs)
       case GameResult.Error(GameError.GameOver(), _message) =>
         GameResult.success(
           GameControllerState.GameOver,
           GameBuilder(None)
         )
       case GameResult.Error(_, message) =>
-        GameRunView.clearScreen()
-        GameRunView.displayError(message)
-        gameLoop(gameSession)
+        gameLoop(gameSession.updateGameState(
+          gameSession.getGameState.withNote(message)
+        ))
 
   @tailrec
   private def processInput(): Option[PlayerCommand] =

@@ -30,7 +30,9 @@ final case class Player(
   override def isAlive: Boolean = health > 0
 
   override def attack(opponent: Enemy): Enemy =
-    opponent.takeDamage(attackPower)
+    weapon match
+      case Some(w) => opponent.takeDamage(w.attack(attackPower))
+      case None    => opponent.takeDamage(attackPower)
 
   override def equipWeapon(weapon: Weapon): Player =
     copy(weapon = Some(weapon))

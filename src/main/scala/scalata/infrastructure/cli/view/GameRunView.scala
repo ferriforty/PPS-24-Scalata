@@ -11,7 +11,10 @@ object GameRunView extends GameView:
     val player = gameSession.getWorld.getPlayer
 
     println("\n" + ("=" * 30))
-    println(s"Location: ${gameSession.getGameState.currentRoom}\n")
+    if !gameSession.getGameState.note.isBlank then
+      println(s"Note: ${gameSession.getGameState.note}")
+
+    println(s"Location: ${gameSession.getGameState.currentRoom}")
     println(s"HP: ${player.health}/${player.maxHealth}")
     player.weapon.foreach(w => println(s"Weapon: ${w.name} (damage: ${w.damage})"))
 
