@@ -1,7 +1,7 @@
 package scalata.infrastructure.cli.view
 
 import scalata.domain.util.{Direction, Point2D, WORLD_DIMENSIONS}
-import scalata.domain.world.{GameSession, World}
+import scalata.domain.world.{GameSession, Room, World}
 
 object WorldView extends GameView:
 
@@ -28,7 +28,10 @@ object WorldView extends GameView:
         ) match
           case Some(room) =>
             if world.player.position == point then world.player.role.toString
-            else "." // TODO check enemies and items
+            else
+              getEnemySymbol(room, point)
+                .orElse(getItemSymbol(room, point))
+                .getOrElse(".")
           case None => " "
 
   private def findDoorSymbol(world: World, point: Point2D): Option[String] =
@@ -43,3 +46,13 @@ object WorldView extends GameView:
               case Direction.South => "v")
       )
       .headOption
+
+  private def getEnemySymbol(room: Room, point: Point2D): Option[String] =
+    room.enemies
+      .find(e => e.isAlive && e.position == point)
+      .map(_.enemyType.toString)
+
+  private def getItemSymbol(room: Room, point: Point2D): Option[String] =
+    room.items
+      .find(i => !i.isPicked && i.position.contains(point))
+      .map(_.toString)
