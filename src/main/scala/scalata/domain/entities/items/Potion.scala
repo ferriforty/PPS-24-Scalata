@@ -6,11 +6,12 @@ import scalata.domain.util.{ItemClasses, Point2D}
 import scalata.domain.world.GameSession
 
 final case class Potion(
-                       override val position: Option[Point2D],
-                       override val name: String,
-                       override val itemClass: ItemClasses,
-                       amount: Int
-                     ) extends Item with Pickable:
+    override val position: Option[Point2D],
+    override val name: String,
+    override val itemClass: ItemClasses,
+    amount: Int
+) extends Item
+    with Pickable:
 
   private def setPosition(pos: Option[Point2D]): Potion = copy(position = pos)
 
@@ -22,4 +23,4 @@ final case class Potion(
   override def use(entity: Entity): Entity =
     entity match
       case p: Player => p.heal(amount).removeItem(this)
-      case _ => entity
+      case _         => entity

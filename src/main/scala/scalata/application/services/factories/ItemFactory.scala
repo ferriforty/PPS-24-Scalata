@@ -3,7 +3,12 @@ package scalata.application.services.factories
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Item
 import scalata.domain.entities.items.{Dust, Potion, Weapon}
-import scalata.domain.util.{ItemClasses, POTION_WEIGHT, gaussianBetween, weightedRandom}
+import scalata.domain.util.{
+  ItemClasses,
+  POTION_WEIGHT,
+  gaussianBetween,
+  weightedRandom
+}
 
 import scala.util.Random
 
@@ -24,10 +29,10 @@ class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
       case 1 => createWeapon(difficulty)
 
   private def createWeapon(difficulty: Int): Item =
-   gaussianBetween(1.0, 3.0, difficulty) match
-     case 1 => create(ItemClasses.Axe)
-     case 2 => create(ItemClasses.Staff)
-     case 3 => create(ItemClasses.Halberd)
+    gaussianBetween(1.0, 3.0, difficulty) match
+      case 1 => create(ItemClasses.Axe)
+      case 2 => create(ItemClasses.Staff)
+      case 3 => create(ItemClasses.Halberd)
 
   override def create(entityType: ItemClasses): Item =
     entityType match

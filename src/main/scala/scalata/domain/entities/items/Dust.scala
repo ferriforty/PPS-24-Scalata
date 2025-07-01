@@ -6,10 +6,11 @@ import scalata.domain.util.{ItemClasses, Point2D}
 import scalata.domain.world.GameSession
 
 final case class Dust(
-                         override val position: Option[Point2D],
-                         override val name: String = "Dust",
-                         override val itemClass: ItemClasses = ItemClasses.Dust,
-                       ) extends Item with Pickable:
+    override val position: Option[Point2D],
+    override val name: String = "Dust",
+    override val itemClass: ItemClasses = ItemClasses.Dust
+) extends Item
+    with Pickable:
 
   private def setPosition(pos: Option[Point2D]): Dust = copy(position = pos)
 

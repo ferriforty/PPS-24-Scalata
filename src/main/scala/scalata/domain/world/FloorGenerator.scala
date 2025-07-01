@@ -2,7 +2,18 @@ package scalata.domain.world
 
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
-import scalata.domain.util.{Direction, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
+import scalata.domain.util.{
+  Direction,
+  MAX_ENEMIES,
+  MAX_PADDING,
+  MIN_ENEMIES,
+  MIN_PADDING,
+  NUM_ROWS_DUNGEON,
+  Point2D,
+  ROOMS,
+  WORLD_DIMENSIONS,
+  gaussianBetween
+}
 
 import scala.util.Random
 
@@ -65,11 +76,13 @@ object FloorGenerator:
         List.empty
       )
 
-      val enemies = if room.id == matrixRooms.head.head then List.empty else
-        generateEnemies(room, difficulty)
+      val enemies =
+        if room.id == matrixRooms.head.head then List.empty
+        else generateEnemies(room, difficulty)
 
-      val items = if room.id == matrixRooms.head.head then List.empty else
-        generateItems(room, difficulty, enemies)
+      val items =
+        if room.id == matrixRooms.head.head then List.empty
+        else generateItems(room, difficulty, enemies)
 
       roomName -> room.withEnemies(enemies).withItems(items)
     ).toMap
@@ -100,14 +113,20 @@ object FloorGenerator:
       )
       .toMap
 
-  private def generateItems(room: Room, difficulty: Int, enemies: List[Enemy]): List[Item] =
+  private def generateItems(
+      room: Room,
+      difficulty: Int,
+      enemies: List[Enemy]
+  ): List[Item] =
 
     val itemPosition = Random
       .shuffle(for
         x <- room.topLeft.x + 1 until room.botRight.x
         y <- room.topLeft.y + 1 until room.botRight.y
         if !enemies.exists(e => e.position == Point2D(x, y)) &&
-          !room.exits.exists(d => room.getDoorPosition(d._1).moveBy(d._1.doorMat) == Point2D(x, y))
+          !room.exits.exists(d =>
+            room.getDoorPosition(d._1).moveBy(d._1.doorMat) == Point2D(x, y)
+          )
       yield Point2D(x, y))
       .head
 
@@ -123,9 +142,7 @@ object FloorGenerator:
       yield Point2D(x, y))
       .take(numEnemies)
 
-    enemiesPosition.map(p =>
-      EnemyFactory().randomGeneration.move(p)
-    ).toList
+    enemiesPosition.map(p => EnemyFactory().randomGeneration.move(p)).toList
 
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)
