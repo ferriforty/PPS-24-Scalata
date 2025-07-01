@@ -1,11 +1,11 @@
 package scalata.application.usecases.playerusecases
 
 import scalata.application.usecases.PlayerUseCase
-import scalata.domain.util.Direction
+import scalata.domain.util.{Direction, GameError, GameResult}
 import scalata.domain.world.GameSession
 
-class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameSession, Direction]:
-  override def execute(param: Direction, gameSession: GameSession): GameSession =
+class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameResult[GameSession], Direction]:
+  override def execute(param: Direction, gameSession: GameSession): GameResult[GameSession] =
     val world = gameSession.getWorld
     val gameState = gameSession.getGameState
     val currentRoom = world
@@ -21,5 +21,33 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameSes
       currentRoom.getEnemyAtPosition(newPos).isEmpty &&
       currentRoom.getItemAtPosition(newPos).isEmpty then
 
-      gameSession.updateWorld(world.updatePlayer(world.player.move(newPos)))
-    gameSession
+      GameResult.success(gameSession.updateWorld(world.updatePlayer(world.player.move(newPos))))
+    else if currentRoom.exits.contains(param) then
+      val neighbor = world
+        .getNeighbor(param, currentRoom.id)
+        .getOrElse(
+          throw new IllegalStateException("Room" + currentRoom.id + "must have neighbor at " + param)
+        )
+
+      val entrance = neighbor
+        .getDoorPosition(param.getOpposite)
+        .moveBy(param.pointsTo)
+
+      GameResult.success(
+        gameSession
+          .updateGameState(gameState.setRoom(neighbor.id))
+          .updateWorld(world
+            .updateRoom(
+              neighbor.withEnemies(
+                neighbor.enemies.map(e =>
+                  if e.position == entrance then
+                    e.move(e.position.moveBy(param.pointsTo))
+                  else e
+                )
+              )
+            )
+            .updatePlayer(world.player.move(entrance))
+          )
+      )
+
+    else GameResult.error(GameError.InvalidInput(param.toString), "input not valid")

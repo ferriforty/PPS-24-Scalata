@@ -3,7 +3,7 @@ package scalata.infrastructure.cli.controller
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.{Direction, GameControllerState, GameResult, PlayerCommand}
+import scalata.domain.util.{Direction, GameControllerState, GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 import scalata.infrastructure.cli.view.GameRunView
 
@@ -24,11 +24,12 @@ class GameController(
     GameRunView.displayWorld(gameSession)
     GameRunningUseCase().execTurn(gameSession, processInput()) match
       case GameResult.Success(gs, _) => gameLoop(gs)
-      case GameResult.Error(_error, _message) =>
+      case GameResult.Error(GameError.GameOver(), _message) =>
         GameResult.success(
           GameControllerState.GameOver,
           GameBuilder(None)
         )
+      case GameResult.Error(_, _message) => gameLoop(gameSession)
 
   @tailrec
   private def processInput(): Option[PlayerCommand] =
