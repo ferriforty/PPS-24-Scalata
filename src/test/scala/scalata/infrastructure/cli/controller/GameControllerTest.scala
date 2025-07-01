@@ -9,8 +9,8 @@ import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
 class GameControllerTest extends AnyFlatSpec with Matchers:
 
-  "GameController" should "Return GameOver State" in:
-    GameController().start(worldBuilder =
+  "GameController" should "Return GameOver State with input q" in:
+    GameController(() => "q").start(worldBuilder =
       GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
     ) match
       case GameResult.Success(value, message) =>

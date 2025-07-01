@@ -57,5 +57,5 @@ class GameController(
 
         Some(PlayerCommand.Quit)
       case _ =>
-        GameRunView.displayError("Invalid Error")
+        GameRunView.displayError("Invalid Input")
         processInput()
