@@ -1,7 +1,7 @@
 package scalata.domain.entities.items
 
 import scalata.domain.entities.components.Pickable
-import scalata.domain.entities.{Entity, Item, Player}
+import scalata.domain.entities.{Enemy, Entity, Item, Player}
 import scalata.domain.util.{ItemClasses, Point2D}
 import scalata.domain.world.GameSession
 
@@ -24,3 +24,4 @@ final case class Potion(
     entity match
       case p: Player => p.heal(amount).removeItem(this)
       case _         => entity
+      

@@ -3,7 +3,32 @@ package scalata.infrastructure.cli.view
 import scalata.domain.util.{Direction, Point2D, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
-object WorldView extends GameView:
+object GameRunView extends GameView:
+
+  def displayGameState(
+                        gameSession: GameSession
+                      ): Unit =
+    val player = gameSession.getWorld.getPlayer
+
+    println("\n" + ("=" * 30))
+    println(s"Location: ${gameSession.getGameState.currentRoom}\n")
+    println(s"HP: ${player.health}/${player.maxHealth}")
+    player.weapon.foreach(w => println(s"Weapon: ${w.name} (damage: ${w.damage})"))
+
+    if player.inventory.nonEmpty then
+      println(s"Inventory: ${player.inventory.map(i => i.name).mkString(", ")}")
+
+    gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom).foreach: room =>
+      if room.enemies.nonEmpty then
+        println(s"Enemies: ${room.enemies.mkString(", ")}")
+
+    println(
+      "[W/A/S/D] Move,\n" +
+        "[A]ttack with [N/S/E/W] direction of the attack,\n" +
+        "[I]nteract with [N/S/E/W] direction in which to interact,\n" +
+        "[U]se [name] item,\n" +
+        "[Q]uit: "
+    )
 
   def displayWorld(gameSession: GameSession): Unit =
     for y <- 0 until WORLD_DIMENSIONS._2 do

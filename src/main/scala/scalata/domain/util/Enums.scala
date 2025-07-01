@@ -1,7 +1,9 @@
 package scalata.domain.util
 
-sealed trait PlayerClasses:
-  override def toString: String = "@"
+enum PlayerClasses:
+  case Mage
+  case Barbarian
+  case Assassin
 
   def reach: Int =
     this match
@@ -15,10 +17,7 @@ sealed trait PlayerClasses:
       case PlayerClasses.Barbarian => 6
       case PlayerClasses.Assassin  => 3
 
-object PlayerClasses:
-  case object Mage extends PlayerClasses
-  case object Barbarian extends PlayerClasses
-  case object Assassin extends PlayerClasses
+  override def toString: String = "@"
 
 enum EnemyClasses:
   case Goblin
@@ -41,12 +40,11 @@ enum ItemClasses:
 
   override def toString: String = "#"
 
-sealed trait GameControllerState
-object GameControllerState:
-  case object Menu extends GameControllerState
-  case object ChampSelect extends GameControllerState
-  case object GameRunning extends GameControllerState
-  case object GameOver extends GameControllerState
+enum GameControllerState:
+  case Menu
+  case ChampSelect
+  case GameRunning
+  case GameOver
 
 object Direction:
   def fromString(s: String): Option[Direction] = s.toLowerCase match
@@ -55,6 +53,13 @@ object Direction:
     case "w" | "west"  => Some(Direction.West)
     case "e" | "east"  => Some(Direction.East)
     case _             => None
+
+  def fromStringMovement(s: String): Option[Direction] = s.toLowerCase match
+    case "w" => Some(Direction.North)
+    case "s" => Some(Direction.South)
+    case "d" => Some(Direction.East)
+    case "a" => Some(Direction.West)
+    case _ => None
 
 enum Direction:
   case North
@@ -75,3 +80,11 @@ enum Direction:
       case Direction.South => Point2D(0, -1)
       case Direction.West  => Point2D(1, 0)
       case Direction.East  => Point2D(-1, 0)
+
+sealed trait PlayerCommand
+object PlayerCommand:
+  case class Movement(direction: Direction) extends PlayerCommand
+  case class Attack(direction: Direction) extends PlayerCommand
+  case class Use(itemName: String) extends PlayerCommand
+  case class Interact(direction: Direction) extends PlayerCommand
+  case object Quit extends PlayerCommand
