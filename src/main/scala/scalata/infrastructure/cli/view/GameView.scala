@@ -3,12 +3,12 @@ package scalata.infrastructure.cli.view
 trait GameView:
   val textToDisplay: String = ""
 
-  def display(): Unit =
+  def display(text: String = textToDisplay): Unit =
     this.clearScreen()
-    println(textToDisplay)
+    println(text)
 
   def getInput: String = scala.io.StdIn.readLine().trim
 
   def displayError(message: String): Unit = println(s"❌ Error: $message")
 
-  private def clearScreen(): Unit = print("\u001b[2J\u001b[H")
+  def clearScreen(): Unit = print("\u001b[2J\u001b[H")

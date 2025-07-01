@@ -12,17 +12,18 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
       .getRoom(gameState.currentRoom)
       .getOrElse(
         throw new IllegalStateException(
-          "Room Not defined in navigation controller"
+          "Room Not defined in movement use case"
         )
       )
     val newPos = world.player.position.moveBy(param.pointsTo)
 
     if currentRoom.isInside(newPos) &&
-      currentRoom.getEnemyAtPosition(newPos).isEmpty &&
+      currentRoom.getAliveEnemyAtPosition(newPos).isEmpty &&
       currentRoom.getItemAtPosition(newPos).isEmpty then
 
       GameResult.success(gameSession.updateWorld(world.updatePlayer(world.player.move(newPos))))
-    else if currentRoom.exits.contains(param) then
+    else if currentRoom.getDoorPosition(param) == newPos &&
+      currentRoom.exits.contains(param) then
       val neighbor = world
         .getNeighbor(param, currentRoom.id)
         .getOrElse(
@@ -50,4 +51,4 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
           )
       )
 
-    else GameResult.error(GameError.InvalidInput(param.toString), "input not valid")
+    else GameResult.error(GameError.InvalidInput(param.toString), "You can't go this way")

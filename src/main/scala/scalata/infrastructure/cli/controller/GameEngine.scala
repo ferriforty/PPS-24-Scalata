@@ -1,6 +1,6 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.{GamePhaseService, GameBuilder}
+import scalata.application.services.{GameBuilder, GamePhaseService}
 import scalata.domain.util.{GameControllerState, GameResult}
 
 import scala.annotation.tailrec
@@ -25,4 +25,4 @@ class GameEngine:
           w
         )
       case GameResult.Error(_, message) =>
-        println(message)
+        ()

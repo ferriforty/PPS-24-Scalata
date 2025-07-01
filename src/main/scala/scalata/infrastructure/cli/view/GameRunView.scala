@@ -19,8 +19,8 @@ object GameRunView extends GameView:
       println(s"Inventory: ${player.inventory.map(i => i.name).mkString(", ")}")
 
     gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom).foreach: room =>
-      if room.enemies.nonEmpty then
-        println(s"Enemies: ${room.enemies.mkString(", ")}")
+      if room.getAliveEnemies.nonEmpty then
+        println(s"Enemies: ${room.getAliveEnemies.mkString(", ")}")
 
     println(
       "[W/A/S/D] Move,\n" +
@@ -73,8 +73,7 @@ object GameRunView extends GameView:
       .headOption
 
   private def getEnemySymbol(room: Room, point: Point2D): Option[String] =
-    room.getEnemyAtPosition(point)
-      .filter(_.isAlive)
+    room.getAliveEnemyAtPosition(point)
       .map(_.enemyType.toString)
 
   private def getItemSymbol(room: Room, point: Point2D): Option[String] =

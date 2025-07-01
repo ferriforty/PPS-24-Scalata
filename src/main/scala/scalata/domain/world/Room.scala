@@ -41,8 +41,13 @@ final case class Room(
 
   def removeItem(item: Item): Room = copy(items = items.filterNot(_ == item))
 
+  def getAliveEnemies: List[Enemy] = enemies.filter(_.isAlive)
+
   def getEnemyAtPosition(position: Point2D): Option[Enemy] =
     this.enemies.find(e => e.position == position)
+
+  def getAliveEnemyAtPosition(position: Point2D): Option[Enemy] =
+    this.enemies.find(e => e.position == position && e.isAlive)
 
   def getItemAtPosition(position: Point2D): Option[Item] =
     this.items.find(e => e.position.contains(position))

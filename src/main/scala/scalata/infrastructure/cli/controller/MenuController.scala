@@ -19,11 +19,11 @@ class MenuController(inputSource: () => String = () => MenuView.getInput)
   private def processInput(): Boolean =
     inputSource().split("\\s+").toList match
       case "y" :: Nil =>
-        println("Enjoy :)")
+        MenuView.display("Enjoy :)")
         true
       case "n" :: Nil =>
-        println("Bye Bye :( ")
+        MenuView.display("Bye Bye :( ")
         false
       case _ =>
-        println("Try again!")
+        MenuView.display("Try again!")
         processInput()

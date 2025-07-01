@@ -23,13 +23,18 @@ class GameController(
     GameRunView.displayGameState(gameSession)
     GameRunView.displayWorld(gameSession)
     GameRunningUseCase().execTurn(gameSession, processInput()) match
-      case GameResult.Success(gs, _) => gameLoop(gs)
+      case GameResult.Success(gs, _) =>
+        GameRunView.clearScreen()
+        gameLoop(gs)
       case GameResult.Error(GameError.GameOver(), _message) =>
         GameResult.success(
           GameControllerState.GameOver,
           GameBuilder(None)
         )
-      case GameResult.Error(_, _message) => gameLoop(gameSession)
+      case GameResult.Error(_, message) =>
+        GameRunView.clearScreen()
+        GameRunView.displayError(message)
+        gameLoop(gameSession)
 
   @tailrec
   private def processInput(): Option[PlayerCommand] =
@@ -52,5 +57,5 @@ class GameController(
 
         Some(PlayerCommand.Quit)
       case _ =>
-        println("Invalid command")
+        GameRunView.displayError("Invalid Error")
         processInput()

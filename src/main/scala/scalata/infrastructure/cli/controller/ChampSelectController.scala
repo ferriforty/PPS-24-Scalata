@@ -22,14 +22,14 @@ class ChampSelectController(
   private def processInput(): PlayerClasses =
     inputSource().split("\\s+").toList match
       case "m" :: Nil =>
-        println("Abracadabra.")
+        ChampSelectView.display("Abracadabra.")
         PlayerClasses.Mage
       case "b" :: Nil =>
-        println("War is the business of barbarians.")
+        ChampSelectView.display("War is the business of barbarians.")
         PlayerClasses.Barbarian
       case "a" :: Nil =>
-        println("Nothing is true, everything is permitted.")
+        ChampSelectView.display("Nothing is true, everything is permitted.")
         PlayerClasses.Assassin
       case _ =>
-        println("Try again!")
+        ChampSelectView.display("Try again!")
         processInput()
