@@ -2,7 +2,8 @@ package scalata.domain.entities.items
 
 import scalata.domain.entities.components.Pickable
 import scalata.domain.entities.{Entity, Item, Player}
-import scalata.domain.util.{ItemClasses, Point2D}
+import scalata.domain.util.ItemClasses
+import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 
 final case class Dust(

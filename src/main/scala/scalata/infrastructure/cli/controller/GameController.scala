@@ -2,7 +2,6 @@ package scalata.infrastructure.cli.controller
 
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.entities.Player
 import scalata.domain.util.{Direction, GameControllerState, GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 import scalata.infrastructure.cli.view.GameRunView

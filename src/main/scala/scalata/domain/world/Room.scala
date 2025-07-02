@@ -1,7 +1,8 @@
 package scalata.domain.world
 
 import scalata.domain.entities.{Enemy, Item}
-import scalata.domain.util.{Direction, Point2D}
+import scalata.domain.util.Direction
+import scalata.domain.util.Geometry.Point2D
 
 final case class Room(
     id: String,

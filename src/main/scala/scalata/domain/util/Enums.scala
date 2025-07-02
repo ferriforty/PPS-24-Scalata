@@ -1,5 +1,7 @@
 package scalata.domain.util
 
+import scalata.domain.util.Geometry.Point2D
+
 enum PlayerClasses:
   case Mage
   case Barbarian

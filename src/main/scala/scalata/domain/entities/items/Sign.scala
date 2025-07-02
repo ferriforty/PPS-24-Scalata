@@ -1,7 +1,8 @@
 package scalata.domain.entities.items
 
 import scalata.domain.entities.Item
-import scalata.domain.util.{ItemClasses, Point2D}
+import scalata.domain.util.ItemClasses
+import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 import scalata.infrastructure.cli.view.GameRunView
 

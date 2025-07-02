@@ -1,6 +1,7 @@
 package scalata.infrastructure.cli.view
 
-import scalata.domain.util.{Direction, Point2D, WORLD_DIMENSIONS}
+import scalata.domain.util.Geometry.Point2D
+import scalata.domain.util.{Direction, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
 object GameRunView extends GameView:

@@ -2,7 +2,8 @@ package scalata.domain.world
 
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
-import scalata.domain.util.{Direction, ItemClasses, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, Point2D, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
+import scalata.domain.util.Geometry.Point2D
+import scalata.domain.util.{Direction, ItemClasses, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
 
 import scala.util.Random
 

@@ -2,7 +2,8 @@ package scalata.domain.entities
 
 import scalata.domain.entities.components.{Alive, Combatant, Inventory, Movable}
 import scalata.domain.entities.items.Weapon
-import scalata.domain.util.{PlayerClasses, Point2D}
+import scalata.domain.util.PlayerClasses
+import scalata.domain.util.Geometry.Point2D
 
 final case class Player(
     override val name: String = "Hero",

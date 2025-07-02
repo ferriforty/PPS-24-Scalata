@@ -1,7 +1,8 @@
 package scalata.domain.entities
 
 import scalata.domain.entities.components.{Alive, Combatant, Movable}
-import scalata.domain.util.{EnemyClasses, Point2D}
+import scalata.domain.util.Geometry.Point2D
+import scalata.domain.util.EnemyClasses
 
 final case class Enemy(
     override val name: String,
