@@ -2,7 +2,13 @@ package scalata.infrastructure.cli.controller
 
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.util.{Direction, GameControllerState, GameError, GameResult, PlayerCommand}
+import scalata.domain.util.{
+  Direction,
+  GameControllerState,
+  GameError,
+  GameResult,
+  PlayerCommand
+}
 import scalata.domain.world.GameSession
 import scalata.infrastructure.cli.view.GameRunView
 
@@ -18,7 +24,9 @@ class GameController(
     gameLoop(worldBuilder.build())
 
   @tailrec
-  private def gameLoop(gameSession: GameSession): GameResult[(GameControllerState, GameBuilder)] =
+  private def gameLoop(
+      gameSession: GameSession
+  ): GameResult[(GameControllerState, GameBuilder)] =
     GameRunView.clearScreen()
     GameRunView.displayGameState(gameSession)
     GameRunView.displayWorld(gameSession)
@@ -34,22 +42,26 @@ class GameController(
           GameBuilder(None)
         )
       case GameResult.Error(error) =>
-        gameLoop(gameSession.updateGameState(
-          gameSession.getGameState.withNote(error.message)
-        ))
+        gameLoop(
+          gameSession.updateGameState(
+            gameSession.getGameState.withNote(error.message)
+          )
+        )
 
   @tailrec
   private def processInput(): Option[PlayerCommand] =
 
     inputSource().split("\\s+").toList match
-      case direction@("w" | "a" | "s" | "d") :: Nil =>
-        Direction.fromStringWASD(direction.head).map(PlayerCommand.Movement.apply)
+      case direction @ ("w" | "a" | "s" | "d") :: Nil =>
+        Direction
+          .fromStringWASD(direction.head)
+          .map(PlayerCommand.Movement.apply)
       case "a" :: direction :: Nil
-        if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+          if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
         Direction.fromString(direction).map(PlayerCommand.Attack.apply)
       case "i" :: direction :: Nil
-        if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+          if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
         Direction.fromString(direction).map(PlayerCommand.Interact.apply)
       case "u" :: itemName =>

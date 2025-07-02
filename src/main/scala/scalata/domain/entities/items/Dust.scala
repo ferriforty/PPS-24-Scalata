@@ -12,10 +12,10 @@ final case class Dust(
     override val itemClass: ItemClasses = ItemClasses.Dust
 ) extends Item
     with Pickable:
-  
+
   private def setPosition(pos: Option[Point2D]): Dust = copy(position = pos)
 
-  override def interact(gameSession: GameSession): GameSession = 
+  override def interact(gameSession: GameSession): GameSession =
     pick(this, gameSession)
 
   override def spawn(pos: Option[Point2D]): Dust = setPosition(pos)

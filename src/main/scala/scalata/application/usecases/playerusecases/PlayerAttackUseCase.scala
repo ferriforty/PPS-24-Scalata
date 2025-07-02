@@ -5,8 +5,14 @@ import scalata.domain.util.{Direction, GameResult}
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 
-class PlayerAttackUseCase extends PlayerUseCase[PlayerAttackUseCase, GameResult[GameSession], Direction]:
-  override def execute(param: Direction, gameSession: GameSession): GameResult[GameSession] =
+class PlayerAttackUseCase
+    extends PlayerUseCase[PlayerAttackUseCase, GameResult[
+      GameSession
+    ], Direction]:
+  override def execute(
+      param: Direction,
+      gameSession: GameSession
+  ): GameResult[GameSession] =
     val player = gameSession.getWorld.player
     val currentRoom = gameSession.getWorld
       .getRoom(gameSession.getGameState.currentRoom)
@@ -18,13 +24,13 @@ class PlayerAttackUseCase extends PlayerUseCase[PlayerAttackUseCase, GameResult[
     val reachVector = param match
       case Direction.North => Point2D(0, -player.reach())
       case Direction.South => Point2D(0, player.reach())
-      case Direction.West => Point2D(-player.reach(), 0)
-      case Direction.East => Point2D(player.reach(), 0)
+      case Direction.West  => Point2D(-player.reach(), 0)
+      case Direction.East  => Point2D(player.reach(), 0)
 
     val attackLine = player.position.rangeTo(
       player.position.moveBy(reachVector)
     )
-    
+
     GameResult.success(
       gameSession.updateWorld(
         gameSession.getWorld.updateRoom(

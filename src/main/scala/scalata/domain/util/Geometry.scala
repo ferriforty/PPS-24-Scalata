@@ -19,8 +19,8 @@ object Geometry:
       List(
         Point2D(p.x + 1, p.y),
         Point2D(p.x - 1, p.y),
-        Point2D(p.x,     p.y + 1),
-        Point2D(p.x,     p.y - 1)
+        Point2D(p.x, p.y + 1),
+        Point2D(p.x, p.y - 1)
       )
 
     def neighboursFiltered(f: Point2D => Boolean): List[Point2D] =
@@ -28,9 +28,9 @@ object Geometry:
 
     def rangeTo(dest: Point2D): List[Point2D] =
       (for
-        i <- (if p.x <= dest.x then p.x to dest.x else p.x to dest.x by -1)
-        j <- (if p.y <= dest.y then p.y to dest.y else p.y to dest.y by -1)
-        if i > 0 && j > 0                       // keep original > 0 guard
+        i <- if p.x <= dest.x then p.x to dest.x else p.x to dest.x by -1
+        j <- if p.y <= dest.y then p.y to dest.y else p.y to dest.y by -1
+        if i > 0 && j > 0
       yield Point2D(i, j)).toList
 
     def moveBy(delta: Point2D): Point2D =

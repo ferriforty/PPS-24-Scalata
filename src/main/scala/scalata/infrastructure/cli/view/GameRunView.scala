@@ -7,8 +7,8 @@ import scalata.domain.world.{GameSession, Room, World}
 object GameRunView extends GameView:
 
   def displayGameState(
-                        gameSession: GameSession
-                      ): Unit =
+      gameSession: GameSession
+  ): Unit =
     val player = gameSession.getWorld.getPlayer
 
     println("\n" + ("=" * 30))
@@ -17,14 +17,18 @@ object GameRunView extends GameView:
 
     println(s"Location: ${gameSession.getGameState.currentRoom}")
     println(s"HP: ${player.health}/${player.maxHealth}")
-    player.weapon.foreach(w => println(s"Weapon: ${w.name} (damage: ${w.damage})"))
+    player.weapon.foreach(w =>
+      println(s"Weapon: ${w.name} (damage: ${w.damage})")
+    )
 
     if player.inventory.nonEmpty then
       println(s"Inventory: ${player.inventory.map(i => i.name).mkString(", ")}")
 
-    gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom).foreach: room =>
-      if room.getAliveEnemies.nonEmpty then
-        println(s"Enemies: ${room.getAliveEnemies.mkString(", ")}")
+    gameSession.getWorld
+      .getRoom(gameSession.getGameState.currentRoom)
+      .foreach: room =>
+        if room.getAliveEnemies.nonEmpty then
+          println(s"Enemies: ${room.getAliveEnemies.mkString(", ")}")
 
     println(
       "[W/A/S/D] Move,\n" +
@@ -77,10 +81,12 @@ object GameRunView extends GameView:
       .headOption
 
   private def getEnemySymbol(room: Room, point: Point2D): Option[String] =
-    room.getAliveEnemyAtPosition(point)
+    room
+      .getAliveEnemyAtPosition(point)
       .map(_.enemyType.toString)
 
   private def getItemSymbol(room: Room, point: Point2D): Option[String] =
-    room.getItemAtPosition(point)
+    room
+      .getItemAtPosition(point)
       .filterNot(_.isPicked)
       .map(_.toString)

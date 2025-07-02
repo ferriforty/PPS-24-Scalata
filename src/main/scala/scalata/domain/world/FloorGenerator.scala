@@ -3,7 +3,18 @@ package scalata.domain.world
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
 import scalata.domain.util.Geometry.Point2D
-import scalata.domain.util.{Direction, ItemClasses, MAX_ENEMIES, MAX_PADDING, MIN_ENEMIES, MIN_PADDING, NUM_ROWS_DUNGEON, ROOMS, WORLD_DIMENSIONS, gaussianBetween}
+import scalata.domain.util.{
+  Direction,
+  ItemClasses,
+  MAX_ENEMIES,
+  MAX_PADDING,
+  MIN_ENEMIES,
+  MIN_PADDING,
+  NUM_ROWS_DUNGEON,
+  ROOMS,
+  WORLD_DIMENSIONS,
+  gaussianBetween
+}
 
 import scala.util.Random
 
@@ -75,11 +86,13 @@ object FloorGenerator:
           List(
             ItemFactory()
               .create(ItemClasses.Sign)
-              .spawn(Some(
-                room
-                  .getDoorPosition(Direction.North)
-                  .moveBy(Direction.North.doorMat)
-              ))
+              .spawn(
+                Some(
+                  room
+                    .getDoorPosition(Direction.North)
+                    .moveBy(Direction.North.doorMat)
+                )
+              )
           )
         else generateItems(room, difficulty, enemies)
 
@@ -87,9 +100,11 @@ object FloorGenerator:
         .withEnemies(enemies)
         .withItems:
           if room.id == matrixRooms.last.last then
-            items.appended(ItemFactory()
-              .create(ItemClasses.ExitDoor)
-              .spawn(Some(room.botRight.moveBy(Point2D(-1, -1)))))
+            items.appended(
+              ItemFactory()
+                .create(ItemClasses.ExitDoor)
+                .spawn(Some(room.botRight.moveBy(Point2D(-1, -1))))
+            )
           else items
     ).toMap
 

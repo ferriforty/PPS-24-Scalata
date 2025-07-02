@@ -25,4 +25,3 @@ object Potion:
   given Usable[Potion, Player] with
     def use(p: Potion, owner: Player): Player =
       owner.heal(p.amount).removeItem(p)
-

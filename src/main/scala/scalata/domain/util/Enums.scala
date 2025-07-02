@@ -51,10 +51,14 @@ enum GameControllerState:
 object Direction:
   private val nameMap: Map[String, Direction] =
     Map(
-      "n" -> North, "north" -> North,
-      "s" -> South, "south" -> South,
-      "w" -> West, "west" -> West,
-      "e" -> East, "east" -> East
+      "n" -> North,
+      "north" -> North,
+      "s" -> South,
+      "south" -> South,
+      "w" -> West,
+      "west" -> West,
+      "e" -> East,
+      "east" -> East
     )
 
   private val wasdMap: Map[String, Direction] =
@@ -71,16 +75,16 @@ object Direction:
     wasdMap.get(s.toLowerCase)
 
 enum Direction(val dx: Int, val dy: Int):
-  case North extends Direction( 0, -1)
-  case South extends Direction( 0,  1)
-  case West  extends Direction(-1,  0)
-  case East  extends Direction( 1,  0)
+  case North extends Direction(0, -1)
+  case South extends Direction(0, 1)
+  case West extends Direction(-1, 0)
+  case East extends Direction(1, 0)
 
   def opposite: Direction = this match
     case Direction.North => Direction.South
     case Direction.South => Direction.North
-    case Direction.West => Direction.East
-    case Direction.East => Direction.West
+    case Direction.West  => Direction.East
+    case Direction.East  => Direction.West
 
   def vector: Point2D = Point2D(dx, dy)
   def doorMat: Point2D = Point2D(-dx, -dy)
