@@ -28,14 +28,14 @@ class GameController(
         if !gs.getGameState.note.isBlank then
           gameLoop(gs.updateGameState(gs.getGameState.withNote("")))
         else gameLoop(gs)
-      case GameResult.Error(GameError.GameOver(), _message) =>
+      case GameResult.Error(GameError.GameOver()) =>
         GameResult.success(
           GameControllerState.GameOver,
           GameBuilder(None)
         )
-      case GameResult.Error(_, message) =>
+      case GameResult.Error(error) =>
         gameLoop(gameSession.updateGameState(
-          gameSession.getGameState.withNote(message)
+          gameSession.getGameState.withNote(error.message)
         ))
 
   @tailrec
@@ -51,7 +51,7 @@ class GameController(
       case "i" :: direction :: Nil
         if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
-        Direction.fromString(direction).map(PlayerCommand.Attack.apply)
+        Direction.fromString(direction).map(PlayerCommand.Interact.apply)
       case "u" :: itemName =>
 
         Some(PlayerCommand.Use(itemName.mkString("").toLowerCase))

@@ -7,4 +7,4 @@ class GameOverController extends Controller:
   override def start(
       worldBuilder: GameBuilder
   ): GameResult[(GameControllerState, GameBuilder)] =
-    GameResult.Error(GameError.GameOver(), "Game Over")
+    GameResult.Error(GameError.GameOver())

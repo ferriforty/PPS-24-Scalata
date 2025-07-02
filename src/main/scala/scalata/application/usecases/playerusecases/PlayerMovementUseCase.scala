@@ -51,4 +51,4 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
           )
       )
 
-    else GameResult.error(GameError.InvalidInput(param.toString), "You can't go this way")
+    else GameResult.error(GameError.InvalidInput(param.toString))

@@ -24,5 +24,5 @@ class GameEngine:
           gamePhaseService.transitionTo(nextPhase),
           w
         )
-      case GameResult.Error(_, message) =>
+      case GameResult.Error(_) =>
         ()

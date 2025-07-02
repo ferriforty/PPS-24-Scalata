@@ -76,7 +76,12 @@ enum Direction(val dx: Int, val dy: Int):
   case West  extends Direction(-1,  0)
   case East  extends Direction( 1,  0)
 
-  def opposite: Direction = Direction.values((ordinal + 2) % 4)
+  def opposite: Direction = this match
+    case Direction.North => Direction.South
+    case Direction.South => Direction.North
+    case Direction.West => Direction.East
+    case Direction.East => Direction.West
+
   def vector: Point2D = Point2D(dx, dy)
   def doorMat: Point2D = Point2D(-dx, -dy)
 

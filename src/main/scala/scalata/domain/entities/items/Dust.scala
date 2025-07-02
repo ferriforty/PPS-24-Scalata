@@ -16,6 +16,6 @@ final case class Dust(
   private def setPosition(pos: Option[Point2D]): Dust = copy(position = pos)
 
   override def interact(gameSession: GameSession): GameSession =
-    pick(this.setPosition(None), gameSession)
+    pick(this, gameSession)
 
   override def spawn(pos: Option[Point2D]): Dust = setPosition(pos)

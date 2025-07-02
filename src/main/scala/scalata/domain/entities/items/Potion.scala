@@ -17,7 +17,7 @@ final case class Potion(
   private def setPosition(pos: Option[Point2D]): Potion = copy(position = pos)
 
   override def interact(gameSession: GameSession): GameSession =
-    pick(this.setPosition(None), gameSession)
+    pick(this, gameSession)
 
   override def spawn(pos: Option[Point2D]): Potion = setPosition(pos)
 
@@ -25,4 +25,4 @@ final case class Potion(
     entity match
       case p: Player => p.heal(amount).removeItem(this)
       case _         => entity
-      
+

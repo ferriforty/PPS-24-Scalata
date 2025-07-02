@@ -5,6 +5,14 @@ sealed trait GameError:
   def errorCode: String
 
 object GameError:
+  case class ItemNotPresent() extends GameError:
+    val message: String = "item not present there"
+    val errorCode = "ITEM_NOT_PRESENT"
+
+  case class InvalidDirection() extends GameError:
+    val message: String = "can't go this way"
+    val errorCode = "INVALID_POSITION"
+    
   case class InvalidInput(input: String) extends GameError:
     val message: String = "Invalid Input " + input
     val errorCode = "INVALID_INPUT"

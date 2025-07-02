@@ -12,5 +12,5 @@ class GameRunningUseCase:
       case PlayerCommand.Attack(direction) => PlayerAttackUseCase().execute(direction, gameSession)
       case PlayerCommand.Use(itemName) => PlayerInventoryUseCase().execute(itemName, gameSession)
       case PlayerCommand.Interact(direction) => PlayerInteractUseCase().execute(direction, gameSession)
-      case PlayerCommand.Quit => GameResult.error(GameError.GameOver(), "GameOver")
+      case PlayerCommand.Quit => GameResult.error(GameError.GameOver())
 
