@@ -10,5 +10,4 @@ trait Item extends Entity with Interactable:
 
   def isPicked: Boolean = this.position.isEmpty
   def spawn(pos: Option[Point2D]): Item
-  def use(entity: Entity): Entity = entity
   override def toString: String = "$"

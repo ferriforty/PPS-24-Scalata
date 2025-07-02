@@ -1,6 +1,6 @@
 package scalata.domain.entities.items
 
-import scalata.domain.entities.components.Pickable
+import scalata.domain.entities.components.{Pickable, Usable}
 import scalata.domain.entities.{Enemy, Entity, Item, Player}
 import scalata.domain.util.ItemClasses
 import scalata.domain.util.Geometry.Point2D
@@ -21,8 +21,8 @@ final case class Potion(
 
   override def spawn(pos: Option[Point2D]): Potion = setPosition(pos)
 
-  override def use(entity: Entity): Entity =
-    entity match
-      case p: Player => p.heal(amount).removeItem(this)
-      case _         => entity
+object Potion:
+  given Usable[Potion, Player] with
+    def use(p: Potion, owner: Player): Player =
+      owner.heal(p.amount).removeItem(p)
 

@@ -1,6 +1,6 @@
 package scalata.domain.entities.items
 
-import scalata.domain.entities.components.Pickable
+import scalata.domain.entities.components.{Pickable, Usable}
 import scalata.domain.entities.{Entity, Item, Player}
 import scalata.domain.util.ItemClasses
 import scalata.domain.util.Geometry.Point2D
@@ -21,9 +21,9 @@ final case class Weapon(
 
   override def spawn(pos: Option[Point2D]): Weapon = setPosition(pos)
 
-  override def use(entity: Entity): Entity =
-    entity match
-      case p: Player => p.equipWeapon(weapon = this).removeItem(this)
-      case _         => entity
-
   def attack(playerAttack: Int): Int = this.damage + playerAttack
+
+object Weapon:
+  given Usable[Weapon, Player] with
+    def use(w: Weapon, owner: Player): Player =
+      owner.equipWeapon(weapon = w).removeItem(w)
