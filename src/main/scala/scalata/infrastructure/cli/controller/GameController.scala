@@ -43,7 +43,7 @@ class GameController(
 
     inputSource().split("\\s+").toList match
       case direction@("w" | "a" | "s" | "d") :: Nil =>
-        Direction.fromStringMovement(direction.head).map(PlayerCommand.Movement.apply)
+        Direction.fromStringWASD(direction.head).map(PlayerCommand.Movement.apply)
       case "a" :: direction :: Nil
         if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 

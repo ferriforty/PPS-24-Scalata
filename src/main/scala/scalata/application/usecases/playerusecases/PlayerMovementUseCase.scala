@@ -15,7 +15,7 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
           "Room Not defined in movement use case"
         )
       )
-    val newPos = world.player.position.moveBy(param.pointsTo)
+    val newPos = world.player.position.moveBy(param.vector)
 
     if currentRoom.isInside(newPos) &&
       currentRoom.getAliveEnemyAtPosition(newPos).isEmpty &&
@@ -31,8 +31,8 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
         )
 
       val entrance = neighbor
-        .getDoorPosition(param.getOpposite)
-        .moveBy(param.pointsTo)
+        .getDoorPosition(param.opposite)
+        .moveBy(param.vector)
 
       GameResult.success(
         gameSession
@@ -42,7 +42,7 @@ class PlayerMovementUseCase extends PlayerUseCase[PlayerMovementUseCase, GameRes
               neighbor.withEnemies(
                 neighbor.enemies.map(e =>
                   if e.position == entrance then
-                    e.move(e.position.moveBy(param.pointsTo))
+                    e.move(e.position.moveBy(param.vector))
                   else e
                 )
               )

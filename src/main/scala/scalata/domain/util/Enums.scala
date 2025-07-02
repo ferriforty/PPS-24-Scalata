@@ -49,46 +49,36 @@ enum GameControllerState:
   case GameOver
 
 object Direction:
-  def fromString(s: String): Option[Direction] = s.toLowerCase match
-    case "n" | "north" => Some(Direction.North)
-    case "s" | "south" => Some(Direction.South)
-    case "w" | "west"  => Some(Direction.West)
-    case "e" | "east"  => Some(Direction.East)
-    case _             => None
+  private val nameMap: Map[String, Direction] =
+    Map(
+      "n" -> North, "north" -> North,
+      "s" -> South, "south" -> South,
+      "w" -> West, "west" -> West,
+      "e" -> East, "east" -> East
+    )
 
-  def fromStringMovement(s: String): Option[Direction] = s.toLowerCase match
-    case "w" => Some(Direction.North)
-    case "s" => Some(Direction.South)
-    case "d" => Some(Direction.East)
-    case "a" => Some(Direction.West)
-    case _ => None
+  private val wasdMap: Map[String, Direction] =
+    Map(
+      "w" -> North,
+      "s" -> South,
+      "a" -> West,
+      "d" -> East
+    )
+  def fromString(s: String): Option[Direction] =
+    nameMap.get(s.toLowerCase)
 
-enum Direction:
-  case North
-  case South
-  case West
-  case East
+  def fromStringWASD(s: String): Option[Direction] =
+    wasdMap.get(s.toLowerCase)
 
-  def getOpposite: Direction =
-    this match
-      case Direction.North => Direction.South
-      case Direction.South => Direction.North
-      case Direction.West  => Direction.East
-      case Direction.East  => Direction.West
-      
-  def pointsTo: Point2D =
-    this match
-      case Direction.North => Point2D(0, -1)
-      case Direction.South => Point2D(0, 1)
-      case Direction.West  => Point2D(-1, 0)
-      case Direction.East  => Point2D(1, 0)
+enum Direction(val dx: Int, val dy: Int):
+  case North extends Direction( 0, -1)
+  case South extends Direction( 0,  1)
+  case West  extends Direction(-1,  0)
+  case East  extends Direction( 1,  0)
 
-  def doorMat: Point2D =
-    this match
-      case Direction.North => Point2D(0, 1)
-      case Direction.South => Point2D(0, -1)
-      case Direction.West  => Point2D(1, 0)
-      case Direction.East  => Point2D(-1, 0)
+  def opposite: Direction = Direction.values((ordinal + 2) % 4)
+  def vector: Point2D = Point2D(dx, dy)
+  def doorMat: Point2D = Point2D(-dx, -dy)
 
 sealed trait PlayerCommand
 object PlayerCommand:
