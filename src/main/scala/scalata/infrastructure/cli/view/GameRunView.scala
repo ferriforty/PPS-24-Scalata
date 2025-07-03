@@ -1,50 +1,58 @@
 package scalata.infrastructure.cli.view
 
+import cats.effect.Sync
+import cats.syntax.all._
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{Direction, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
-object GameRunView extends GameView:
+object GameRunView:
 
-  def displayGameState(
+  def gameRunView[F[_] : Sync](view: ConsoleView[F], gameSession: GameSession): F[String] =
+    for
+      _ <- view.display(displayGameState(gameSession = gameSession))
+      _ <- view.display(displayWorld(gameSession = gameSession))
+      resp <- view.getInput
+    yield resp
+
+  private def displayGameState(
       gameSession: GameSession
-  ): Unit =
+  ): String =
     val player = gameSession.getWorld.getPlayer
+    val note = gameSession.getGameState.note
+    val room = gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom)
 
-    println("\n" + ("=" * 30))
-    if !gameSession.getGameState.note.isBlank then
-      println(s"Note: ${gameSession.getGameState.note}")
+    List(
+      Some("\n" + "=" * 30),
+      Option.when(note.nonEmpty)(s"Note: $note"),
+      Some(s"Location: ${gameSession.getGameState.currentRoom}"),
+      Some(s"HP: ${player.health}/${player.maxHealth}"),
+      player.weapon.map(w => s"Weapon: ${w.name} (damage: ${w.damage})"),
+      Option.when(player.inventory.nonEmpty)(
+        s"Inventory: ${player.inventory.map(_.name).mkString(", ")}"
+      ),
+      room.flatMap(r =>
+        Option.when(r.getAliveEnemies.nonEmpty)(
+          s"Enemies: ${r.getAliveEnemies.mkString(", ")}"
+        )
+      ),
+      Some(
+        """[W/A/S/D] Move,
+          |[A]ttack with [N/S/E/W] direction of the attack,
+          |[I]nteract with [N/S/E/W] direction in which to interact,
+          |[U]se [name] item,
+          |[Q]uit: """.stripMargin
+      )
+    ).flatten.mkString("\n")
 
-    println(s"Location: ${gameSession.getGameState.currentRoom}")
-    println(s"HP: ${player.health}/${player.maxHealth}")
-    player.weapon.foreach(w =>
-      println(s"Weapon: ${w.name} (damage: ${w.damage})")
-    )
 
-    if player.inventory.nonEmpty then
-      println(s"Inventory: ${player.inventory.map(i => i.name).mkString(", ")}")
+  private def displayWorld(gameSession: GameSession): String =
+    (for (y <- 0 until WORLD_DIMENSIONS._2)
+      yield (for (x <- 0 until WORLD_DIMENSIONS._1)
+        yield getCellDisplay(gameSession, Point2D(x, y))
+        ).mkString
+      ).mkString("\n")
 
-    gameSession.getWorld
-      .getRoom(gameSession.getGameState.currentRoom)
-      .foreach: room =>
-        if room.getAliveEnemies.nonEmpty then
-          println(s"Enemies: ${room.getAliveEnemies.mkString(", ")}")
-
-    println(
-      "[W/A/S/D] Move,\n" +
-        "[A]ttack with [N/S/E/W] direction of the attack,\n" +
-        "[I]nteract with [N/S/E/W] direction in which to interact,\n" +
-        "[U]se [name] item,\n" +
-        "[Q]uit: "
-    )
-
-  def displayWorld(gameSession: GameSession): Unit =
-    for y <- 0 until WORLD_DIMENSIONS._2 do
-      val row = for x <- 0 until WORLD_DIMENSIONS._1 yield
-        val point = Point2D(x, y)
-        getCellDisplay(gameSession, point)
-
-      println(row.mkString)
 
   private def getCellDisplay(gameSession: GameSession, point: Point2D): String =
 

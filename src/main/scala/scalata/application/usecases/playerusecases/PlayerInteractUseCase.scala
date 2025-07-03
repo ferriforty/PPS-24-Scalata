@@ -12,6 +12,7 @@ class PlayerInteractUseCase
       param: Direction,
       gameSession: GameSession
   ): GameResult[GameSession] =
+
     val currentRoom = gameSession.getWorld
       .getRoom(gameSession.getGameState.currentRoom)
       .getOrElse(
@@ -19,9 +20,8 @@ class PlayerInteractUseCase
       )
 
     val itemPos = gameSession.getWorld.player.position.moveBy(param.vector)
-
     currentRoom
       .getItemAtPosition(itemPos)
       .fold(
         GameResult.error(GameError.ItemNotPresent())
-      )(item => GameResult.success(item.interact(gameSession)))
+      )(item => item.interact(gameSession))

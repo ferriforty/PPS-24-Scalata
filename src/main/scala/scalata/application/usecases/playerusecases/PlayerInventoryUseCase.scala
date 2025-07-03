@@ -25,7 +25,5 @@ class PlayerInventoryUseCase
         newW = gameSession.getWorld.updatePlayer(newPl)
       yield GameResult.success(gameSession.updateWorld(newW))
 
-    println(gameSession.getWorld.player.getItem(param).get.name)
-    println(result)
     result.getOrElse:
       GameResult.Error(GameError.ItemNotOwned())

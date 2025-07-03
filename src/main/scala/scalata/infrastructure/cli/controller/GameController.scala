@@ -1,46 +1,42 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.GameBuilder
+import cats.effect.IO
+import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.util.{
-  Direction,
-  GameControllerState,
-  GameError,
-  GameResult,
-  PlayerCommand
-}
+import scalata.domain.util.{Direction, GameControllerState, GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
-import scalata.infrastructure.cli.view.GameRunView
-
-import scala.annotation.tailrec
+import scalata.infrastructure.cli.view.{ConsoleView, GameRunView}
 
 class GameController(
-    inputSource: () => String = () => GameRunView.getInput
+    view: ConsoleView[IO]
 ) extends Controller:
 
   final override def start(
       worldBuilder: GameBuilder
-  ): GameResult[(GameControllerState, GameBuilder)] =
+  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
     gameLoop(worldBuilder.build())
 
-  @tailrec
   private def gameLoop(
       gameSession: GameSession
-  ): GameResult[(GameControllerState, GameBuilder)] =
-    GameRunView.clearScreen()
-    GameRunView.displayGameState(gameSession)
-    GameRunView.displayWorld(gameSession)
+  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
+    val input = GameRunView.gameRunView(view, gameSession)
 
-    GameRunningUseCase().execTurn(gameSession, processInput()) match
-      case GameResult.Success(gs, _) =>
+    GameRunningUseCase().execTurn(gameSession, processInput(input)).flatMap:
+      case GameResult.Success(gs, None) =>
         if !gs.getGameState.note.isBlank then
           gameLoop(gs.updateGameState(gs.getGameState.withNote("")))
         else gameLoop(gs)
+      case GameResult.Success(gs, Some(note)) =>
+        gameLoop(
+          gs.updateGameState(
+            gs.getGameState.withNote(note)
+          )
+        )
       case GameResult.Error(GameError.GameOver()) =>
-        GameResult.success(
+        IO.pure(GameResult.success((
           GameControllerState.GameOver,
           GameBuilder(None)
-        )
+        )))
       case GameResult.Error(error) =>
         gameLoop(
           gameSession.updateGameState(
@@ -48,28 +44,28 @@ class GameController(
           )
         )
 
-  @tailrec
-  private def processInput(): Option[PlayerCommand] =
+  private def processInput(input: IO[String]): IO[Option[PlayerCommand]] =
 
-    inputSource().split("\\s+").toList match
-      case direction @ ("w" | "a" | "s" | "d") :: Nil =>
-        Direction
-          .fromStringWASD(direction.head)
-          .map(PlayerCommand.Movement.apply)
-      case "a" :: direction :: Nil
-          if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+    input.flatMap: raw =>
+      raw.split("\\s+").toList match
+        case direction @ ("w" | "a" | "s" | "d") :: Nil =>
 
-        Direction.fromString(direction).map(PlayerCommand.Attack.apply)
-      case "i" :: direction :: Nil
-          if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+          IO.pure(Direction
+            .fromStringWASD(direction.head)
+            .map(PlayerCommand.Movement.apply))
+        case "a" :: direction :: Nil
+            if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
-        Direction.fromString(direction).map(PlayerCommand.Interact.apply)
-      case "u" :: itemName =>
+          IO.pure(Direction.fromString(direction).map(PlayerCommand.Attack.apply))
+        case "i" :: direction :: Nil
+            if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
-        Some(PlayerCommand.Use(itemName.mkString("").toLowerCase))
-      case "q" :: Nil =>
+          IO.pure(Direction.fromString(direction).map(PlayerCommand.Interact.apply))
+        case "u" :: itemName =>
 
-        Some(PlayerCommand.Quit)
-      case _ =>
-        GameRunView.displayError("Invalid Input")
-        processInput()
+          IO.pure(Some(PlayerCommand.Use(itemName.mkString("").toLowerCase)))
+        case "q" :: Nil =>
+
+          IO.pure(Some(PlayerCommand.Quit))
+        case _ =>
+          view.displayError("Invalid Input") *> processInput(view.getInput)
