@@ -11,4 +11,4 @@ class GameOverControllerTest extends AnyFlatSpec with Matchers:
     GameOverController().start(worldBuilder = GameBuilder(None)) match
       case GameResult.Success(value, message) =>
         value._1 shouldBe GameControllerState.GameOver
-      case GameResult.Error(error, message) => ()
+      case GameResult.Error(error) => ()

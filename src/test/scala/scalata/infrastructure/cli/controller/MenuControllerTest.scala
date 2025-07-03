@@ -11,10 +11,10 @@ class MenuControllerTest extends AnyFlatSpec with Matchers:
     MenuController(() => "y").start(gameBuilder = GameBuilder(None)) match
       case GameResult.Success(value, _) =>
         value._1 shouldBe GameControllerState.ChampSelect
-      case GameResult.Error(_, _) => ()
+      case GameResult.Error(_) => ()
 
   "MenuController" should "Return GameOver State with n" in:
     MenuController(() => "n").start(gameBuilder = GameBuilder(None)) match
       case GameResult.Success(value, _) => ()
-      case GameResult.Error(error, _)   =>
+      case GameResult.Error(error)   =>
         error shouldBe GameError.GameOver()

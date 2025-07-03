@@ -15,7 +15,7 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
     ) match
       case GameResult.Success(value, message) =>
         value._1 shouldBe GameControllerState.GameOver
-      case GameResult.Error(error, message) => ()
+      case GameResult.Error(error) => ()
 
   "GameController" should "Throw an exception" in:
     intercept[IllegalStateException]:

@@ -12,4 +12,4 @@ class ChampSelectControllerTest extends AnyFlatSpec with Matchers:
       .start(worldBuilder = GameBuilder(None)) match
       case GameResult.Success(value, _) =>
         value._1 shouldBe GameControllerState.GameRunning
-      case GameResult.Error(error, message) => ()
+      case GameResult.Error(error) => ()
