@@ -77,13 +77,14 @@ object GameRunView:
   private def findDoorSymbol(world: World, point: Point2D): Option[String] =
     world.rooms.values
       .flatMap(room =>
-        room.exits.collectFirst(_ match
+        room.exits.collectFirst {
           case (d, _) if room.getDoorPosition(d) == point =>
             d match
-              case Direction.West  => "<"
-              case Direction.East  => ">"
+              case Direction.West => "<"
+              case Direction.East => ">"
               case Direction.North => "^"
-              case Direction.South => "v")
+              case Direction.South => "v"
+        }
       )
       .headOption
 
