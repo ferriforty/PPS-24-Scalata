@@ -1,14 +1,18 @@
 package scalata.infrastructure.cli.view
 
 import cats.effect.Sync
-import cats.syntax.all._
+import cats.syntax.all.*
+import scalata.application.services.GameView
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{Direction, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
 object GameRunView:
 
-  def gameRunView[F[_] : Sync](view: ConsoleView[F], gameSession: GameSession): F[String] =
+  def gameRunView[F[_]: Sync](
+      view: GameView[F],
+      gameSession: GameSession
+  ): F[String] =
     for
       _ <- view.display(displayGameState(gameSession = gameSession))
       _ <- view.display(displayWorld(gameSession = gameSession))
@@ -20,7 +24,8 @@ object GameRunView:
   ): String =
     val player = gameSession.getWorld.getPlayer
     val note = gameSession.getGameState.note
-    val room = gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom)
+    val room =
+      gameSession.getWorld.getRoom(gameSession.getGameState.currentRoom)
 
     List(
       Some("\n" + "=" * 30),
@@ -45,14 +50,11 @@ object GameRunView:
       )
     ).flatten.mkString("\n")
 
-
   private def displayWorld(gameSession: GameSession): String =
     (for (y <- 0 until WORLD_DIMENSIONS._2)
       yield (for (x <- 0 until WORLD_DIMENSIONS._1)
-        yield getCellDisplay(gameSession, Point2D(x, y))
-        ).mkString
-      ).mkString("\n")
-
+        yield getCellDisplay(gameSession, Point2D(x, y))).mkString)
+      .mkString("\n")
 
   private def getCellDisplay(gameSession: GameSession, point: Point2D): String =
 

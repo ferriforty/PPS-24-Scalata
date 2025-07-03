@@ -2,7 +2,12 @@ package scalata.application.usecases
 
 import cats.Monad
 import cats.syntax.all.*
-import scalata.application.usecases.playerusecases.{PlayerAttackUseCase, PlayerInteractUseCase, PlayerInventoryUseCase, PlayerMovementUseCase}
+import scalata.application.usecases.playerusecases.{
+  PlayerAttackUseCase,
+  PlayerInteractUseCase,
+  PlayerInventoryUseCase,
+  PlayerMovementUseCase
+}
 import scalata.domain.util.{GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 

@@ -17,7 +17,7 @@ final case class Weapon(
   private def setPosition(pos: Option[Point2D]): Weapon = copy(position = pos)
 
   override def interact(gameSession: GameSession): GameResult[GameSession] =
-   GameResult.success(pick(this, gameSession))
+    GameResult.success(pick(this, gameSession))
 
   override def spawn(pos: Option[Point2D]): Weapon = setPosition(pos)
 

@@ -13,7 +13,7 @@ object ChampSelectView:
       | ---> [B]arbarian(melee) <---
       | ---> [A]ssassin(stealth) <---""".stripMargin
 
-  def champSelect[F[_] : Sync](view: ConsoleView[F]): F[String] =
+  def champSelect[F[_]: Sync](view: GameView[F]): F[String] =
     for
       _ <- view.display(textToDisplay)
       resp <- view.getInput

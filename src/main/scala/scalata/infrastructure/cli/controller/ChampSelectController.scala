@@ -1,22 +1,23 @@
 package scalata.infrastructure.cli.controller
 
 import cats.effect.IO
-import cats.effect.IO.{IOCont, Uncancelable}
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.ChampSelectUseCase
-import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 import scalata.infrastructure.cli.view.{ChampSelectView, ConsoleView}
 
 class ChampSelectController(
-    view: ConsoleView[IO]
+    view: GameView[IO]
 ) extends Controller:
 
   override def start(
       worldBuilder: GameBuilder
   ): IO[GameResult[(GameControllerState, GameBuilder)]] =
-    
-    ChampSelectUseCase().champSelect(processInput(ChampSelectView.champSelect(view)), worldBuilder)
+
+    ChampSelectUseCase().champSelect(
+      processInput(ChampSelectView.champSelect(view)),
+      worldBuilder
+    )
 
   private def processInput(input: IO[String]): IO[PlayerClasses] =
     input.flatMap: raw =>

@@ -16,8 +16,7 @@ class ChampSelectUseCase:
 
     input.map: raw =>
       val player = PlayerFactory().create(raw)
-  
+
       GameResult.success(
-        (GameControllerState.GameRunning,
-        worldBuilder.withPlayer(Some(player)))
+        (GameControllerState.GameRunning, worldBuilder.withPlayer(Some(player)))
       )

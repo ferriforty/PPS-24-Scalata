@@ -12,8 +12,8 @@ object MenuView:
       | --> Do you want to play? <--
       | ---> [y/n] <---""".stripMargin
 
-  def menu[F[_]: Sync](view: ConsoleView[F]): F[String] =
+  def menu[F[_]: Sync](view: GameView[F]): F[String] =
     for
-      _    <- view.display(textToDisplay)
+      _ <- view.display(textToDisplay)
       resp <- view.getInput
     yield resp

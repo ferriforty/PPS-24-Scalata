@@ -12,7 +12,7 @@ class GameEngine:
   final def gameLoop(
       gamePhaseService: GamePhaseService = GamePhaseService(),
       worldBuilder: GameBuilder = GameBuilder(None),
-      view: ConsoleView[IO]
+      view: GameView[IO]
   ): IO[ExitCode] =
     val controller = gamePhaseService.getCurrentPhase match
       case GameControllerState.Menu        => MenuController(view)
@@ -20,11 +20,13 @@ class GameEngine:
       case GameControllerState.GameRunning => GameController(view)
       case GameControllerState.GameOver    => GameOverController()
 
-    controller.start(worldBuilder).flatMap:
-      case GameResult.Success((nextPhase, w), _) =>
-        gameLoop(
-          gamePhaseService.transitionTo(nextPhase),
-          w,
-          view
-        )
-      case GameResult.Error(_) => IO.pure(ExitCode.Success)
+    controller
+      .start(worldBuilder)
+      .flatMap:
+        case GameResult.Success((nextPhase, w), _) =>
+          gameLoop(
+            gamePhaseService.transitionTo(nextPhase),
+            w,
+            view
+          )
+        case GameResult.Error(_) => IO.pure(ExitCode.Success)

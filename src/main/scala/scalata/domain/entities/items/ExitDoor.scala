@@ -15,10 +15,13 @@ final case class ExitDoor(
   private def setPosition(pos: Option[Point2D]): ExitDoor = copy(position = pos)
 
   override def interact(gameSession: GameSession): GameResult[GameSession] =
-    GameResult.success(GameBuilder(
-      player = Some(gameSession.getWorld.getPlayer),
-      difficulty = (gameSession.getWorld.getDifficulty + 1).min(MAX_DIFFICULTY),
-      level = gameSession.getGameState.currentLevel + 1
-    ).build())
+    GameResult.success(
+      GameBuilder(
+        player = Some(gameSession.getWorld.getPlayer),
+        difficulty =
+          (gameSession.getWorld.getDifficulty + 1).min(MAX_DIFFICULTY),
+        level = gameSession.getGameState.currentLevel + 1
+      ).build()
+    )
 
   override def spawn(pos: Option[Point2D]): ExitDoor = setPosition(pos)
