@@ -82,6 +82,9 @@ class GameController(
         case "u" :: itemName =>
 
           IO.pure(Some(PlayerCommand.Use(itemName.mkString("").toLowerCase)))
+        case "h" :: itemName =>
+
+          IO.pure(Some(PlayerCommand.Help))
         case "q" :: Nil =>
 
           IO.pure(Some(PlayerCommand.Quit))

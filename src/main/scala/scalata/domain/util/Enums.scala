@@ -96,3 +96,4 @@ object PlayerCommand:
   case class Use(itemName: String) extends PlayerCommand
   case class Interact(direction: Direction) extends PlayerCommand
   case object Quit extends PlayerCommand
+  case object Help extends PlayerCommand

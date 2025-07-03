@@ -29,3 +29,4 @@ class GameRunningUseCase:
         case PlayerCommand.Interact(direction) =>
           PlayerInteractUseCase().execute(direction, gameSession)
         case PlayerCommand.Quit => GameResult.error(GameError.GameOver())
+        case PlayerCommand.Help => GameResult.error(GameError.Help())

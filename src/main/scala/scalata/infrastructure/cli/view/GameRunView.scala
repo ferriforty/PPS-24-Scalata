@@ -32,6 +32,7 @@ object GameRunView:
 
     List(
       Some("\n" + "=" * 30),
+      Some("Press [H] for help"),
       Option.when(note.nonEmpty)(s"Note: $note"),
       Some(s"Location: ${gameSession.getGameState.currentRoom}"),
       Some(s"HP: ${player.health}/${player.maxHealth}"),
@@ -43,13 +44,6 @@ object GameRunView:
         Option.when(r.getAliveEnemies.nonEmpty)(
           s"Enemies: ${r.getAliveEnemies.mkString(", ")}"
         )
-      ),
-      Some(
-        """[W/A/S/D] Move,
-          |[A]ttack with [N/S/E/W] direction of the attack,
-          |[I]nteract with [N/S/E/W] direction in which to interact,
-          |[U]se [name] item,
-          |[Q]uit: """.stripMargin
       )
     ).flatten.mkString("\n")
 

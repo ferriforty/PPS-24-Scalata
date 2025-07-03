@@ -6,6 +6,15 @@ sealed trait GameError:
 
 object GameError:
 
+  case class Help() extends GameError:
+    val message: String = "\n" +
+      """[W/A/S/D]  Move
+        |[A]        Attack (choose direction: [N/S/E/W])
+        |[I]        Interact (choose direction: [N/S/E/W])
+        |[U]        Use item (specify item name)
+        |[Q]        Quit""".stripMargin + "\n"
+    val errorCode = "HELP"
+
   case class ItemNotOwned() extends GameError:
     val message: String = "You don't own this item."
     val errorCode = "ITEM_NOT_OWNED"

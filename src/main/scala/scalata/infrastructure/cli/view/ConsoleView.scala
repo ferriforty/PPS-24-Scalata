@@ -9,7 +9,7 @@ final class ConsoleView[F[_]: Sync] extends GameView[F]:
     clearScreen *> Sync[F].delay(println(text))
 
   override def getInput: F[String] =
-    Sync[F].blocking(scala.io.StdIn.readLine().trim)
+    Sync[F].blocking(Option(scala.io.StdIn.readLine()).getOrElse("").trim)
 
   override def displayError[String](msg: String): F[Unit] =
     Sync[F].delay(println(s"Error: $msg"))
