@@ -80,8 +80,8 @@ object GameRunView:
         room.exits.collectFirst:
           case (d, _) if room.getDoorPosition(d) == point =>
             d match
-              case Direction.West => "<"
-              case Direction.East => ">"
+              case Direction.West  => "<"
+              case Direction.East  => ">"
               case Direction.North => "^"
               case Direction.South => "v"
       )
