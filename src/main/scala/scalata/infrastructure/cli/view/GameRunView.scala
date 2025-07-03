@@ -14,8 +14,11 @@ object GameRunView:
       gameSession: GameSession
   ): F[String] =
     for
-      _ <- view.display(displayGameState(gameSession = gameSession))
-      _ <- view.display(displayWorld(gameSession = gameSession))
+      _ <- view.display(
+        displayGameState(gameSession = gameSession) +
+          "\n\n" +
+          displayWorld(gameSession = gameSession)
+      )
       resp <- view.getInput
     yield resp
 
