@@ -1,12 +1,12 @@
-package scalata.application.usecases.enemyusecase
+package scalata.application.usecases.enemyusecases
 
 import scalata.application.usecases.CreatureUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.{Direction, GameResult}
+import scalata.domain.util.Direction
 import scalata.domain.world.GameSession
 
-class EnemyAttackUseCase extends CreatureUseCase[Player, Direction]:
-  override def execute(_param: Direction, gameSession: GameSession): Player =
+class EnemyAttackUseCase extends CreatureUseCase[Player, Unit]:
+  override def execute(_param: Unit, gameSession: GameSession): Player =
     val currentRoom = gameSession.getWorld
       .getRoom(gameSession.getGameState.currentRoom)
       .getOrElse(

@@ -1,4 +1,4 @@
-package scalata.application.usecases.enemyusecase
+package scalata.application.usecases.enemyusecases
 
 import scalata.application.usecases.CreatureUseCase
 import scalata.domain.util.{Direction, GameResult}
