@@ -2,22 +2,16 @@ package scalata.application.usecases.enemyusecases
 
 import scalata.application.usecases.CreatureUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.Direction
-import scalata.domain.world.GameSession
+import scalata.domain.world.{GameSession, Room}
 
-class EnemyAttackUseCase extends CreatureUseCase[Player, Unit]:
-  override def execute(_param: Unit, gameSession: GameSession): Player =
-    val currentRoom = gameSession.getWorld
-      .getRoom(gameSession.getGameState.currentRoom)
-      .getOrElse(
-        throw IllegalStateException("Room Not defined in Interact use case")
-      )
+class EnemyAttackUseCase extends CreatureUseCase[Player, Room]:
+  override def execute(param: Room, gameSession: GameSession): Player =
     val player = gameSession.getWorld.getPlayer
 
-    currentRoom.getAliveEnemies
+    param.getAliveEnemies
       .filter: e =>
         e.position
-          .neighboursFiltered(currentRoom.isInside)
+          .neighboursFiltered(param.isInside)
           .contains(player.position)
       .foldLeft(player): (p, e) =>
         e.attack(p)

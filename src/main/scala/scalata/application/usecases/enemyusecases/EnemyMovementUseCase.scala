@@ -1,9 +1,8 @@
 package scalata.application.usecases.enemyusecases
 
 import scalata.application.usecases.CreatureUseCase
-import scalata.domain.util.{Direction, GameResult}
-import scalata.domain.world.GameSession
+import scalata.domain.world.{GameSession, Room}
 
-class EnemyMovementUseCase extends CreatureUseCase[GameResult[GameSession], Direction]:
-  override def execute(param: Direction, gameSession: GameSession): GameResult[GameSession] =
-    GameResult.success(gameSession)
+class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
+  override def execute(param: Room, gameSession: GameSession): Room =
+    param

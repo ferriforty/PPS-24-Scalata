@@ -33,4 +33,11 @@ class EnemyAttackUseCaseTest extends AnyFlatSpec with Matchers:
       )
     )
 
-    EnemyAttackUseCase().execute((), newGs).health shouldBe player.health - enemy.attackPower
+    val newCr = newGs.getWorld
+      .getRoom(newGs.getGameState.currentRoom)
+      .getOrElse(
+        throw IllegalStateException("Room Not defined in Interact use case")
+      )
+
+    EnemyAttackUseCase()
+      .execute(newCr, newGs).health shouldBe player.health - enemy.attackPower

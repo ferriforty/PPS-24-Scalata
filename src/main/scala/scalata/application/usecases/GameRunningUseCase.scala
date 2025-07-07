@@ -2,12 +2,8 @@ package scalata.application.usecases
 
 import cats.Monad
 import cats.syntax.all.*
-import scalata.application.usecases.playerusecases.{
-  PlayerAttackUseCase,
-  PlayerInteractUseCase,
-  PlayerInventoryUseCase,
-  PlayerMovementUseCase
-}
+import scalata.application.usecases.enemyusecases.{EnemyAttackUseCase, EnemyMovementUseCase}
+import scalata.application.usecases.playerusecases.{PlayerAttackUseCase, PlayerInteractUseCase, PlayerInventoryUseCase, PlayerMovementUseCase}
 import scalata.domain.util.{GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 
@@ -32,5 +28,20 @@ class GameRunningUseCase:
         case PlayerCommand.Help => GameResult.error(GameError.Help())
 
       turn match
-        case GameResult.Success(gs, _) => GameResult.success(gs)
+        case GameResult.Success(gs, _) =>
+          val currentRoom = gameSession.getWorld
+            .getRoom(gameSession.getGameState.currentRoom)
+            .getOrElse(
+              throw IllegalStateException("Room Not defined in Interact use case")
+            )
+
+          GameResult.success(
+            gs.updateWorld(
+              gs.getWorld.updatePlayer(
+                EnemyAttackUseCase().execute(currentRoom, gs)
+              ).updateRoom(
+                EnemyMovementUseCase().execute(currentRoom, gs)
+              )
+            )
+          )
         case _ => turn
