@@ -13,7 +13,7 @@ lazy val root = (project in file("."))
     coverageExcludedPackages      := ".*view.*",
 
     libraryDependencies ++= Seq(
-      // Testing
+      "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0",
       "org.scalatest" %% "scalatest" % "3.2.19" % Test,
       "org.scalatestplus" %% "scalacheck-1-17" % "3.2.18.0" % Test,
       "org.typelevel" %% "cats-effect" % "3.6.1"

@@ -12,6 +12,9 @@ final case class Room(
     items: List[Item] = List.empty,
     enemies: List[Enemy] = List.empty
 ):
+  def size: (Int, Int) =
+    (this.botRight.x - this.topLeft.x, this.botRight.y - this.topLeft.y)
+
   def getNeighbor(direction: Direction): Option[String] =
     this.exits.get(direction)
 

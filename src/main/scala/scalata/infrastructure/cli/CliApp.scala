@@ -1,11 +1,9 @@
 package scalata.infrastructure.cli
 
 import scalata.infrastructure.cli.controller.GameEngine
-import cats.effect.{ExitCode, IO, IOApp, Sync}
-import cats.effect.kernel.Ref
+import cats.effect.{ExitCode, IO, IOApp}
 import scalata.application.services.{GameBuilder, GamePhaseService}
 import scalata.infrastructure.cli.view.ConsoleView
-import scalata.infrastructure.cli.view.MenuView.menu
 
 object CliApp extends IOApp:
 

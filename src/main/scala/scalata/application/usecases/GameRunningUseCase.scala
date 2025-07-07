@@ -29,8 +29,8 @@ class GameRunningUseCase:
 
       turn match
         case GameResult.Success(gs, _) =>
-          val currentRoom = gameSession.getWorld
-            .getRoom(gameSession.getGameState.currentRoom)
+          val currentRoom = gs.getWorld
+            .getRoom(gs.getGameState.currentRoom)
             .getOrElse(
               throw IllegalStateException("Room Not defined in Interact use case")
             )
