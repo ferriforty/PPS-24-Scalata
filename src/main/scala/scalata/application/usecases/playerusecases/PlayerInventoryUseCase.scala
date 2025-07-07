@@ -1,12 +1,12 @@
 package scalata.application.usecases.playerusecases
 
-import scalata.application.usecases.PlayerUseCase
+import scalata.application.usecases.CreatureUseCase
 import scalata.domain.entities.components.Usable
 import scalata.domain.util.{GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerInventoryUseCase
-    extends PlayerUseCase[PlayerInventoryUseCase, GameResult[
+    extends CreatureUseCase[PlayerInventoryUseCase, GameResult[
       GameSession
     ], String]:
   override def execute(

@@ -19,7 +19,7 @@ class GameRunningUseCase:
   ): F[GameResult[GameSession]] =
 
     command.map: raw =>
-      raw.fold(GameResult.success(gameSession)):
+      val turn: GameResult[GameSession] = raw.fold(GameResult.error(GameError.InvalidInput(raw.toString))):
         case PlayerCommand.Movement(direction) =>
           PlayerMovementUseCase().execute(direction, gameSession)
         case PlayerCommand.Attack(direction) =>
@@ -30,3 +30,7 @@ class GameRunningUseCase:
           PlayerInteractUseCase().execute(direction, gameSession)
         case PlayerCommand.Quit => GameResult.error(GameError.GameOver())
         case PlayerCommand.Help => GameResult.error(GameError.Help())
+
+      turn match
+        case GameResult.Success(gs, _) => GameResult.success(gs)
+        case _ => turn

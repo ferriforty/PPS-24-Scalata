@@ -1,11 +1,11 @@
 package scalata.application.usecases.playerusecases
 
-import scalata.application.usecases.PlayerUseCase
+import scalata.application.usecases.CreatureUseCase
 import scalata.domain.util.{Direction, GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerInteractUseCase
-    extends PlayerUseCase[PlayerInteractUseCase, GameResult[
+    extends CreatureUseCase[PlayerInteractUseCase, GameResult[
       GameSession
     ], Direction]:
   override def execute(
