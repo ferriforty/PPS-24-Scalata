@@ -5,7 +5,7 @@ import scalata.domain.util.{Direction, GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerMovementUseCase
-    extends CreatureUseCase[PlayerMovementUseCase, GameResult[
+    extends CreatureUseCase[GameResult[
       GameSession
     ], Direction]:
   override def execute(

@@ -6,7 +6,7 @@ import scalata.domain.util.{GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerInventoryUseCase
-    extends CreatureUseCase[PlayerInventoryUseCase, GameResult[
+    extends CreatureUseCase[GameResult[
       GameSession
     ], String]:
   override def execute(

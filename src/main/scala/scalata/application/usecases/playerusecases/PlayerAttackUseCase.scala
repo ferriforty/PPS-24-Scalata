@@ -6,7 +6,7 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 
 class PlayerAttackUseCase
-    extends CreatureUseCase[PlayerAttackUseCase, GameResult[
+    extends CreatureUseCase[GameResult[
       GameSession
     ], Direction]:
   override def execute(
