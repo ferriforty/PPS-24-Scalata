@@ -7,13 +7,14 @@ import scalata.domain.util.EnemyClasses
 import scala.util.Random
 
 class EnemyFactory extends EntityFactory[EnemyFactory, Enemy, EnemyClasses]:
-  def randomGeneration: Enemy =
-    create(EnemyClasses.values(Random.nextInt(EnemyClasses.values.length)))
+  def randomGeneration(id: String): Enemy =
+    create(EnemyClasses.values(Random.nextInt(EnemyClasses.values.length)), id)
 
-  override def create(entityType: EnemyClasses): Enemy =
+  override def create(entityType: EnemyClasses, id: String): Enemy =
     entityType match
       case EnemyClasses.Goblin =>
         Enemy(
+          id = id,
           name = "Goblin",
           enemyType = entityType,
           health = 40,
@@ -22,6 +23,7 @@ class EnemyFactory extends EntityFactory[EnemyFactory, Enemy, EnemyClasses]:
         )
       case EnemyClasses.Pig =>
         Enemy(
+          id = id,
           name = "Pig",
           enemyType = entityType,
           health = 60,

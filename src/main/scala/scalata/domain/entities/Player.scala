@@ -6,6 +6,7 @@ import scalata.domain.util.PlayerClasses
 import scalata.domain.util.Geometry.Point2D
 
 final case class Player(
+    override val id: String,
     override val name: String = "Hero",
     role: PlayerClasses,
     override val health: Int,

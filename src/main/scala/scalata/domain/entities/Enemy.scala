@@ -5,6 +5,7 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.EnemyClasses
 
 final case class Enemy(
+    override val id: String,
     override val name: String,
     enemyType: EnemyClasses,
     override val position: Point2D = Point2D(0, 0),

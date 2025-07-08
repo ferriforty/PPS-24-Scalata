@@ -1,6 +1,5 @@
 package scalata.domain.entities
 
-import scalata.domain.util.Geometry
-
 trait Entity:
+  val id: String
   val name: String

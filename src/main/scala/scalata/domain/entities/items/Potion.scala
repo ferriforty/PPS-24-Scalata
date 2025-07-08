@@ -7,6 +7,7 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 
 final case class Potion(
+    override val id: String,
     override val position: Option[Point2D] = None,
     override val name: String,
     override val itemClass: ItemClasses,

@@ -79,14 +79,17 @@ object FloorGenerator:
 
       val enemies =
         if room.id == matrixRooms.head.head then List.empty
-        else generateEnemies(room, difficulty)
+        else generateEnemies(room, matrixRooms, difficulty)
+
+      println(enemies)
 
       val items =
         if room.id == matrixRooms.head.head then
           List(
             ItemFactory()
-              .create(ItemClasses.Sign)
-              .spawn(
+              .create(ItemClasses.Sign,
+                room.id + "-i1"
+              ).spawn(
                 Some(
                   room
                     .getDoorPosition(Direction.North)
@@ -102,8 +105,10 @@ object FloorGenerator:
           if room.id == matrixRooms.last.last then
             items.appended(
               ItemFactory()
-                .create(ItemClasses.ExitDoor)
-                .spawn(Some(room.botRight.moveBy(Point2D(-1, -1))))
+                .create(
+                  ItemClasses.ExitDoor,
+                  room.id + "-i" + (items.size + 1)
+                ).spawn(Some(room.botRight.moveBy(Point2D(-1, -1))))
             )
           else items
     ).toMap
@@ -151,9 +156,12 @@ object FloorGenerator:
       yield Point2D(x, y))
       .head
 
-    List(ItemFactory().createBox(difficulty).spawn(Some(itemPosition)))
+    List(ItemFactory().createBox(
+      difficulty,
+      room.id + "-i" + (room.items.size + 1)
+    ).spawn(Some(itemPosition)))
 
-  private def generateEnemies(room: Room, difficulty: Int): List[Enemy] =
+  private def generateEnemies(room: Room, matrixRooms: List[List[String]], difficulty: Int): List[Enemy] =
     val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
     val enemiesPosition = Random
       .shuffle(for
@@ -163,7 +171,10 @@ object FloorGenerator:
       yield Point2D(x, y))
       .take(numEnemies)
 
-    enemiesPosition.map(p => EnemyFactory().randomGeneration.move(p)).toList
+    enemiesPosition.zipWithIndex.map((p, i) =>
+      EnemyFactory().randomGeneration("room" + matrixRooms.zipWithIndex.map((l, j) =>
+        l.indexOf(room.id).toString + j + "e"
+      ).filterNot(r => r.contains("-1")).head + i).move(p)).toList
 
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)

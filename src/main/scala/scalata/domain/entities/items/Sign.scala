@@ -6,6 +6,7 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 
 final case class Sign(
+    override val id: String,
     override val position: Option[Point2D] = None,
     override val name: String = "Sign",
     override val itemClass: ItemClasses = ItemClasses.Sign
