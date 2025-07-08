@@ -14,17 +14,11 @@ object Scala2P:
     engine.setTheory(Theory(clauses mkString " "))
 
     goal =>
-      new Iterable[Term]:
-        override def iterator: Iterator[Term] = new Iterator[Term]:
-          var solution: SolveInfo = engine.solve(goal);
-
-          override def hasNext: Boolean =
-            solution != null && (solution.isSuccess || solution.hasOpenAlternatives)
-
-          override def next(): Term =
-            val current = solution.getSolution
-            solution = if solution.hasOpenAlternatives then
-              engine.solveNext()
-            else null
-            current
-    .to(LazyList)
+      LazyList.unfold(engine.solve(goal)): info =>
+        if !info.isSuccess then None
+        else
+          val term     = info.getSolution
+          val nextInfo =
+            if info.hasOpenAlternatives then engine.solveNext()
+            else engine.solve("fail.")
+          Some(term -> nextInfo)

@@ -36,8 +36,8 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     param.items.foreach(i => facts ++=
       s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n")
 
-    /*param.getAliveEnemies.foreach(e => facts ++=
-      s"enemy(a,pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n")*/
+    param.getAliveEnemies.foreach(e => facts ++=
+      s"enemy(a,pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n")
 
     val engine: Term => LazyList[Term] = mkPrologEngine(facts.toString() + rules)
     println(player.toString() + " " + padding.toString())
