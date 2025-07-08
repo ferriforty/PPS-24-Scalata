@@ -1,35 +1,32 @@
 package scalata.infrastructure.cli.controller
 
-import scalata.application.services.GameBuilder
+import cats.effect.IO
+import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.ChampSelectUseCase
-import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
-import scalata.infrastructure.cli.view.ChampSelectView
-
-import scala.annotation.tailrec
+import scalata.infrastructure.cli.view.{ChampSelectView, ConsoleView}
 
 class ChampSelectController(
-    inputSource: () => String = () => ChampSelectView.getInput
+    view: GameView[IO]
 ) extends Controller:
 
   override def start(
       worldBuilder: GameBuilder
-  ): GameResult[(GameControllerState, GameBuilder)] =
-    ChampSelectView.display()
-    ChampSelectUseCase().champSelect(processInput(), worldBuilder)
+  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
 
-  @tailrec
-  private def processInput(): PlayerClasses =
-    inputSource().split("\\s+").toList match
-      case "m" :: Nil =>
-        println("Abracadabra.")
-        PlayerClasses.Mage
-      case "b" :: Nil =>
-        println("War is the business of barbarians.")
-        PlayerClasses.Barbarian
-      case "a" :: Nil =>
-        println("Nothing is true, everything is permitted.")
-        PlayerClasses.Assassin
-      case _ =>
-        println("Try again!")
-        processInput()
+    ChampSelectUseCase().champSelect(
+      processInput(ChampSelectView.champSelect(view)),
+      worldBuilder
+    )
+
+  private def processInput(input: IO[String]): IO[PlayerClasses] =
+    input.flatMap: raw =>
+      raw.split("\\s+").toList match
+        case "m" :: Nil =>
+          IO.pure(PlayerClasses.Mage)
+        case "b" :: Nil =>
+          IO.pure(PlayerClasses.Barbarian)
+        case "a" :: Nil =>
+          IO.pure(PlayerClasses.Assassin)
+        case _ =>
+          view.displayError("Try again!") *> processInput(view.getInput)

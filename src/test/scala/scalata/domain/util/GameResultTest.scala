@@ -26,11 +26,10 @@ class GameResultTest extends AnyFlatSpec with Matchers:
 
   "GameResult.error" should "create an Error instance" in:
     val gameError = GameError.InvalidInput("s")
-    val result = GameResult.error(gameError, "invalid input")
+    val result = GameResult.error(gameError)
 
     result shouldBe a[GameResult.Error]
     result match
-      case GameResult.Error(error, message) =>
+      case GameResult.Error(error) =>
         error shouldBe gameError
-        message shouldBe "invalid input"
       case _ => fail("Expected Error")

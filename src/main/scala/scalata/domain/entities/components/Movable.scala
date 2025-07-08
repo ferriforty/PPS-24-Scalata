@@ -1,7 +1,7 @@
 package scalata.domain.entities.components
 
-import scalata.domain.entities.Entity
-import scalata.domain.util.Point2D
+import scalata.domain.util.Geometry.Point2D
 
-trait Movable:
-  def move(pos: Point2D): Entity
+trait Movable[E <: Movable[E]]:
+  val position: Point2D
+  def move(pos: Point2D): E

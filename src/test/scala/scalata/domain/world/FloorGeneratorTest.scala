@@ -3,21 +3,23 @@ package scalata.domain.world
 import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
 import scalata.domain.util.{
   Direction,
+  ItemClasses,
   MAX_PADDING,
   MIN_PADDING,
   NUM_ROWS_DUNGEON,
-  Point2D,
+  Geometry,
   ROOMS,
   WORLD_DIMENSIONS
 }
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
-  val TestPlayer: Player = Player(role = Mage, position = Point2D(0, 0))
+  val TestPlayer: Player = PlayerFactory().create(Mage)
   val TestDifficulty = 1
   val TestLevel = 1
   var gameSession: GameSession = _
@@ -71,3 +73,19 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
       .generateFloor(TestPlayer, TestDifficulty, 42, TestLevel)
       .getWorld
     world1 shouldBe world2
+
+  "FloorGenerator" should "generate exit Door in the last room" in:
+    assert(
+      gameSession.getWorld.rooms
+        .filter(r => r._1 == gameSession.getWorld.roomsArrangement.last.last)
+        .exists(p =>
+          p._2.items.exists(i => i.itemClass == ItemClasses.ExitDoor)
+        )
+    )
+
+  "FloorGenerator" should "generate Sign in the last room" in:
+    assert(
+      gameSession.getWorld.rooms
+        .filter(r => r._1 == gameSession.getWorld.roomsArrangement.head.head)
+        .exists(p => p._2.items.exists(i => i.itemClass == ItemClasses.Sign))
+    )

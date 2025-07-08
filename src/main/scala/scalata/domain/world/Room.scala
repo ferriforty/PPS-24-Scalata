@@ -1,15 +1,20 @@
 package scalata.domain.world
 
-import scalata.domain.util.{Direction, Point2D}
+import scalata.domain.entities.{Enemy, Item}
+import scalata.domain.util.Direction
+import scalata.domain.util.Geometry.Point2D
 
 final case class Room(
     id: String,
     topLeft: Point2D,
     botRight: Point2D,
-    // TODO items: List[Items],
-    // TODO enemies: List[Enemy],
-    exits: Map[Direction, String] // direction -> roomId
+    exits: Map[Direction, String], // direction -> roomId
+    items: List[Item] = List.empty,
+    enemies: List[Enemy] = List.empty
 ):
+  def size: (Int, Int) =
+    (this.botRight.x - this.topLeft.x, this.botRight.y - this.topLeft.y)
+
   def getNeighbor(direction: Direction): Option[String] =
     this.exits.get(direction)
 
@@ -33,3 +38,20 @@ final case class Room(
       case Direction.South => Point2D(centerX, botRight.y)
       case Direction.West  => Point2D(topLeft.x, centerY)
       case Direction.East  => Point2D(botRight.x, centerY)
+
+  def withItems(items: List[Item]): Room = copy(items = items)
+
+  def withEnemies(enemies: List[Enemy]): Room = copy(enemies = enemies)
+
+  def removeItem(item: Item): Room = copy(items = items.filterNot(_ == item))
+
+  def getAliveEnemies: List[Enemy] = enemies.filter(_.isAlive)
+
+  def getEnemyAtPosition(position: Point2D): Option[Enemy] =
+    this.enemies.find(e => e.position == position)
+
+  def getAliveEnemyAtPosition(position: Point2D): Option[Enemy] =
+    this.enemies.find(e => e.position == position && e.isAlive)
+
+  def getItemAtPosition(position: Point2D): Option[Item] =
+    this.items.find(e => e.position.contains(position))

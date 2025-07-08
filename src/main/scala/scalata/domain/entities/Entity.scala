@@ -1,3 +1,5 @@
 package scalata.domain.entities
 
-trait Entity
+trait Entity:
+  val id: String
+  val name: String

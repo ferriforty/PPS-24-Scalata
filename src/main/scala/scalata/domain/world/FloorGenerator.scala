@@ -1,14 +1,19 @@
 package scalata.domain.world
 
-import scalata.domain.entities.Player
+import scalata.application.services.factories.{EnemyFactory, ItemFactory}
+import scalata.domain.entities.{Enemy, Item, Player}
+import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{
   Direction,
+  ItemClasses,
+  MAX_ENEMIES,
   MAX_PADDING,
+  MIN_ENEMIES,
   MIN_PADDING,
   NUM_ROWS_DUNGEON,
-  Point2D,
   ROOMS,
-  WORLD_DIMENSIONS
+  WORLD_DIMENSIONS,
+  gaussianBetween
 }
 
 import scala.util.Random
@@ -33,7 +38,7 @@ object FloorGenerator:
 
     GameSession(
       World(
-        player.move(rooms(startRoom).topLeft.moveBy(1, 1)),
+        player.move(rooms(startRoom).topLeft.moveBy(Point2D(1, 1))),
         difficulty,
         rooms,
         matrixRooms
@@ -62,14 +67,48 @@ object FloorGenerator:
       val (startCol, endCol) = calculateStartEnd(rowIndex, areaHeight)
 
       val connections = getConnections(matrixRooms, rowIndex, colIndex)
-      roomName -> Room(
+
+      val room = Room(
         roomName,
         Point2D(startRow, startCol),
         Point2D(endRow, endCol),
-        // TODO List.empty,
-        // TODO List.empty,
-        connections
+        connections,
+        List.empty,
+        List.empty
       )
+
+      val enemies =
+        if room.id == matrixRooms.head.head then List.empty
+        else generateEnemies(room, matrixRooms, difficulty)
+
+      val items =
+        if room.id == matrixRooms.head.head then
+          List(
+            ItemFactory()
+              .create(ItemClasses.Sign, room.id + "-i1")
+              .spawn(
+                Some(
+                  room
+                    .getDoorPosition(Direction.North)
+                    .moveBy(Direction.North.doorMat)
+                )
+              )
+          )
+        else generateItems(room, difficulty, enemies)
+
+      roomName -> room
+        .withEnemies(enemies)
+        .withItems:
+          if room.id == matrixRooms.last.last then
+            items.appended(
+              ItemFactory()
+                .create(
+                  ItemClasses.ExitDoor,
+                  room.id + "-i" + (items.size + 1)
+                )
+                .spawn(Some(room.botRight.moveBy(Point2D(-1, -1))))
+            )
+          else items
     ).toMap
 
   private def getConnections(
@@ -97,6 +136,59 @@ object FloorGenerator:
           case _ => None
       )
       .toMap
+
+  private def generateItems(
+      room: Room,
+      difficulty: Int,
+      enemies: List[Enemy]
+  ): List[Item] =
+
+    val itemPosition = Random
+      .shuffle(for
+        x <- room.topLeft.x + 1 until room.botRight.x
+        y <- room.topLeft.y + 1 until room.botRight.y
+        if !enemies.exists(e => e.position == Point2D(x, y)) &&
+          !room.exits.exists(d =>
+            room.getDoorPosition(d._1).moveBy(d._1.doorMat) == Point2D(x, y)
+          )
+      yield Point2D(x, y))
+      .head
+
+    List(
+      ItemFactory()
+        .createBox(
+          difficulty,
+          room.id + "-i" + (room.items.size + 1)
+        )
+        .spawn(Some(itemPosition))
+    )
+
+  private def generateEnemies(
+      room: Room,
+      matrixRooms: List[List[String]],
+      difficulty: Int
+  ): List[Enemy] =
+    val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
+    val enemiesPosition = Random
+      .shuffle(for
+        x <- room.topLeft.x + 1 until room.botRight.x
+        y <- room.topLeft.y + 1 until room.botRight.y
+        if !room.items.exists(i => i.position == Point2D(x, y))
+      yield Point2D(x, y))
+      .take(numEnemies)
+
+    enemiesPosition.zipWithIndex
+      .map((p, i) =>
+        EnemyFactory()
+          .randomGeneration(
+            "room" + matrixRooms.zipWithIndex
+              .map((l, j) => l.indexOf(room.id).toString + j + "e")
+              .filterNot(r => r.contains("-1"))
+              .head + i
+          )
+          .move(p)
+      )
+      .toList
 
   private def calculateStartEnd(index: Int, size: Int): (Int, Int) =
     val start = index * size + Random.between(MIN_PADDING, MAX_PADDING)

@@ -1,21 +1,22 @@
 package scalata.application.usecases
 
-import scalata.application.services.{PlayerFactory, GameBuilder}
+import cats.Monad
+import cats.effect.IO
+import cats.syntax.all.*
+import scalata.application.services.GameBuilder
+import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
 class ChampSelectUseCase:
-  def champSelect(
-      input: PlayerClasses,
+  def champSelect[F[_]: Monad](
+      input: F[PlayerClasses],
       worldBuilder: GameBuilder
-  ): GameResult[(GameControllerState, GameBuilder)] =
+  ): F[GameResult[(GameControllerState, GameBuilder)]] =
 
-    val player = PlayerFactory().createPlayer(input) match
-      case GameResult.Success(p, _)     => p
-      case GameResult.Error(_, message) =>
-        throw new IllegalStateException(message)
+    input.map: raw =>
+      val player = PlayerFactory().create(raw)
 
-    GameResult.success(
-      GameControllerState.GameRunning,
-      worldBuilder.withPlayer(Some(player))
-    )
+      GameResult.success(
+        (GameControllerState.GameRunning, worldBuilder.withPlayer(Some(player)))
+      )
