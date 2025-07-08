@@ -8,7 +8,6 @@ import scalata.domain.util.EnemyClasses.Pig
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.PlayerClasses.Mage
 
-
 class EnemyAttackUseCaseTest extends AnyFlatSpec with Matchers:
 
   "Enemy" should "damage player if near" in:
@@ -25,11 +24,13 @@ class EnemyAttackUseCaseTest extends AnyFlatSpec with Matchers:
 
     val newGs = gameSession.updateWorld(
       world.updateRoom(
-        currentRoom.withEnemies(List(
-          enemy.move(
-            world.getPlayer.position.moveBy(Point2D(1,0))
+        currentRoom.withEnemies(
+          List(
+            enemy.move(
+              world.getPlayer.position.moveBy(Point2D(1, 0))
+            )
           )
-        ))
+        )
       )
     )
 
@@ -40,4 +41,5 @@ class EnemyAttackUseCaseTest extends AnyFlatSpec with Matchers:
       )
 
     EnemyAttackUseCase()
-      .execute(newCr, newGs).health shouldBe player.health - enemy.attackPower
+      .execute(newCr, newGs)
+      .health shouldBe player.health - enemy.attackPower

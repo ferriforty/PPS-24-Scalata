@@ -93,17 +93,24 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     facts ++= s"grid_size(${size._1},${size._2}).\n"
     facts ++= s"player(pos(${playerPos.x - padding.x},${playerPos.y - padding.y})).\n"
 
-    param.items.foreach(i => facts ++=
-      s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n")
+    param.items.foreach(i =>
+      facts ++=
+        s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n"
+    )
 
-    param.getAliveEnemies.foreach(e => facts ++=
-      s"enemy(${e.id},pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
+    param.getAliveEnemies.foreach(e =>
+      facts ++=
+        s"enemy(${e.id},pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
     )
 
     facts ++= s"obstacle(${playerPos.x - padding.x},${playerPos.y - padding.y}).\n"
 
-    val engine: Term => LazyList[SolveInfo] = mkPrologEngine(facts.toString() + rules)
-    val startPos = Term.createTerm(s"pos(${playerPos.x - padding.x},${playerPos.y - padding.y})")
+    val engine: Term => LazyList[SolveInfo] = mkPrologEngine(
+      facts.toString() + rules
+    )
+    val startPos = Term.createTerm(
+      s"pos(${playerPos.x - padding.x},${playerPos.y - padding.y})"
+    )
 
     val input = Struct("build_distances", startPos)
     engine(input).headOption
@@ -115,8 +122,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
       param.getAliveEnemies.map(e =>
         e.move(decidedMoves.get(e.id) match
           case Some(newPos) => newPos.moveBy(padding)
-          case None => e.position
-        )
+          case None         => e.position)
       )
     )
 
@@ -129,13 +135,17 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
       if listMoves.isEmptyList then Nil
       else
         import scala.jdk.CollectionConverters.*
-        listMoves.listIterator().asScala.toList.map: t =>
-          val mv = t.asInstanceOf[Struct]
-          Move(
-            mv.getArg(0).getTerm.toString,
-            asPoint(mv.getArg(1).getTerm),
-            asPoint(mv.getArg(2).getTerm)
-          )
+        listMoves
+          .listIterator()
+          .asScala
+          .toList
+          .map: t =>
+            val mv = t.asInstanceOf[Struct]
+            Move(
+              mv.getArg(0).getTerm.toString,
+              asPoint(mv.getArg(1).getTerm),
+              asPoint(mv.getArg(2).getTerm)
+            )
 
   private def decideMoves(moves: List[Move]): Map[String, Point2D] =
 
@@ -145,11 +155,12 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
 
     val order = grouped.toList.sortBy(_._2.size).map(_._1)
 
-    val (_, chosen) = order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])):
-      case ((reserved, acc), id) =>
-        val firstFree = grouped(id).find(!reserved(_))
-        firstFree
-          .map(p => (reserved + p, acc.updated(id, p)))
-          .getOrElse((reserved, acc))
+    val (_, chosen) =
+      order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])):
+        case ((reserved, acc), id) =>
+          val firstFree = grouped(id).find(!reserved(_))
+          firstFree
+            .map(p => (reserved + p, acc.updated(id, p)))
+            .getOrElse((reserved, acc))
 
     chosen

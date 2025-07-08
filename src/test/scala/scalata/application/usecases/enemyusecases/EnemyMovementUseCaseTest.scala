@@ -24,11 +24,13 @@ class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
 
     val newGs = gameSession.updateWorld(
       world.updateRoom(
-        currentRoom.withEnemies(List(
-          enemy.move(
-            world.getPlayer.position.moveBy(Point2D(3,0))
+        currentRoom.withEnemies(
+          List(
+            enemy.move(
+              world.getPlayer.position.moveBy(Point2D(3, 0))
+            )
           )
-        ))
+        )
       )
     )
 
@@ -38,6 +40,7 @@ class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
         throw IllegalStateException("Room Not defined in Interact use case")
       )
 
-    println(EnemyMovementUseCase()
-      .execute(newCr, newGs))
-
+    println(
+      EnemyMovementUseCase()
+        .execute(newCr, newGs)
+    )

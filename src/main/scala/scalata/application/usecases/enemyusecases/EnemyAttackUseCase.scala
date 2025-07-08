@@ -15,4 +15,3 @@ class EnemyAttackUseCase extends CreatureUseCase[Player, Room]:
           .contains(player.position)
       .foldLeft(player): (p, e) =>
         e.attack(p)
-

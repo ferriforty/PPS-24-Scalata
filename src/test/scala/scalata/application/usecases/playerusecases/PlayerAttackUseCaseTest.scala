@@ -10,7 +10,7 @@ import scalata.domain.util.PlayerClasses.Mage
 
 class PlayerAttackUseCaseTest extends AnyFlatSpec with Matchers:
 
-  "Player" should "damage enemy" in :
+  "Player" should "damage enemy" in:
     val enemy = EnemyFactory().create(Pig)
     val player = PlayerFactory().create(Mage)
     val gameSession = GameBuilder(Some(player)).build()
@@ -25,19 +25,25 @@ class PlayerAttackUseCaseTest extends AnyFlatSpec with Matchers:
 
     val newGs = gameSession.updateWorld(
       world.updateRoom(
-        currentRoom.withEnemies(List(
-          enemy.move(
-            world.getPlayer.position.moveBy(direction.vector)
+        currentRoom.withEnemies(
+          List(
+            enemy.move(
+              world.getPlayer.position.moveBy(direction.vector)
+            )
           )
-        ))
+        )
       )
     )
 
     PlayerAttackUseCase().execute(direction, newGs) match
       case GameResult.Success(gs, _) =>
-        gs.getWorld.getRoom(
-          gs.getGameState.currentRoom
-        ).get.enemies.exists(e =>
-          e.health == enemy.health - player.attackPower
-        ) shouldBe true
+        gs.getWorld
+          .getRoom(
+            gs.getGameState.currentRoom
+          )
+          .get
+          .enemies
+          .exists(e =>
+            e.health == enemy.health - player.attackPower
+          ) shouldBe true
       case _ => ()
