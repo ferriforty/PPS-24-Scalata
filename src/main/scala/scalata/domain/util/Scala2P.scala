@@ -1,24 +1,28 @@
 package scalata.domain.util
 
 import alice.tuprolog.*
+import scalata.domain.util.Geometry.Point2D
 
 object Scala2P:
   given Conversion[String, Term] = Term.createTerm(_)
   given Conversion[Seq[_], Term] = _.mkString("[", ",", "]")
 
-  def extractTerm(t: Term, i: Integer): Term =
-    t.asInstanceOf[Struct].getArg(i).getTerm
+  def asInt(t: Term): scala.Int =
+    t.asInstanceOf[alice.tuprolog.Number].intValue
 
-  def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
+  def asPoint(t: Term): Point2D =
+    Point2D(
+      asInt(t.asInstanceOf[Struct].getArg(0).getTerm),
+      asInt(t.asInstanceOf[Struct].getArg(1).getTerm)
+    )
+
+  def mkPrologEngine(clauses: String*): Term => LazyList[SolveInfo] =
     val engine = Prolog()
-    engine.setTheory(Theory(clauses mkString " "))
-
+    engine.setTheory(Theory(clauses.mkString(" ")))
     goal =>
-      LazyList.unfold(engine.solve(goal)): info =>
-        if !info.isSuccess then None
-        else
-          val term     = info.getSolution
-          val nextInfo =
-            if info.hasOpenAlternatives then engine.solveNext()
-            else engine.solve("fail.")
-          Some(term -> nextInfo)
+      LazyList.unfold(Option(engine.solve(goal))) {
+        case Some(info) if info.isSuccess =>
+          val next = if info.hasOpenAlternatives then Some(engine.solveNext()) else None
+          Some(info -> next)
+        case _ => None
+      }
