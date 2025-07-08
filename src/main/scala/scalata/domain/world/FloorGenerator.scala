@@ -81,8 +81,6 @@ object FloorGenerator:
         if room.id == matrixRooms.head.head then List.empty
         else generateEnemies(room, matrixRooms, difficulty)
 
-      println(enemies)
-
       val items =
         if room.id == matrixRooms.head.head then
           List(

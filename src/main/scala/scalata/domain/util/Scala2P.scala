@@ -7,7 +7,7 @@ object Scala2P:
   given Conversion[String, Term] = Term.createTerm(_)
   given Conversion[Seq[_], Term] = _.mkString("[", ",", "]")
 
-  def asInt(t: Term): scala.Int =
+  private def asInt(t: Term): scala.Int =
     t.asInstanceOf[alice.tuprolog.Number].intValue
 
   def asPoint(t: Term): Point2D =

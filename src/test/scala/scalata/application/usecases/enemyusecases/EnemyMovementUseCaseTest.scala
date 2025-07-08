@@ -11,7 +11,7 @@ import scalata.domain.util.PlayerClasses.Mage
 class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
 
   "Enemy" should "move" in:
-    val enemy = EnemyFactory().create(Pig)
+    val enemy = EnemyFactory().create(Pig, "1")
     val player = PlayerFactory().create(Mage)
     val gameSession = GameBuilder(Some(player)).build()
 
@@ -21,14 +21,13 @@ class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
       .getOrElse(
         throw IllegalStateException("Room Not defined in Interact use case")
       )
+    val enemyPos = world.getPlayer.position.moveBy(Point2D(0, 2))
 
     val newGs = gameSession.updateWorld(
       world.updateRoom(
         currentRoom.withEnemies(
           List(
-            enemy.move(
-              world.getPlayer.position.moveBy(Point2D(3, 0))
-            )
+            enemy.move(enemyPos)
           )
         )
       )
@@ -40,7 +39,8 @@ class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
         throw IllegalStateException("Room Not defined in Interact use case")
       )
 
-    println(
-      EnemyMovementUseCase()
-        .execute(newCr, newGs)
-    )
+    EnemyMovementUseCase()
+      .execute(newCr, newGs)
+      .enemies
+      .head
+      .position shouldBe enemyPos.moveBy(Point2D(0, -1))

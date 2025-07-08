@@ -22,7 +22,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
         |    number(X), number(Y), !,
         |    X >= 1, Y >= 1,
         |    grid_size(W,H),
-        |    X =< W, Y =< H, !,
+        |    X < W, Y < H, !,
         |    \+ obstacle(X,Y).
         |
         |neigh(pos(X,Y), pos(X1,Y)) :- X1 is X+1, walkable(X1,Y).
@@ -84,30 +84,11 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
         |    ).
         |
         |""".stripMargin
-
-    val size = param.size
     val playerPos = gameSession.getWorld.getPlayer.position
     val padding = param.topLeft
+    val facts = createFacts(param, playerPos, padding)
 
-    val facts = new StringBuilder
-    facts ++= s"grid_size(${size._1},${size._2}).\n"
-    facts ++= s"player(pos(${playerPos.x - padding.x},${playerPos.y - padding.y})).\n"
-
-    param.items.foreach(i =>
-      facts ++=
-        s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n"
-    )
-
-    param.getAliveEnemies.foreach(e =>
-      facts ++=
-        s"enemy(${e.id},pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
-    )
-
-    facts ++= s"obstacle(${playerPos.x - padding.x},${playerPos.y - padding.y}).\n"
-
-    val engine: Term => LazyList[SolveInfo] = mkPrologEngine(
-      facts.toString() + rules
-    )
+    val engine: Term => LazyList[SolveInfo] = mkPrologEngine(facts + rules)
     val startPos = Term.createTerm(
       s"pos(${playerPos.x - padding.x},${playerPos.y - padding.y})"
     )
@@ -115,7 +96,6 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     val input = Struct("build_distances", startPos)
     engine(input).headOption
     val moves = fetchMoves(engine)
-    println(moves)
     val decidedMoves = decideMoves(moves)
 
     param.withEnemies(
@@ -125,6 +105,30 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
           case None         => e.position)
       )
     )
+
+  private def createFacts(
+      room: Room,
+      playerPos: Point2D,
+      padding: Point2D
+  ): String =
+    val facts = new StringBuilder
+    val size = room.size
+
+    facts ++= s"grid_size(${size._1},${size._2}).\n"
+    facts ++= s"player(pos(${playerPos.x - padding.x},${playerPos.y - padding.y})).\n"
+
+    room.items.foreach(i =>
+      facts ++=
+        s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n"
+    )
+
+    room.getAliveEnemies.foreach(e =>
+      facts ++=
+        s"enemy(${e.id},pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
+    )
+
+    facts ++= s"obstacle(${playerPos.x - padding.x},${playerPos.y - padding.y}).\n"
+    facts.toString()
 
   private case class Move(id: String, cur: Point2D, next: Point2D)
   private def fetchMoves(engine: Term => LazyList[SolveInfo]): List[Move] =
@@ -149,7 +153,6 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
 
   private def decideMoves(moves: List[Move]): Map[String, Point2D] =
 
-    println(moves)
     val grouped: Map[String, List[Point2D]] =
       moves.groupMap(_.id)(_.next)
 
