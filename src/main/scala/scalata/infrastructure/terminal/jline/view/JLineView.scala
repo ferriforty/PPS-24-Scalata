@@ -61,4 +61,4 @@ object JLineView:
         val term = TerminalBuilder.terminal()
         val reader = term.reader()
         new JLineView[F](term, reader)
-    )(view => view.asInstanceOf[JLineView[F]].closeTerminal)
+    )(view => view.closeTerminal)
