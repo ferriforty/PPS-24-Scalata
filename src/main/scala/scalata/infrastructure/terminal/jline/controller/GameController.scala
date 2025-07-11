@@ -1,19 +1,13 @@
-package scalata.infrastructure.cli.controller
+package scalata.infrastructure.terminal.jline.controller
 
 import cats.effect.IO
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.world.World
 import scalata.domain.entities.Player
-import scalata.domain.util.{
-  Direction,
-  GameControllerState,
-  GameError,
-  GameResult,
-  PlayerCommand
-}
-import scalata.domain.world.GameSession
-import scalata.infrastructure.cli.view.{ConsoleView, GameRunView}
+import scalata.domain.util.*
+import scalata.domain.world.{GameSession, World}
+import scalata.infrastructure.terminal.cli.controller.Controller
+import scalata.infrastructure.terminal.cli.view.{ConsoleView, GameRunView}
 
 class GameController(
     view: GameView[IO]
@@ -101,7 +95,7 @@ class GameController(
               .fromStringWASD(direction.head)
               .map(PlayerCommand.Movement.apply)
           )
-        case "a" :: direction :: Nil
+        case "c" :: direction :: Nil
             if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
 
           IO.pure(

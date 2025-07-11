@@ -6,6 +6,7 @@ import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameResult}
 import scalata.infrastructure.cli.view.TestView
 import cats.effect.unsafe.implicits.global
+import scalata.infrastructure.terminal.cli.controller.ChampSelectController
 
 class ChampSelectControllerTest extends AnyFlatSpec with Matchers:
 

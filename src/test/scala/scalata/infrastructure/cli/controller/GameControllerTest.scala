@@ -8,6 +8,7 @@ import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 import scalata.infrastructure.cli.view.TestView
+import scalata.infrastructure.terminal.cli.controller.GameController
 
 class GameControllerTest extends AnyFlatSpec with Matchers:
 

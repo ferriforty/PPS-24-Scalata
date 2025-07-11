@@ -1,4 +1,4 @@
-package scalata.infrastructure.cli.controller
+package scalata.infrastructure.terminal.cli.controller
 
 import cats.effect.IO
 import scalata.application.services.GameBuilder

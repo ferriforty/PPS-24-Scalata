@@ -1,4 +1,4 @@
-package scalata.infrastructure.cli.view
+package scalata.infrastructure.terminal.cli.view
 
 import cats.effect.Sync
 import cats.syntax.all.*

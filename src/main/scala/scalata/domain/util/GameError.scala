@@ -1,5 +1,7 @@
 package scalata.domain.util
 
+import scalata.infrastructure.terminal.jline.view.HelpView
+
 sealed trait GameError:
   def message: String
   def errorCode: String
@@ -7,12 +9,7 @@ sealed trait GameError:
 object GameError:
 
   case class Help() extends GameError:
-    val message: String = "\n" +
-      """[W/A/S/D]  Move
-        |[A]        Attack (choose direction: [N/S/E/W])
-        |[I]        Interact (choose direction: [N/S/E/W])
-        |[U]        Use item (specify item name)
-        |[Q]        Quit""".stripMargin + "\n"
+    val message: String = HelpView.helpText
     val errorCode = "HELP"
 
   case class ItemNotOwned() extends GameError:

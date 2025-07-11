@@ -1,10 +1,10 @@
-package scalata.infrastructure.cli.controller
+package scalata.infrastructure.terminal.cli.controller
 
 import cats.effect.IO
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.GameOverUseCase
 import scalata.domain.util.{GameControllerState, GameError, GameResult}
-import scalata.infrastructure.cli.view.GameOverView
+import scalata.infrastructure.terminal.cli.view.GameOverView
 
 class GameOverController(
     view: GameView[IO]
