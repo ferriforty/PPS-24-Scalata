@@ -7,11 +7,11 @@ import org.jline.utils.NonBlockingReader
 import scalata.application.services.GameView
 
 final class JLineView[F[_]: Sync] private (
-                                            private val term: Terminal,
-                                            private val reader: NonBlockingReader)
-  extends GameView[F]:
+    private val term: Terminal,
+    private val reader: NonBlockingReader
+) extends GameView[F]:
 
-  private val keys = Set('w','a','s','d','W','A','S','D')
+  private val keys = Set('w', 'a', 's', 'd', 'W', 'A', 'S', 'D')
 
   def display[A](text: A): F[Unit] =
     clearScreen >> Sync[F].blocking(term.writer.println(text))
@@ -19,17 +19,16 @@ final class JLineView[F[_]: Sync] private (
   def getInput: F[String] =
     Sync[F].blocking:
       val out = term.writer
-      val line     = new StringBuilder
+      val line = new StringBuilder
 
       def echo(c: Char): Unit =
         out.print(c)
         out.flush()
 
-      var ch: Int  = reader.read()
+      var ch: Int = reader.read()
       echo(ch.toChar)
 
-      if keys.contains(ch.toChar) then
-        ch.toChar.toString
+      if keys.contains(ch.toChar) then ch.toChar.toString
       else
         while ch != -1 && ch != '\n' && ch != '\r' do
           line.append(ch.toChar)
@@ -53,7 +52,7 @@ final class JLineView[F[_]: Sync] private (
     Sync[F].blocking(term.close())
 
 object JLineView:
-  def apply[F[_] : Sync](): Resource[F, GameView[F]] =
+  def apply[F[_]: Sync](): Resource[F, GameView[F]] =
     resource[F]
 
   private def resource[F[_]: Sync]: Resource[F, GameView[F]] =
@@ -62,6 +61,4 @@ object JLineView:
         val term = TerminalBuilder.terminal()
         val reader = term.reader()
         new JLineView[F](term, reader)
-    )(view =>
-      view.asInstanceOf[JLineView[F]].closeTerminal
-    )
+    )(view => view.asInstanceOf[JLineView[F]].closeTerminal)

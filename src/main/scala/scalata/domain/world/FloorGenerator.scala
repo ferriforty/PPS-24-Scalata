@@ -49,7 +49,7 @@ object FloorGenerator:
         currentLevel = level
       )
     )
-  
+
   private def generateRooms(
       difficulty: Int,
       numRoomsFloor: Int,

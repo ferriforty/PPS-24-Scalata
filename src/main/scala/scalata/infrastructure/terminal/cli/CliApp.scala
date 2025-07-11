@@ -9,4 +9,3 @@ object CliApp extends IOApp:
 
   def run(args: List[String]): IO[ExitCode] =
     GameEngine().gameLoop(view = ConsoleView[IO]())
-

@@ -12,7 +12,8 @@ final case class GameSession(
 
   def getWorld: World = this.world
   def getGameState: GameState = this.gameState
-  private def getSession: (World, GameState) = (this.getWorld, this.getGameState)
+  private def getSession: (World, GameState) =
+    (this.getWorld, this.getGameState)
 
   def updateWorld(world: World): GameSession = copy(world = world)
   def updateGameState(gameState: GameState): GameSession =
