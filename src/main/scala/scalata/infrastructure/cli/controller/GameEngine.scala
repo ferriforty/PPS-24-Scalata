@@ -18,7 +18,7 @@ class GameEngine:
       case GameControllerState.Menu        => MenuController(view)
       case GameControllerState.ChampSelect => ChampSelectController(view)
       case GameControllerState.GameRunning => GameController(view)
-      case GameControllerState.GameOver    => GameOverController()
+      case GameControllerState.GameOver    => GameOverController(view)
 
     controller
       .start(worldBuilder)

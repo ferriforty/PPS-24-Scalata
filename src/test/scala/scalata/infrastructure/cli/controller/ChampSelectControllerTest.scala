@@ -12,7 +12,7 @@ class ChampSelectControllerTest extends AnyFlatSpec with Matchers:
   "ChampSelect" should "Return GameRunning State" in:
     val testView = new TestView("m")
     val controller = ChampSelectController(testView)
-    val resultIO = controller.start(worldBuilder = GameBuilder(None))
+    val resultIO = controller.start(gameBuilder = GameBuilder(None))
     val result = resultIO.unsafeRunSync()
 
     result match

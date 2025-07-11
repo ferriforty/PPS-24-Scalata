@@ -15,7 +15,7 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
     val testView = new TestView("q")
     val controller = GameController(testView)
     val resultIO = controller
-      .start(worldBuilder =
+      .start(gameBuilder =
         GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
       )
     val result = resultIO.unsafeRunSync()
@@ -29,4 +29,4 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
     val testView = new TestView("q")
 
     intercept[IllegalStateException]:
-      GameController(testView).start(worldBuilder = GameBuilder(None))
+      GameController(testView).start(gameBuilder = GameBuilder(None))

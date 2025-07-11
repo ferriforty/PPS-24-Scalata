@@ -1,11 +1,9 @@
 package scalata.application.usecases
 
 import cats.Monad
-import cats.effect.IO
 import cats.syntax.all.*
 import scalata.application.services.GameBuilder
 import scalata.application.services.factories.PlayerFactory
-import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
 class ChampSelectUseCase:

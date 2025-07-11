@@ -11,12 +11,12 @@ class ChampSelectController(
 ) extends Controller:
 
   override def start(
-      worldBuilder: GameBuilder
+      gameBuilder: GameBuilder
   ): IO[GameResult[(GameControllerState, GameBuilder)]] =
 
     ChampSelectUseCase().champSelect(
       processInput(ChampSelectView.champSelect(view)),
-      worldBuilder
+      gameBuilder
     )
 
   private def processInput(input: IO[String]): IO[PlayerClasses] =

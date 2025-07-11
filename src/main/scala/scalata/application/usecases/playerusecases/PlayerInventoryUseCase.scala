@@ -10,7 +10,7 @@ class PlayerInventoryUseCase
       GameSession
     ], String]:
   override def execute(
-      param: String,
+      itemName: String,
       gameSession: GameSession
   ): GameResult[GameSession] =
 
@@ -20,7 +20,7 @@ class PlayerInventoryUseCase
 
     val result =
       for
-        item <- gameSession.getWorld.player.getItem(param)
+        item <- gameSession.getWorld.player.getItem(itemName)
         newPl <- Usable.tryUse(item, gameSession.getWorld.getPlayer)
         newW = gameSession.getWorld.updatePlayer(newPl)
       yield GameResult.success(gameSession.updateWorld(newW))

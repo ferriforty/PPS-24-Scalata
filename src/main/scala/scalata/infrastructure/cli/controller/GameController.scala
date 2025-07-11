@@ -3,6 +3,8 @@ package scalata.infrastructure.cli.controller
 import cats.effect.IO
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.GameRunningUseCase
+import scalata.domain.world.World
+import scalata.domain.entities.Player
 import scalata.domain.util.{
   Direction,
   GameControllerState,
@@ -18,9 +20,9 @@ class GameController(
 ) extends Controller:
 
   final override def start(
-      worldBuilder: GameBuilder
+      gameBuilder: GameBuilder
   ): IO[GameResult[(GameControllerState, GameBuilder)]] =
-    gameLoop(worldBuilder.build())
+    gameLoop(gameBuilder.build())
 
   private def gameLoop(
       gameSession: GameSession
@@ -30,6 +32,26 @@ class GameController(
     GameRunningUseCase()
       .execTurn(gameSession, processInput(input))
       .flatMap:
+        case GameResult.Success(
+              GameSession(
+                World(
+                  Player(_, _, _, 0, _, _, _, _, _),
+                  _,
+                  _,
+                  _
+                ),
+                _
+              ),
+              None
+            ) =>
+          IO.pure(
+            GameResult.success(
+              (
+                GameControllerState.GameOver,
+                GameBuilder(None)
+              )
+            )
+          )
         case GameResult.Success(gs, None) =>
           if !gs.getGameState.note.isBlank then
             gameLoop(gs.updateGameState(gs.getGameState.withNote("")))

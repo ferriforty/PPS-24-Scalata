@@ -9,7 +9,7 @@ class PlayerMovementUseCase
       GameSession
     ], Direction]:
   override def execute(
-      param: Direction,
+      direction: Direction,
       gameSession: GameSession
   ): GameResult[GameSession] =
     val world = gameSession.getWorld
@@ -21,7 +21,7 @@ class PlayerMovementUseCase
           "Room Not defined in movement use case"
         )
       )
-    val newPos = world.player.position.moveBy(param.vector)
+    val newPos = world.player.position.moveBy(direction.vector)
 
     if currentRoom.isInside(newPos) &&
       currentRoom.getAliveEnemyAtPosition(newPos).isEmpty &&
@@ -31,20 +31,20 @@ class PlayerMovementUseCase
       GameResult.success(
         gameSession.updateWorld(world.updatePlayer(world.player.move(newPos)))
       )
-    else if currentRoom.getDoorPosition(param) == newPos &&
-      currentRoom.exits.contains(param)
+    else if currentRoom.getDoorPosition(direction) == newPos &&
+      currentRoom.exits.contains(direction)
     then
       val neighbor = world
-        .getNeighbor(param, currentRoom.id)
+        .getNeighbor(direction, currentRoom.id)
         .getOrElse(
           throw new IllegalStateException(
-            "Room" + currentRoom.id + "must have neighbor at " + param
+            "Room" + currentRoom.id + "must have neighbor at " + direction
           )
         )
 
       val entrance = neighbor
-        .getDoorPosition(param.opposite)
-        .moveBy(param.vector)
+        .getDoorPosition(direction.opposite)
+        .moveBy(direction.vector)
 
       GameResult.success(
         gameSession
@@ -55,7 +55,7 @@ class PlayerMovementUseCase
                 neighbor.withEnemies(
                   neighbor.enemies.map(e =>
                     if e.position == entrance then
-                      e.move(e.position.moveBy(param.vector))
+                      e.move(e.position.moveBy(direction.vector))
                     else e
                   )
                 )
@@ -63,4 +63,4 @@ class PlayerMovementUseCase
               .updatePlayer(world.player.move(entrance))
           )
       )
-    else GameResult.error(GameError.InvalidInput(param.toString))
+    else GameResult.error(GameError.InvalidInput(direction.toString))

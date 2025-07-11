@@ -10,7 +10,7 @@ class PlayerAttackUseCase
       GameSession
     ], Direction]:
   override def execute(
-      param: Direction,
+      direction: Direction,
       gameSession: GameSession
   ): GameResult[GameSession] =
     val player = gameSession.getWorld.player
@@ -21,7 +21,7 @@ class PlayerAttackUseCase
           "Room Not defined in attack use case"
         )
       )
-    val reachVector = param match
+    val reachVector = direction match
       case Direction.North => Point2D(0, -player.reach())
       case Direction.South => Point2D(0, player.reach())
       case Direction.West  => Point2D(-player.reach(), 0)

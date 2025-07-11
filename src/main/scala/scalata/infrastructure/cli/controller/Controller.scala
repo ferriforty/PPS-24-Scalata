@@ -6,5 +6,5 @@ import scalata.domain.util.{GameControllerState, GameResult}
 
 trait Controller:
   def start(
-      worldBuilder: GameBuilder
+      gameBuilder: GameBuilder
   ): IO[GameResult[(GameControllerState, GameBuilder)]]

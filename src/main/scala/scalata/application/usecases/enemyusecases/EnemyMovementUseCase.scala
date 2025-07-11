@@ -8,7 +8,7 @@ import scalata.domain.util.Scala2P
 import scalata.domain.util.Scala2P.{*, given}
 
 class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
-  override def execute(param: Room, gameSession: GameSession): Room =
+  override def execute(currentRoom: Room, gameSession: GameSession): Room =
 
     val rules: String =
       """
@@ -85,8 +85,8 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
         |
         |""".stripMargin
     val playerPos = gameSession.getWorld.getPlayer.position
-    val padding = param.topLeft
-    val facts = createFacts(param, playerPos, padding)
+    val padding = currentRoom.topLeft
+    val facts = createFacts(currentRoom, playerPos, padding)
 
     val engine: Term => LazyList[SolveInfo] = mkPrologEngine(facts + rules)
     val startPos = Term.createTerm(
@@ -98,8 +98,8 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     val moves = fetchMoves(engine)
     val decidedMoves = decideMoves(moves)
 
-    param.withEnemies(
-      param.getAliveEnemies.map(e =>
+    currentRoom.withEnemies(
+      currentRoom.getAliveEnemies.map(e =>
         e.move(decidedMoves.get(e.id) match
           case Some(newPos) => newPos.moveBy(padding)
           case None         => e.position)
@@ -107,22 +107,22 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     )
 
   private def createFacts(
-      room: Room,
+      currentRoom: Room,
       playerPos: Point2D,
       padding: Point2D
   ): String =
     val facts = new StringBuilder
-    val size = room.size
+    val size = currentRoom.size
 
     facts ++= s"grid_size(${size._1},${size._2}).\n"
     facts ++= s"player(pos(${playerPos.x - padding.x},${playerPos.y - padding.y})).\n"
 
-    room.items.foreach(i =>
+    currentRoom.items.foreach(i =>
       facts ++=
         s"obstacle(${i.position.get.x - padding.x},${i.position.get.y - padding.y}).\n"
     )
 
-    room.getAliveEnemies.foreach(e =>
+    currentRoom.getAliveEnemies.foreach(e =>
       facts ++=
         s"enemy(${e.id},pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
     )

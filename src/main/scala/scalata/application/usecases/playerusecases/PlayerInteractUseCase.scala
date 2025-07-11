@@ -9,7 +9,7 @@ class PlayerInteractUseCase
       GameSession
     ], Direction]:
   override def execute(
-      param: Direction,
+      direction: Direction,
       gameSession: GameSession
   ): GameResult[GameSession] =
 
@@ -19,7 +19,7 @@ class PlayerInteractUseCase
         throw IllegalStateException("Room Not defined in Interact use case")
       )
 
-    val itemPos = gameSession.getWorld.player.position.moveBy(param.vector)
+    val itemPos = gameSession.getWorld.player.position.moveBy(direction.vector)
     currentRoom
       .getItemAtPosition(itemPos)
       .fold(

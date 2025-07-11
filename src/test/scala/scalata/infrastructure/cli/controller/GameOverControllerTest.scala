@@ -5,11 +5,13 @@ import org.scalatest.matchers.should.Matchers
 import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameResult}
 import cats.effect.unsafe.implicits.global
+import scalata.infrastructure.cli.view.TestView
 
 class GameOverControllerTest extends AnyFlatSpec with Matchers:
 
   "GameOver" should "Return GameOver State" in:
-    val controller = GameOverController()
+    val testView = new TestView("n")
+    val controller = GameOverController(testView)
     val resultIO = controller.start(GameBuilder(None))
     val result = resultIO.unsafeRunSync()
 
