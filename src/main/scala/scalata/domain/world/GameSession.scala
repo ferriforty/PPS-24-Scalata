@@ -2,6 +2,7 @@ package scalata.domain.world
 
 import cats.syntax.all.*
 import cats.data.NonEmptyList
+import scalata.domain.util.GameError
 
 final case class GameSession(
     world: World,
@@ -21,7 +22,11 @@ final case class GameSession(
     copy(history = NonEmptyList(getSession, history.toList))
 
   def undo: GameSession =
-    history.tail.toNel.fold(this): t =>
+    history.tail.toNel.fold(
+      this.updateGameState(
+        this.getGameState.withNote(GameError.UndoError().message)
+      )
+    ): t =>
       copy(
         world = t.head._1,
         gameState = t.head._2,

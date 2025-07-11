@@ -38,3 +38,7 @@ object GameError:
   case class Undo() extends GameError:
     val message: String = "Undo"
     val errorCode = "UNDO"
+
+  case class UndoError() extends GameError:
+    val message: String = "State already at the root"
+    val errorCode = "UNDO_ERROR"
