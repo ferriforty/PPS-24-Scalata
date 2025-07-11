@@ -173,7 +173,9 @@ object FloorGenerator:
       .shuffle(for
         x <- room.topLeft.x + 1 until room.botRight.x
         y <- room.topLeft.y + 1 until room.botRight.y
-        if !room.items.exists(i => i.position == Point2D(x, y))
+        if !room.items.exists(_.position == Point2D(x, y))
+        if !(room.id == matrixRooms.last.last && Point2D(x, y) ==
+          room.botRight.moveBy(Point2D(-1, -1)))
       yield Point2D(x, y))
       .take(numEnemies)
 

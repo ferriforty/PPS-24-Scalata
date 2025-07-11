@@ -157,7 +157,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
       moves.groupMap(_.id)(_.next)
 
     val order = grouped.toList.sortBy(_._2.size).map(_._1)
-
+    println(order)
     val (_, chosen) =
       order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])):
         case ((reserved, acc), id) =>
