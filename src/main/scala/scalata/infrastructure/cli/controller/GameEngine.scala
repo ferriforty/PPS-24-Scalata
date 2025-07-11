@@ -11,7 +11,7 @@ class GameEngine:
 
   final def gameLoop(
       gamePhaseService: GamePhaseService = GamePhaseService(),
-      worldBuilder: GameBuilder = GameBuilder(None),
+      gameBuilder: GameBuilder = GameBuilder(None),
       view: GameView[IO]
   ): IO[ExitCode] =
     val controller = gamePhaseService.getCurrentPhase match
@@ -21,7 +21,7 @@ class GameEngine:
       case GameControllerState.GameOver    => GameOverController(view)
 
     controller
-      .start(worldBuilder)
+      .start(gameBuilder)
       .flatMap:
         case GameResult.Success((nextPhase, w), _) =>
           gameLoop(

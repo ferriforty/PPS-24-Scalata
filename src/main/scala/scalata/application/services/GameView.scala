@@ -1,6 +1,5 @@
 package scalata.application.services
 
-import cats.effect.{IO, Sync}
 import cats.syntax.all._
 
 trait GameView[F[_]]:

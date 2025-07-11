@@ -35,9 +35,10 @@ class GameRunningUseCase:
             PlayerInteractUseCase().execute(direction, gameSession)
           case PlayerCommand.Quit => GameResult.error(GameError.GameOver())
           case PlayerCommand.Help => GameResult.error(GameError.Help())
+          case PlayerCommand.Undo => GameResult.error(GameError.Undo())
 
       turn match
-        case GameResult.Success(gs, _) =>
+        case GameResult.Success(gs, note) =>
           val currentRoom = gs.getWorld
             .getRoom(gs.getGameState.currentRoom)
             .getOrElse(
@@ -55,6 +56,7 @@ class GameRunningUseCase:
                 .updateRoom(
                   EnemyMovementUseCase().execute(currentRoom, gs)
                 )
-            )
+            ),
+            note
           )
         case _ => turn

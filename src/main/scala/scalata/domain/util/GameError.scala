@@ -34,3 +34,7 @@ object GameError:
   case class GameOver() extends GameError:
     val message: String = "Game Over"
     val errorCode = "GAME_OVER"
+
+  case class Undo() extends GameError:
+    val message: String = "Undo"
+    val errorCode = "UNDO"

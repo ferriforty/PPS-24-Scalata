@@ -40,6 +40,7 @@ class GameController(
                   _,
                   _
                 ),
+                _,
                 _
               ),
               None
@@ -52,16 +53,23 @@ class GameController(
               )
             )
           )
+
         case GameResult.Success(gs, None) =>
-          if !gs.getGameState.note.isBlank then
-            gameLoop(gs.updateGameState(gs.getGameState.withNote("")))
-          else gameLoop(gs)
+          if gs.getGameState.note.isBlank then gameLoop(gs.store)
+          else
+            gameLoop(
+              gs.updateGameState(
+                gs.getGameState.withNote("")
+              ).store
+            )
+
         case GameResult.Success(gs, Some(note)) =>
           gameLoop(
             gs.updateGameState(
               gs.getGameState.withNote(note)
-            )
+            ).store
           )
+
         case GameResult.Error(GameError.GameOver()) =>
           IO.pure(
             GameResult.success(
@@ -71,6 +79,10 @@ class GameController(
               )
             )
           )
+
+        case GameResult.Error(GameError.Undo()) =>
+          gameLoop(gameSession.undo)
+
         case GameResult.Error(error) =>
           gameLoop(
             gameSession.updateGameState(
@@ -110,5 +122,8 @@ class GameController(
         case "q" :: Nil =>
 
           IO.pure(Some(PlayerCommand.Quit))
+        case "undo" :: Nil =>
+
+          IO.pure(Some(PlayerCommand.Undo))
         case _ =>
           view.displayError("Invalid Input") *> processInput(view.getInput)

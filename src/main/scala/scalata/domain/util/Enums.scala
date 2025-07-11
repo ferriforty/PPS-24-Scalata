@@ -97,3 +97,4 @@ object PlayerCommand:
   case class Interact(direction: Direction) extends PlayerCommand
   case object Quit extends PlayerCommand
   case object Help extends PlayerCommand
+  case object Undo extends PlayerCommand
