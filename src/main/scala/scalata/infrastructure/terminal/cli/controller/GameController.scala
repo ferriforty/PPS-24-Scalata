@@ -13,7 +13,7 @@ import scalata.domain.util.{
   PlayerCommand
 }
 import scalata.domain.world.GameSession
-import scalata.infrastructure.terminal.cli.view.{ConsoleView, GameRunView}
+import scalata.infrastructure.terminal.cli.view.GameRunView
 
 class GameController(
     view: GameView[IO]
