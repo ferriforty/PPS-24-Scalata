@@ -17,7 +17,7 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
 
   "GameController" should "Return GameOver State with input q" in:
     val testView = new TestView("q")
-    val controller = GameController(GameRunView[IO, String](testView).ask)
+    val controller = GameController(GameRunView[IO](testView).ask)
     val resultIO = controller
       .start(gameBuilder =
         GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
@@ -33,5 +33,5 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
     val testView = new TestView("q")
 
     intercept[IllegalStateException]:
-      GameController(GameRunView[IO, String](testView).ask)
+      GameController(GameRunView[IO](testView).ask)
         .start(gameBuilder = GameBuilder(None))

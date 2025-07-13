@@ -16,7 +16,7 @@ class MenuControllerTest extends AnyFlatSpec with Matchers:
 
   "MenuController" should "Return ChampSelect State with y" in:
     val testView = new TestView("y")
-    val controller = MenuController(MenuView[IO, String](testView).ask)
+    val controller = MenuController(MenuView[IO](testView).ask)
     val resultIO = controller.start(GameBuilder(None))
     val result = resultIO.unsafeRunSync()
 
@@ -27,7 +27,7 @@ class MenuControllerTest extends AnyFlatSpec with Matchers:
 
   "MenuController" should "Return GameOver State with n" in:
     val testView = new TestView("n")
-    val controller = MenuController(MenuView[IO, String](testView).ask)
+    val controller = MenuController(MenuView[IO](testView).ask)
     val resultIO = controller.start(GameBuilder(None))
     val result = resultIO.unsafeRunSync()
 

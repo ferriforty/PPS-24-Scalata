@@ -15,7 +15,7 @@ class GameOverControllerTest extends AnyFlatSpec with Matchers:
 
   "GameOver" should "Return GameOver State" in:
     val testView = new TestView("n")
-    val controller = GameOverController(GameOverView[IO, String](testView).ask)
+    val controller = GameOverController(GameOverView[IO](testView).ask)
     val resultIO = controller.start(GameBuilder(None))
     val result = resultIO.unsafeRunSync()
 
