@@ -1,15 +1,15 @@
 package scalata.domain.util
 
-import scalata.infrastructure.view.jline.HelpView
 
 sealed trait GameError:
   def message: String
+
   def errorCode: String
 
 object GameError:
 
   case class Help() extends GameError:
-    val message: String = HelpView.helpText
+    val message: String = "?"
     val errorCode = "HELP"
 
   case class ItemNotOwned() extends GameError:

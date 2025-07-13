@@ -1,21 +1,24 @@
 package scalata.domain.world
 
-import cats.syntax.all.*
 import cats.data.NonEmptyList
+import cats.syntax.all.*
 import scalata.domain.util.GameError
 
 final case class GameSession(
-    world: World,
-    gameState: GameState,
-    history: NonEmptyList[(World, GameState)]
-):
+                              world: World,
+                              gameState: GameState,
+                              history: NonEmptyList[(World, GameState)]
+                            ):
 
   def getWorld: World = this.world
+
   def getGameState: GameState = this.gameState
+
   private def getSession: (World, GameState) =
     (this.getWorld, this.getGameState)
 
   def updateWorld(world: World): GameSession = copy(world = world)
+
   def updateGameState(gameState: GameState): GameSession =
     copy(gameState = gameState)
 

@@ -1,30 +1,51 @@
-package scalata.infrastructure.view.cli
+package scalata.infrastructure.view.terminal
 
 import cats.effect.Sync
 import cats.syntax.all.*
 import scalata.application.services.GameView
 import scalata.domain.util.Geometry.Point2D
-import scalata.domain.util.{Direction, WORLD_DIMENSIONS}
+import scalata.domain.util.{Direction, PlayerCommand, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
-object GameRunView:
+class GameRunView[F[_] : Sync, I](val view: GameView[F, I]):
 
-  def gameRunView[F[_]: Sync](
-      view: GameView[F],
-      gameSession: GameSession
-  ): F[String] =
+  def ask(gameSession: GameSession): F[PlayerCommand] =
+    val banner = displayGameState(gameSession = gameSession) + "\n\n" +
+      displayWorld(gameSession = gameSession)
+
     for
-      _ <- view.display(
-        displayGameState(gameSession = gameSession) +
-          "\n\n" +
-          displayWorld(gameSession = gameSession)
-      )
-      resp <- view.getInput
-    yield resp
+      _ <- view.display(banner)
+      res <- loop
+    yield res
+
+  private def loop: F[PlayerCommand] = Shared.run(view, parse)
+
+  private def parse(raw: I): Option[PlayerCommand] =
+    raw.toString.toLowerCase.split("\\s+").toList match
+      case direction@("w" | "a" | "s" | "d") :: Nil =>
+
+        Direction
+          .fromStringWASD(direction.head)
+          .map(PlayerCommand.Movement.apply)
+      case "c" :: direction :: Nil
+        if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+
+        Direction.fromString(direction).map(PlayerCommand.Attack.apply)
+      case "i" :: direction :: Nil
+        if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
+
+        Direction.fromString(direction).map(PlayerCommand.Interact.apply)
+      case "u" :: itemName =>
+
+        Some(PlayerCommand.Use(itemName.mkString("").toLowerCase))
+      case "h" :: itemName => Some(PlayerCommand.Help)
+      case "q" :: Nil => Some(PlayerCommand.Quit)
+      case "undo" :: Nil => Some(PlayerCommand.Undo)
+      case _ => None
 
   private def displayGameState(
-      gameSession: GameSession
-  ): String =
+                                gameSession: GameSession
+                              ): String =
     val player = gameSession.getWorld.getPlayer
     val note = gameSession.getGameState.note
     val room =
@@ -80,8 +101,8 @@ object GameRunView:
         room.exits.collectFirst:
           case (d, _) if room.getDoorPosition(d) == point =>
             d match
-              case Direction.West  => "<"
-              case Direction.East  => ">"
+              case Direction.West => "<"
+              case Direction.East => ">"
               case Direction.North => "^"
               case Direction.South => "v"
       )

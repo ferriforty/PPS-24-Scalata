@@ -1,28 +1,17 @@
 package scalata.infrastructure.controller
 
-import cats.effect.IO
-import scalata.application.services.{GameBuilder, GameView}
+import cats.effect.Sync
+import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameOverUseCase
-import scalata.domain.util.{GameControllerState, GameError, GameResult}
-import scalata.infrastructure.view.cli.GameOverView
+import scalata.domain.util.{GameControllerState, GameResult}
 
-class GameOverController(
-    view: GameView[IO]
-) extends Controller:
+class GameOverController[F[_] : Sync, I](
+                                          askRestart: F[Boolean]
+                                        ) extends Controller:
   override def start(
-      gameBuilder: GameBuilder
-  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
+                      gameBuilder: GameBuilder
+                    ): F[GameResult[(GameControllerState, GameBuilder)]] =
     GameOverUseCase().gameOver(
-      processInput(GameOverView.gameOver(view)),
+      askRestart,
       gameBuilder
     )
-
-  private def processInput(input: IO[String]): IO[Boolean] =
-    input.flatMap: raw =>
-      raw.split("\\s+").toList match
-        case "y" :: Nil =>
-          IO.pure(true)
-        case "n" :: Nil =>
-          IO.pure(false)
-        case _ =>
-          view.displayError("Try again!") *> processInput(view.getInput)

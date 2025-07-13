@@ -4,11 +4,11 @@ import scalata.domain.entities.Player
 import scalata.domain.util.Direction
 
 final case class World(
-    player: Player,
-    difficulty: Int = 1,
-    rooms: Map[String, Room],
-    roomsArrangement: List[List[String]]
-):
+                        player: Player,
+                        difficulty: Int = 1,
+                        rooms: Map[String, Room],
+                        roomsArrangement: List[List[String]]
+                      ):
 
   def getDifficulty: Int = difficulty
 

@@ -6,16 +6,16 @@ import scalata.domain.util.{GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerInventoryUseCase
-    extends CreatureUseCase[GameResult[
-      GameSession
-    ], String]:
+  extends CreatureUseCase[GameResult[
+    GameSession
+  ], String]:
   override def execute(
-      itemName: String,
-      gameSession: GameSession
-  ): GameResult[GameSession] =
+                        itemName: String,
+                        gameSession: GameSession
+                      ): GameResult[GameSession] =
 
-    import scalata.domain.entities.items.Potion.given
     import scalata.domain.entities.items.Dust.given
+    import scalata.domain.entities.items.Potion.given
     import scalata.domain.entities.items.Weapon.given
 
     val result =

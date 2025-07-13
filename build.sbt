@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
     Global / useSuperShell        := false ,
     Global / onChangedBuildSource := ReloadOnSourceChanges,
     coverageExcludedPackages      := ".*view.*",
-    assembly / mainClass := Some("scalata.infrastructure.terminal.jline.JLineApp"),
+    assembly / mainClass := Some("scalata.infrastructure.view.terminal.jline.JLineApp"),
 
     libraryDependencies ++= Seq(
       "org.jline" % "jline" % "3.30.4",

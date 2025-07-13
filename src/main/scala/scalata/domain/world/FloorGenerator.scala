@@ -3,28 +3,17 @@ package scalata.domain.world
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
 import scalata.domain.util.Geometry.Point2D
-import scalata.domain.util.{
-  Direction,
-  ItemClasses,
-  MAX_ENEMIES,
-  MAX_PADDING,
-  MIN_ENEMIES,
-  MIN_PADDING,
-  NUM_ROWS_DUNGEON,
-  ROOMS,
-  WORLD_DIMENSIONS,
-  gaussianBetween
-}
+import scalata.domain.util.*
 
 import scala.util.Random
 
 object FloorGenerator:
   def generateFloor(
-      player: Player,
-      difficulty: Int,
-      seed: Long,
-      level: Int
-  ): GameSession =
+                     player: Player,
+                     difficulty: Int,
+                     seed: Long,
+                     level: Int
+                   ): GameSession =
     Random.setSeed(seed)
     val numRoomsFloor = (ROOMS.length + NUM_ROWS_DUNGEON - 1) / NUM_ROWS_DUNGEON
     val shuffledRooms = Random.shuffle(ROOMS)
@@ -51,11 +40,11 @@ object FloorGenerator:
     )
 
   private def generateRooms(
-      difficulty: Int,
-      numRoomsFloor: Int,
-      shuffledRooms: List[String],
-      matrixRooms: List[List[String]]
-  ): Map[String, Room] =
+                             difficulty: Int,
+                             numRoomsFloor: Int,
+                             shuffledRooms: List[String],
+                             matrixRooms: List[List[String]]
+                           ): Map[String, Room] =
 
     val areaHeight = WORLD_DIMENSIONS._2 / NUM_ROWS_DUNGEON
     val areaWidth = WORLD_DIMENSIONS._1 / numRoomsFloor
@@ -109,13 +98,13 @@ object FloorGenerator:
                 .spawn(Some(room.botRight.moveBy(Point2D(-1, -1))))
             )
           else items
-    ).toMap
+      ).toMap
 
   private def getConnections(
-      matrixRooms: List[List[String]],
-      row: Int,
-      col: Int
-  ): Map[Direction, String] =
+                              matrixRooms: List[List[String]],
+                              row: Int,
+                              col: Int
+                            ): Map[Direction, String] =
     Direction.values
       .flatMap(
         _ match
@@ -138,10 +127,10 @@ object FloorGenerator:
       .toMap
 
   private def generateItems(
-      room: Room,
-      difficulty: Int,
-      enemies: List[Enemy]
-  ): List[Item] =
+                             room: Room,
+                             difficulty: Int,
+                             enemies: List[Enemy]
+                           ): List[Item] =
 
     val itemPosition = Random
       .shuffle(for
@@ -164,10 +153,10 @@ object FloorGenerator:
     )
 
   private def generateEnemies(
-      room: Room,
-      matrixRooms: List[List[String]],
-      difficulty: Int
-  ): List[Enemy] =
+                               room: Room,
+                               matrixRooms: List[List[String]],
+                               difficulty: Int
+                             ): List[Enemy] =
     val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
     val enemiesPosition = Random
       .shuffle(for

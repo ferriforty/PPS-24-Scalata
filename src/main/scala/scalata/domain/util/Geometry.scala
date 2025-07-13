@@ -5,6 +5,7 @@ object Geometry:
 
   object Point2D:
     inline def apply(x: Int, y: Int): Point2D = (x, y)
+
     def unapply(p: Point2D): Some[(Int, Int)] = Some((p._1, p._2))
 
   extension (p: Point2D)

@@ -5,13 +5,13 @@ import scalata.domain.util.Direction
 import scalata.domain.util.Geometry.Point2D
 
 final case class Room(
-    id: String,
-    topLeft: Point2D,
-    botRight: Point2D,
-    exits: Map[Direction, String], // direction -> roomId
-    items: List[Item] = List.empty,
-    enemies: List[Enemy] = List.empty
-):
+                       id: String,
+                       topLeft: Point2D,
+                       botRight: Point2D,
+                       exits: Map[Direction, String], // direction -> roomId
+                       items: List[Item] = List.empty,
+                       enemies: List[Enemy] = List.empty
+                     ):
   def size: (Int, Int) =
     (this.botRight.x - this.topLeft.x, this.botRight.y - this.topLeft.y)
 
@@ -36,8 +36,8 @@ final case class Room(
     where match
       case Direction.North => Point2D(centerX, topLeft.y)
       case Direction.South => Point2D(centerX, botRight.y)
-      case Direction.West  => Point2D(topLeft.x, centerY)
-      case Direction.East  => Point2D(botRight.x, centerY)
+      case Direction.West => Point2D(topLeft.x, centerY)
+      case Direction.East => Point2D(botRight.x, centerY)
 
   def withItems(items: List[Item]): Room = copy(items = items)
 

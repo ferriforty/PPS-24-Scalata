@@ -4,10 +4,10 @@ import scalata.domain.entities.Player
 import scalata.domain.world.{FloorGenerator, GameSession, World}
 
 final case class GameBuilder(
-    player: Option[Player],
-    difficulty: Int = 1,
-    level: Int = 1
-):
+                              player: Option[Player],
+                              difficulty: Int = 1,
+                              level: Int = 1
+                            ):
 
   def withPlayer(player: Option[Player]): GameBuilder =
     copy(player = player)

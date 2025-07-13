@@ -5,6 +5,7 @@ import scalata.domain.util.Geometry.Point2D
 
 object Scala2P:
   given Conversion[String, Term] = Term.createTerm(_)
+
   given Conversion[Seq[_], Term] = _.mkString("[", ",", "]")
 
   def asInt(t: Term): scala.Int =

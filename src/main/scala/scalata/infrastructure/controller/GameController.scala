@@ -1,58 +1,49 @@
 package scalata.infrastructure.controller
 
-import cats.effect.IO
-import scalata.application.services.{GameBuilder, GameView}
+import cats.effect.Sync
+import cats.syntax.all.*
+import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.world.World
 import scalata.domain.entities.Player
-import scalata.domain.util.{
-  Direction,
-  GameControllerState,
-  GameError,
-  GameResult,
-  PlayerCommand
-}
-import scalata.domain.world.GameSession
-import scalata.infrastructure.view.cli.GameRunView
+import scalata.domain.util.{GameControllerState, GameError, GameResult, PlayerCommand}
+import scalata.domain.world.{GameSession, World}
+import scalata.infrastructure.view.terminal.HelpView
 
-class GameController(
-    view: GameView[IO]
-) extends Controller:
+class GameController[F[_] : Sync, I](
+                                      askCommand: GameSession => F[PlayerCommand]
+                                    ) extends Controller:
 
   final override def start(
-      gameBuilder: GameBuilder
-  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
+                            gameBuilder: GameBuilder
+                          ): F[GameResult[(GameControllerState, GameBuilder)]] =
     gameLoop(gameBuilder.build())
 
   private def gameLoop(
-      gameSession: GameSession
-  ): IO[GameResult[(GameControllerState, GameBuilder)]] =
-    val input = GameRunView.gameRunView(view, gameSession)
+                        gameSession: GameSession
+                      ): F[GameResult[(GameControllerState, GameBuilder)]] =
 
     GameRunningUseCase()
-      .execTurn(gameSession, processInput(input))
+      .execTurn(gameSession, askCommand(gameSession))
       .flatMap:
         case GameResult.Success(
-              GameSession(
-                World(
-                  Player(_, _, _, 0, _, _, _, _, _),
-                  _,
-                  _,
-                  _
-                ),
-                _,
-                _
-              ),
-              None
-            ) =>
-          IO.pure(
-            GameResult.success(
-              (
-                GameControllerState.GameOver,
-                GameBuilder(None)
-              )
+        GameSession(
+        World(
+        Player(_, _, _, 0, _, _, _, _, _),
+        _,
+        _,
+        _
+        ),
+        _,
+        _
+        ),
+        None
+        ) =>
+          GameResult.success(
+            (
+              GameControllerState.GameOver,
+              GameBuilder(None)
             )
-          )
+          ).pure[F]
 
         case GameResult.Success(gs, None) =>
           if gs.getGameState.note.isBlank then gameLoop(gs.store)
@@ -70,15 +61,20 @@ class GameController(
             ).store
           )
 
-        case GameResult.Error(GameError.GameOver()) =>
-          IO.pure(
-            GameResult.success(
-              (
-                GameControllerState.GameOver,
-                GameBuilder(None)
-              )
+        case GameResult.Error(GameError.Help()) =>
+          gameLoop(
+            gameSession.updateGameState(
+              gameSession.getGameState.withNote(HelpView.helpText)
             )
           )
+
+        case GameResult.Error(GameError.GameOver()) =>
+          GameResult.success(
+            (
+              GameControllerState.GameOver,
+              GameBuilder(None)
+            )
+          ).pure[F]
 
         case GameResult.Error(GameError.Undo()) =>
           gameLoop(gameSession.undo)
@@ -89,41 +85,3 @@ class GameController(
               gameSession.getGameState.withNote(error.message)
             )
           )
-
-  private def processInput(input: IO[String]): IO[Option[PlayerCommand]] =
-
-    input.flatMap: raw =>
-      raw.split("\\s+").toList match
-        case direction @ ("w" | "a" | "s" | "d") :: Nil =>
-
-          IO.pure(
-            Direction
-              .fromStringWASD(direction.head)
-              .map(PlayerCommand.Movement.apply)
-          )
-        case "a" :: direction :: Nil
-            if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
-
-          IO.pure(
-            Direction.fromString(direction).map(PlayerCommand.Attack.apply)
-          )
-        case "i" :: direction :: Nil
-            if Set("n", "s", "e", "w").contains(direction.toLowerCase) =>
-
-          IO.pure(
-            Direction.fromString(direction).map(PlayerCommand.Interact.apply)
-          )
-        case "u" :: itemName =>
-
-          IO.pure(Some(PlayerCommand.Use(itemName.mkString("").toLowerCase)))
-        case "h" :: itemName =>
-
-          IO.pure(Some(PlayerCommand.Help))
-        case "q" :: Nil =>
-
-          IO.pure(Some(PlayerCommand.Quit))
-        case "undo" :: Nil =>
-
-          IO.pure(Some(PlayerCommand.Undo))
-        case _ =>
-          view.displayError("Invalid Input") *> processInput(view.getInput)

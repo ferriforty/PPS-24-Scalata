@@ -1,10 +1,10 @@
-package scalata.infrastructure.view.cli
+package scalata.infrastructure.view.terminal.cli
 
 import cats.effect.Sync
 import cats.implicits.catsSyntaxApplyOps
 import scalata.application.services.GameView
 
-final class ConsoleView[F[_]: Sync] extends GameView[F]:
+final class ConsoleView[F[_] : Sync] extends GameView[F, String]:
   override def display[String](text: String): F[Unit] =
     clearScreen *> Sync[F].delay(println(text))
 

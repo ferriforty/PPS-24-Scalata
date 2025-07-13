@@ -8,6 +8,9 @@ trait Inventory[E <: Inventory[E]]:
   val weapon: Option[Weapon]
 
   def equipWeapon(weapon: Weapon): E
+
   def addItem(item: Item): E
+
   def getItem(itemName: String): Option[Item]
+
   def removeItem(item: Item): E

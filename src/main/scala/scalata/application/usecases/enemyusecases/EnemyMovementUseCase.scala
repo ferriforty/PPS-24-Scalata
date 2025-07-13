@@ -1,11 +1,11 @@
 package scalata.application.usecases.enemyusecases
 
-import scalata.application.usecases.CreatureUseCase
-import scalata.domain.world.{GameSession, Room}
 import alice.tuprolog.*
+import scalata.application.usecases.CreatureUseCase
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.Scala2P
 import scalata.domain.util.Scala2P.{*, given}
+import scalata.domain.world.{GameSession, Room}
 
 class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
   override def execute(currentRoom: Room, gameSession: GameSession): Room =
@@ -86,15 +86,15 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
       currentRoom.getAliveEnemies.map(e =>
         e.move(decidedMoves.get(e.id) match
           case Some(newPos) => newPos.moveBy(padding)
-          case None         => e.position)
+          case None => e.position)
       )
     )
 
   private def createFacts(
-      currentRoom: Room,
-      playerPos: Point2D,
-      padding: Point2D
-  ): String =
+                           currentRoom: Room,
+                           playerPos: Point2D,
+                           padding: Point2D
+                         ): String =
     val facts = new StringBuilder
     val size = currentRoom.size
 
@@ -116,6 +116,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     facts.toString()
 
   private case class Move(id: String, cur: Point2D, next: Point2D, cost: scala.Int)
+
   private def fetchMoves(engine: Term => LazyList[SolveInfo]): List[Move] =
     val mVar = Var("M")
 
@@ -150,6 +151,6 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
         case ((reserved, steps), id) =>
           moves(id).find(!reserved(_)) match
             case Some(p) => (reserved + p, steps.updated(id, p))
-            case None    => (reserved, steps)
+            case None => (reserved, steps)
 
     chosen
