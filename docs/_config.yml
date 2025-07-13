@@ -1,9 +1,10 @@
 title: "Scalata Docs"
 theme: "just-the-docs"
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+search_enabled: true
+
 color_scheme: "dark"   # or "light"
 footer_content: "© 2025 Scalata Project — PPS 24"
 aux_links:
   "Scalata on GitHub":
     - "https://github.com/ferriforty/PPS-24-Scalata"
-
-search: true
