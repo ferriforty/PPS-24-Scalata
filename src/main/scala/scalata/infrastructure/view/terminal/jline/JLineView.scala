@@ -6,10 +6,10 @@ import org.jline.terminal.{Terminal, TerminalBuilder}
 import org.jline.utils.NonBlockingReader
 import scalata.application.services.GameView
 
-final class JLineView[F[_] : Sync] private(
-                                            private val term: Terminal,
-                                            private val reader: NonBlockingReader
-                                          ) extends GameView[F, String]:
+final class JLineView[F[_]: Sync] private (
+    private val term: Terminal,
+    private val reader: NonBlockingReader
+) extends GameView[F, String]:
 
   private val keys = Set('w', 'a', 's', 'd', 'W', 'A', 'S', 'D')
 
@@ -52,10 +52,10 @@ final class JLineView[F[_] : Sync] private(
     Sync[F].blocking(term.close())
 
 object JLineView:
-  def apply[F[_] : Sync](): Resource[F, GameView[F, String]] =
+  def apply[F[_]: Sync](): Resource[F, GameView[F, String]] =
     resource[F]
 
-  private def resource[F[_] : Sync]: Resource[F, GameView[F, String]] =
+  private def resource[F[_]: Sync]: Resource[F, GameView[F, String]] =
     Resource.make(
       Sync[F].delay:
         val term = TerminalBuilder.terminal()

@@ -3,7 +3,12 @@ package scalata.application.services.factories
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Item
 import scalata.domain.entities.items.*
-import scalata.domain.util.{ItemClasses, POTION_WEIGHT, gaussianBetween, weightedRandom}
+import scalata.domain.util.{
+  ItemClasses,
+  POTION_WEIGHT,
+  gaussianBetween,
+  weightedRandom
+}
 
 import scala.util.Random
 
@@ -66,6 +71,6 @@ class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
           itemClass = ItemClasses.SmallPotion,
           amount = 20
         )
-      case ItemClasses.Dust => Dust(id = id)
-      case ItemClasses.Sign => Sign(id = id)
+      case ItemClasses.Dust     => Dust(id = id)
+      case ItemClasses.Sign     => Sign(id = id)
       case ItemClasses.ExitDoor => ExitDoor(id = id)

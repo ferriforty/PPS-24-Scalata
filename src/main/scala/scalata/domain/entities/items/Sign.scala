@@ -6,11 +6,11 @@ import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
 final case class Sign(
-                       override val id: String,
-                       override val position: Option[Point2D] = None,
-                       override val name: String = "Sign",
-                       override val itemClass: ItemClasses = ItemClasses.Sign
-                     ) extends Item:
+    override val id: String,
+    override val position: Option[Point2D] = None,
+    override val name: String = "Sign",
+    override val itemClass: ItemClasses = ItemClasses.Sign
+) extends Item:
 
   private def setPosition(pos: Option[Point2D]): Sign = copy(position = pos)
 

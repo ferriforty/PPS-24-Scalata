@@ -5,9 +5,9 @@ import scalata.application.services.GameView
 import scalata.domain.util.PlayerClasses
 import scalata.infrastructure.view.View
 
-class ChampSelectView[F[_] : Sync, I](
-                                       val view: GameView[F, I]
-                                     ) extends View[ChampSelectView[F, I], String, PlayerClasses, I, F](view):
+class ChampSelectView[F[_]: Sync, I](
+    val view: GameView[F, I]
+) extends View[ChampSelectView[F, I], String, PlayerClasses, I, F](view):
 
   override protected def banner: String =
     """ -> Let's create your champion now <-
@@ -21,4 +21,4 @@ class ChampSelectView[F[_] : Sync, I](
       case "m" => Some(PlayerClasses.Mage)
       case "b" => Some(PlayerClasses.Barbarian)
       case "a" => Some(PlayerClasses.Assassin)
-      case _ => None
+      case _   => None

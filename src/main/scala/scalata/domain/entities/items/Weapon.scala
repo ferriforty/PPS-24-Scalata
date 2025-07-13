@@ -7,13 +7,13 @@ import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
 final case class Weapon(
-                         override val id: String,
-                         override val position: Option[Point2D] = None,
-                         override val name: String,
-                         override val itemClass: ItemClasses,
-                         damage: Int
-                       ) extends Item
-  with Pickable:
+    override val id: String,
+    override val position: Option[Point2D] = None,
+    override val name: String,
+    override val itemClass: ItemClasses,
+    damage: Int
+) extends Item
+    with Pickable:
 
   private def setPosition(pos: Option[Point2D]): Weapon = copy(position = pos)
 

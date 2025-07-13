@@ -6,10 +6,10 @@ import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameError, GameResult}
 
 class GameStartUseCase:
-  def newGame[F[_] : Monad](
-                             input: F[Boolean],
-                             worldBuilder: GameBuilder
-                           ): F[GameResult[(GameControllerState, GameBuilder)]] =
+  def newGame[F[_]: Monad](
+      input: F[Boolean],
+      worldBuilder: GameBuilder
+  ): F[GameResult[(GameControllerState, GameBuilder)]] =
 
     input.map: raw =>
       if raw then

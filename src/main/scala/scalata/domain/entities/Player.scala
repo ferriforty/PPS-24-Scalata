@@ -6,20 +6,20 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.PlayerClasses
 
 final case class Player(
-                         override val id: String,
-                         override val name: String = "Hero",
-                         role: PlayerClasses,
-                         override val health: Int,
-                         override val maxHealth: Int,
-                         override val position: Point2D = Point2D(0, 0),
-                         override val weapon: Option[Weapon] = None,
-                         override val inventory: List[Item] = List.empty,
-                         override val attackPower: Int
-                       ) extends Entity
-  with Movable[Player]
-  with Alive[Player]
-  with Combatant[Enemy]
-  with Inventory[Player]:
+    override val id: String,
+    override val name: String = "Hero",
+    role: PlayerClasses,
+    override val health: Int,
+    override val maxHealth: Int,
+    override val position: Point2D = Point2D(0, 0),
+    override val weapon: Option[Weapon] = None,
+    override val inventory: List[Item] = List.empty,
+    override val attackPower: Int
+) extends Entity
+    with Movable[Player]
+    with Alive[Player]
+    with Combatant[Enemy]
+    with Inventory[Player]:
 
   override def move(pos: Point2D): Player = copy(position = pos)
 
@@ -34,7 +34,7 @@ final case class Player(
   override def attack(opponent: Enemy): Enemy =
     weapon match
       case Some(w) => opponent.takeDamage(w.attack(attackPower))
-      case None => opponent.takeDamage(attackPower)
+      case None    => opponent.takeDamage(attackPower)
 
   override def equipWeapon(weapon: Weapon): Player =
     copy(weapon = Some(weapon))

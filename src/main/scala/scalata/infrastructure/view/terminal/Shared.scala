@@ -7,18 +7,28 @@ import scalata.domain.util.GameControllerState
 import scalata.infrastructure.controller.*
 
 object Shared:
-  def getControllersMap[F[_] : Sync, I](view: GameView[F, I]): GameControllerState => Controller[F] =
+  def getControllersMap[F[_]: Sync, I](
+      view: GameView[F, I]
+  ): GameControllerState => Controller[F] =
     Map(
-      GameControllerState.Menu -> MenuController[F, I](MenuView[F, I](view).ask),
-      GameControllerState.ChampSelect -> ChampSelectController[F, I](ChampSelectView[F, I](view).ask),
-      GameControllerState.GameRunning -> GameController[F, I](GameRunView[F, I](view).ask),
-      GameControllerState.GameOver -> GameOverController[F, I](GameOverView[F, I](view).ask)
+      GameControllerState.Menu -> MenuController[F, I](
+        MenuView[F, I](view).ask
+      ),
+      GameControllerState.ChampSelect -> ChampSelectController[F, I](
+        ChampSelectView[F, I](view).ask
+      ),
+      GameControllerState.GameRunning -> GameController[F, I](
+        GameRunView[F, I](view).ask
+      ),
+      GameControllerState.GameOver -> GameOverController[F, I](
+        GameOverView[F, I](view).ask
+      )
     )
 
-  def run[F[_] : Sync, I, O](
-                              gameView: GameView[F, I],
-                              parse: I => Option[O]
-                            ): F[O] =
+  def run[F[_]: Sync, I, O](
+      gameView: GameView[F, I],
+      parse: I => Option[O]
+  ): F[O] =
 
     gameView.getInput.flatMap: raw =>
       parse(raw) match
@@ -29,6 +39,4 @@ object Shared:
     raw.toString.toLowerCase.split("\\s+").toList match
       case "y" :: Nil => Some(true)
       case "n" :: Nil => Some(false)
-      case _ => None
-
-
+      case _          => None

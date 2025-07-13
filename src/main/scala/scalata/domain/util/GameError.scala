@@ -1,6 +1,5 @@
 package scalata.domain.util
 
-
 sealed trait GameError:
   def message: String
 

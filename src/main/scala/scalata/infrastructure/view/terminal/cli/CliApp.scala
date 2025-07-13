@@ -10,4 +10,5 @@ object CliApp extends IOApp:
   private val view = ConsoleView[IO]()
 
   def run(args: List[String]): IO[ExitCode] =
-    GameEngine[IO, String]().gameLoop(controllers = Shared.getControllersMap[IO, String](view))
+    GameEngine[IO, String]()
+      .gameLoop(controllers = Shared.getControllersMap[IO, String](view))

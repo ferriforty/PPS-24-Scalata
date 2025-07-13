@@ -5,13 +5,13 @@ import cats.syntax.all.*
 import scalata.application.services.{GameBuilder, GamePhaseService}
 import scalata.domain.util.{GameControllerState, GameResult}
 
-class GameEngine[F[_] : Sync, I]:
+class GameEngine[F[_]: Sync, I]:
 
   final def gameLoop(
-                      gamePhaseService: GamePhaseService = GamePhaseService(),
-                      gameBuilder: GameBuilder = GameBuilder(None),
-                      controllers: GameControllerState => Controller[F]
-                    ): F[ExitCode] =
+      gamePhaseService: GamePhaseService = GamePhaseService(),
+      gameBuilder: GameBuilder = GameBuilder(None),
+      controllers: GameControllerState => Controller[F]
+  ): F[ExitCode] =
     val controller = controllers(gamePhaseService.getCurrentPhase)
 
     controller

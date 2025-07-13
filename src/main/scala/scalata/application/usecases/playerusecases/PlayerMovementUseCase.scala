@@ -5,13 +5,13 @@ import scalata.domain.util.{Direction, GameError, GameResult}
 import scalata.domain.world.GameSession
 
 class PlayerMovementUseCase
-  extends CreatureUseCase[GameResult[
-    GameSession
-  ], Direction]:
+    extends CreatureUseCase[GameResult[
+      GameSession
+    ], Direction]:
   override def execute(
-                        direction: Direction,
-                        gameSession: GameSession
-                      ): GameResult[GameSession] =
+      direction: Direction,
+      gameSession: GameSession
+  ): GameResult[GameSession] =
     val world = gameSession.getWorld
     val gameState = gameSession.getGameState
     val currentRoom = world

@@ -2,17 +2,25 @@ package scalata.application.usecases
 
 import cats.Monad
 import cats.syntax.all.*
-import scalata.application.usecases.enemyusecases.{EnemyAttackUseCase, EnemyMovementUseCase}
-import scalata.application.usecases.playerusecases.{PlayerAttackUseCase, PlayerInteractUseCase, PlayerInventoryUseCase, PlayerMovementUseCase}
+import scalata.application.usecases.enemyusecases.{
+  EnemyAttackUseCase,
+  EnemyMovementUseCase
+}
+import scalata.application.usecases.playerusecases.{
+  PlayerAttackUseCase,
+  PlayerInteractUseCase,
+  PlayerInventoryUseCase,
+  PlayerMovementUseCase
+}
 import scalata.domain.util.{GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 
 class GameRunningUseCase:
 
-  final def execTurn[F[_] : Monad](
-                                    gameSession: GameSession,
-                                    command: F[PlayerCommand]
-                                  ): F[GameResult[GameSession]] =
+  final def execTurn[F[_]: Monad](
+      gameSession: GameSession,
+      command: F[PlayerCommand]
+  ): F[GameResult[GameSession]] =
 
     command.map: raw =>
       val turn: GameResult[GameSession] =

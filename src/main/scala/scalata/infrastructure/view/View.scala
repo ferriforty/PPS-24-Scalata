@@ -5,7 +5,7 @@ import cats.syntax.all.*
 import scalata.application.services.GameView
 import scalata.infrastructure.view.terminal.Shared
 
-trait View[V <: View[V, C, O, I, F], C, O, I, F[_] : Sync](view: GameView[F, I]):
+trait View[V <: View[V, C, O, I, F], C, O, I, F[_]: Sync](view: GameView[F, I]):
 
   protected def banner: C
 

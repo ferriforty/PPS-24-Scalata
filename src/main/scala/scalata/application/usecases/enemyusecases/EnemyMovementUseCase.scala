@@ -86,15 +86,15 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
       currentRoom.getAliveEnemies.map(e =>
         e.move(decidedMoves.get(e.id) match
           case Some(newPos) => newPos.moveBy(padding)
-          case None => e.position)
+          case None         => e.position)
       )
     )
 
   private def createFacts(
-                           currentRoom: Room,
-                           playerPos: Point2D,
-                           padding: Point2D
-                         ): String =
+      currentRoom: Room,
+      playerPos: Point2D,
+      padding: Point2D
+  ): String =
     val facts = new StringBuilder
     val size = currentRoom.size
 
@@ -115,7 +115,12 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     facts ++= s"distance(pos(${playerPos.x - padding.x},${playerPos.y - padding.y}), 0).\n"
     facts.toString()
 
-  private case class Move(id: String, cur: Point2D, next: Point2D, cost: scala.Int)
+  private case class Move(
+      id: String,
+      cur: Point2D,
+      next: Point2D,
+      cost: scala.Int
+  )
 
   private def fetchMoves(engine: Term => LazyList[SolveInfo]): List[Move] =
     val mVar = Var("M")
@@ -139,18 +144,22 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
             )
 
   private def groupMoves(moves: List[Move]): Map[String, List[Point2D]] =
-    moves.groupMap(_.id)(m => (m.next, m.cost)).map((id, moves) =>
-      val min = moves.map(_._2).min
-      id -> moves.filter(_._2.equals(min)).map(_._1)
-    )
+    moves
+      .groupMap(_.id)(m => (m.next, m.cost))
+      .map((id, moves) =>
+        val min = moves.map(_._2).min
+        id -> moves.filter(_._2.equals(min)).map(_._1)
+      )
 
-  private def decideMoves(moves: Map[String, List[Point2D]]): Map[String, Point2D] =
+  private def decideMoves(
+      moves: Map[String, List[Point2D]]
+  ): Map[String, Point2D] =
     val order = moves.toList.sortBy(_._2.size).map(_._1)
     val (_, chosen) =
       order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])):
         case ((reserved, steps), id) =>
           moves(id).find(!reserved(_)) match
             case Some(p) => (reserved + p, steps.updated(id, p))
-            case None => (reserved, steps)
+            case None    => (reserved, steps)
 
     chosen

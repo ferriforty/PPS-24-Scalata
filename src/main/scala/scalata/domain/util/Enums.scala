@@ -9,15 +9,15 @@ enum PlayerClasses:
 
   def reach: Int =
     this match
-      case PlayerClasses.Mage => 2
+      case PlayerClasses.Mage      => 2
       case PlayerClasses.Barbarian => 1
-      case PlayerClasses.Assassin => 1
+      case PlayerClasses.Assassin  => 1
 
   def visibility: Int =
     this match
-      case PlayerClasses.Mage => 5
+      case PlayerClasses.Mage      => 5
       case PlayerClasses.Barbarian => 6
-      case PlayerClasses.Assassin => 3
+      case PlayerClasses.Assassin  => 3
 
   override def toString: String = "@"
 
@@ -28,7 +28,7 @@ enum EnemyClasses:
   override def toString: String =
     this match
       case EnemyClasses.Goblin => "g"
-      case EnemyClasses.Pig => "p"
+      case EnemyClasses.Pig    => "p"
 
 enum ItemClasses:
   case Halberd
@@ -84,8 +84,8 @@ enum Direction(val dx: Int, val dy: Int):
   def opposite: Direction = this match
     case Direction.North => Direction.South
     case Direction.South => Direction.North
-    case Direction.West => Direction.East
-    case Direction.East => Direction.West
+    case Direction.West  => Direction.East
+    case Direction.East  => Direction.West
 
   def vector: Point2D = Point2D(dx, dy)
 

@@ -5,10 +5,10 @@ import cats.syntax.all.*
 import scalata.domain.util.GameError
 
 final case class GameSession(
-                              world: World,
-                              gameState: GameState,
-                              history: NonEmptyList[(World, GameState)]
-                            ):
+    world: World,
+    gameState: GameState,
+    history: NonEmptyList[(World, GameState)]
+):
 
   def getWorld: World = this.world
 

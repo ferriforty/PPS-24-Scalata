@@ -1,5 +1,7 @@
 package scalata.infrastructure.cli.controller
 
+import cats.effect.IO
+import cats.syntax.all.*
 import cats.effect.unsafe.implicits.global
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -9,12 +11,13 @@ import scalata.domain.entities.Player
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 import scalata.infrastructure.cli.view.TestView
 import scalata.infrastructure.controller.GameController
+import scalata.infrastructure.view.terminal.GameRunView
 
 class GameControllerTest extends AnyFlatSpec with Matchers:
 
   "GameController" should "Return GameOver State with input q" in:
     val testView = new TestView("q")
-    val controller = GameController(testView)
+    val controller = GameController(GameRunView[IO, String](testView).ask)
     val resultIO = controller
       .start(gameBuilder =
         GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
@@ -30,4 +33,5 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
     val testView = new TestView("q")
 
     intercept[IllegalStateException]:
-      GameController(testView).start(gameBuilder = GameBuilder(None))
+      GameController(GameRunView[IO, String](testView).ask)
+        .start(gameBuilder = GameBuilder(None))

@@ -5,17 +5,17 @@ import scalata.domain.util.EnemyClasses
 import scalata.domain.util.Geometry.Point2D
 
 final case class Enemy(
-                        override val id: String,
-                        override val name: String,
-                        enemyType: EnemyClasses,
-                        override val position: Point2D = Point2D(0, 0),
-                        override val health: Int,
-                        override val maxHealth: Int,
-                        override val attackPower: Int
-                      ) extends Entity
-  with Alive[Enemy]
-  with Movable[Enemy]
-  with Combatant[Player]:
+    override val id: String,
+    override val name: String,
+    enemyType: EnemyClasses,
+    override val position: Point2D = Point2D(0, 0),
+    override val health: Int,
+    override val maxHealth: Int,
+    override val attackPower: Int
+) extends Entity
+    with Alive[Enemy]
+    with Movable[Enemy]
+    with Combatant[Player]:
 
   override def takeDamage(damage: Int): Enemy =
     copy(health = (health - damage).max(0))

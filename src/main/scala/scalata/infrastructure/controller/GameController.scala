@@ -5,45 +5,52 @@ import cats.syntax.all.*
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.{GameControllerState, GameError, GameResult, PlayerCommand}
+import scalata.domain.util.{
+  GameControllerState,
+  GameError,
+  GameResult,
+  PlayerCommand
+}
 import scalata.domain.world.{GameSession, World}
 import scalata.infrastructure.view.terminal.HelpView
 
-class GameController[F[_] : Sync, I](
-                                      askCommand: GameSession => F[PlayerCommand]
-                                    ) extends Controller:
+class GameController[F[_]: Sync, I](
+    askCommand: GameSession => F[PlayerCommand]
+) extends Controller:
 
   final override def start(
-                            gameBuilder: GameBuilder
-                          ): F[GameResult[(GameControllerState, GameBuilder)]] =
+      gameBuilder: GameBuilder
+  ): F[GameResult[(GameControllerState, GameBuilder)]] =
     gameLoop(gameBuilder.build())
 
   private def gameLoop(
-                        gameSession: GameSession
-                      ): F[GameResult[(GameControllerState, GameBuilder)]] =
+      gameSession: GameSession
+  ): F[GameResult[(GameControllerState, GameBuilder)]] =
 
     GameRunningUseCase()
       .execTurn(gameSession, askCommand(gameSession))
       .flatMap:
         case GameResult.Success(
-        GameSession(
-        World(
-        Player(_, _, _, 0, _, _, _, _, _),
-        _,
-        _,
-        _
-        ),
-        _,
-        _
-        ),
-        None
-        ) =>
-          GameResult.success(
-            (
-              GameControllerState.GameOver,
-              GameBuilder(None)
+              GameSession(
+                World(
+                  Player(_, _, _, 0, _, _, _, _, _),
+                  _,
+                  _,
+                  _
+                ),
+                _,
+                _
+              ),
+              None
+            ) =>
+          GameResult
+            .success(
+              (
+                GameControllerState.GameOver,
+                GameBuilder(None)
+              )
             )
-          ).pure[F]
+            .pure[F]
 
         case GameResult.Success(gs, None) =>
           if gs.getGameState.note.isBlank then gameLoop(gs.store)
@@ -69,12 +76,14 @@ class GameController[F[_] : Sync, I](
           )
 
         case GameResult.Error(GameError.GameOver()) =>
-          GameResult.success(
-            (
-              GameControllerState.GameOver,
-              GameBuilder(None)
+          GameResult
+            .success(
+              (
+                GameControllerState.GameOver,
+                GameBuilder(None)
+              )
             )
-          ).pure[F]
+            .pure[F]
 
         case GameResult.Error(GameError.Undo()) =>
           gameLoop(gameSession.undo)
