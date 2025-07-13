@@ -1,4 +1,4 @@
-package scalata.infrastructure.terminal.jline.view
+package scalata.infrastructure.view.jline
 
 object HelpView:
   val helpText: String = "\n" +

@@ -1,10 +1,10 @@
-package scalata.infrastructure.terminal.cli.controller
+package scalata.infrastructure.controller
 
 import cats.effect.IO
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.GameStartUseCase
 import scalata.domain.util.{GameControllerState, GameResult}
-import scalata.infrastructure.terminal.cli.view.MenuView
+import scalata.infrastructure.view.cli.MenuView
 
 class MenuController(view: GameView[IO]) extends Controller:
   override def start(

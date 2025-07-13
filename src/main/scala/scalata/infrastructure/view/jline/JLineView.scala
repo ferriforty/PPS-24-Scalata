@@ -1,4 +1,4 @@
-package scalata.infrastructure.terminal.jline.view
+package scalata.infrastructure.view.jline
 
 import cats.effect.{Resource, Sync}
 import cats.syntax.all.*

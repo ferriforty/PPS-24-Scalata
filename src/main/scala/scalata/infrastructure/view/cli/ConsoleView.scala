@@ -1,4 +1,4 @@
-package scalata.infrastructure.terminal.cli.view
+package scalata.infrastructure.view.cli
 
 import cats.effect.Sync
 import cats.implicits.catsSyntaxApplyOps
@@ -16,3 +16,5 @@ final class ConsoleView[F[_]: Sync] extends GameView[F]:
 
   override def clearScreen: F[Unit] =
     Sync[F].delay(print("\u001b[2J\u001b[H"))
+
+  

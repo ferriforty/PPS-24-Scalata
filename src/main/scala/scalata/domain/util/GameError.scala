@@ -1,6 +1,6 @@
 package scalata.domain.util
 
-import scalata.infrastructure.terminal.jline.view.HelpView
+import scalata.infrastructure.view.jline.HelpView
 
 sealed trait GameError:
   def message: String

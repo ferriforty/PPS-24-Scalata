@@ -1,9 +1,8 @@
-package scalata.infrastructure.terminal.cli
+package scalata.infrastructure.view.cli
 
 import cats.effect.{ExitCode, IO, IOApp}
 import scalata.application.services.{GameBuilder, GamePhaseService}
-import scalata.infrastructure.terminal.cli.controller.GameEngine
-import scalata.infrastructure.terminal.cli.view.ConsoleView
+import scalata.infrastructure.controller.GameEngine
 
 object CliApp extends IOApp:
 

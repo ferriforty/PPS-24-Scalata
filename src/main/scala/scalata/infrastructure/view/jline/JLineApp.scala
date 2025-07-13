@@ -1,8 +1,7 @@
-package scalata.infrastructure.terminal.jline
+package scalata.infrastructure.view.jline
 
 import cats.effect.{ExitCode, IO, IOApp}
-import scalata.infrastructure.terminal.jline.view.JLineView
-import scalata.infrastructure.terminal.cli.controller.GameEngine
+import scalata.infrastructure.controller.GameEngine
 
 object JLineApp extends IOApp:
 

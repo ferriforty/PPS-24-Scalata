@@ -1,8 +1,8 @@
-package scalata.infrastructure.terminal.cli.view
+package scalata.infrastructure.view.cli
 
 import cats.effect.Sync
+import cats.syntax.all.*
 import scalata.application.services.GameView
-import cats.syntax.all._
 
 object GameOverView:
 

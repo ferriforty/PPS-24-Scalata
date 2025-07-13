@@ -1,9 +1,8 @@
-package scalata.infrastructure.terminal.cli.controller
+package scalata.infrastructure.controller
 
 import cats.effect.{ExitCode, IO}
 import scalata.application.services.{GameBuilder, GamePhaseService, GameView}
 import scalata.domain.util.{GameControllerState, GameResult}
-import scalata.infrastructure.terminal.jline.controller.GameController
 
 class GameEngine:
 

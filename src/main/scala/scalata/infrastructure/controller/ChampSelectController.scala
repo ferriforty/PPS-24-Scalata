@@ -1,10 +1,10 @@
-package scalata.infrastructure.terminal.cli.controller
+package scalata.infrastructure.controller
 
 import cats.effect.IO
 import scalata.application.services.{GameBuilder, GameView}
 import scalata.application.usecases.ChampSelectUseCase
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
-import scalata.infrastructure.terminal.cli.view.{ChampSelectView, ConsoleView}
+import scalata.infrastructure.view.cli.{ChampSelectView, ConsoleView}
 
 class ChampSelectController(
     view: GameView[IO]

@@ -7,7 +7,7 @@ import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameError, GameResult}
 import scalata.infrastructure.cli.view.TestView
 import cats.effect.unsafe.implicits.global
-import scalata.infrastructure.terminal.cli.controller.MenuController
+import scalata.infrastructure.controller.MenuController
 
 class MenuControllerTest extends AnyFlatSpec with Matchers:
 
