@@ -4,9 +4,9 @@ import cats.effect.Sync
 import scalata.application.services.GameView
 import scalata.infrastructure.view.View
 
-class MenuView[F[_]: Sync, I](
-    val view: GameView[F, I]
-) extends View[MenuView[F, I], String, Boolean, I, F](view):
+class MenuView[F[_]: Sync](
+    val view: GameView[F, String]
+) extends View[MenuView[F], String, Boolean, String, F](view):
 
   override protected def banner: String =
     """ -> Welcome to Scalata <-
@@ -14,5 +14,5 @@ class MenuView[F[_]: Sync, I](
       | --> Do you want to play? <--
       | ---> [y/n] <---""".stripMargin
 
-  override protected def parse(raw: I): Option[Boolean] =
-    Shared.booleanParse[I](raw)
+  override protected def parse(raw: String): Option[Boolean] =
+    Shared.booleanParse(raw)

@@ -5,7 +5,7 @@ import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameStartUseCase
 import scalata.domain.util.{GameControllerState, GameResult}
 
-class MenuController[F[_]: Sync, I](askStart: F[Boolean]) extends Controller:
+class MenuController[F[_]: Sync](askStart: F[Boolean]) extends Controller:
   override def start(
       gameBuilder: GameBuilder
   ): F[GameResult[(GameControllerState, GameBuilder)]] =

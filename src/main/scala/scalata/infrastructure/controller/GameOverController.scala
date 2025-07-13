@@ -5,7 +5,7 @@ import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameOverUseCase
 import scalata.domain.util.{GameControllerState, GameResult}
 
-class GameOverController[F[_]: Sync, I](
+class GameOverController[F[_]: Sync](
     askRestart: F[Boolean]
 ) extends Controller:
   override def start(

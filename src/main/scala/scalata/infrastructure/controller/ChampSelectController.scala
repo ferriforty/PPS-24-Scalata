@@ -5,7 +5,7 @@ import scalata.application.services.GameBuilder
 import scalata.application.usecases.ChampSelectUseCase
 import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
-class ChampSelectController[F[_]: Sync, I](
+class ChampSelectController[F[_]: Sync](
     askClass: F[PlayerClasses]
 ) extends Controller:
 

@@ -7,21 +7,21 @@ import scalata.domain.util.GameControllerState
 import scalata.infrastructure.controller.*
 
 object Shared:
-  def getControllersMap[F[_]: Sync, I](
-      view: GameView[F, I]
+  def getControllersMap[F[_]: Sync](
+      view: GameView[F, String]
   ): GameControllerState => Controller[F] =
     Map(
-      GameControllerState.Menu -> MenuController[F, I](
-        MenuView[F, I](view).ask
+      GameControllerState.Menu -> MenuController[F](
+        MenuView[F](view).ask
       ),
-      GameControllerState.ChampSelect -> ChampSelectController[F, I](
-        ChampSelectView[F, I](view).ask
+      GameControllerState.ChampSelect -> ChampSelectController[F](
+        ChampSelectView[F](view).ask
       ),
-      GameControllerState.GameRunning -> GameController[F, I](
-        GameRunView[F, I](view).ask
+      GameControllerState.GameRunning -> GameController[F](
+        GameRunView[F](view).ask
       ),
-      GameControllerState.GameOver -> GameOverController[F, I](
-        GameOverView[F, I](view).ask
+      GameControllerState.GameOver -> GameOverController[F](
+        GameOverView[F](view).ask
       )
     )
 
@@ -35,8 +35,8 @@ object Shared:
         case Some(out) => Sync[F].pure(out)
         case None => gameView.displayError("Try again!") *> run(gameView, parse)
 
-  def booleanParse[I](raw: I): Option[Boolean] =
-    raw.toString.toLowerCase.split("\\s+").toList match
+  def booleanParse(raw: String): Option[Boolean] =
+    raw.toLowerCase.split("\\s+").toList match
       case "y" :: Nil => Some(true)
       case "n" :: Nil => Some(false)
       case _          => None

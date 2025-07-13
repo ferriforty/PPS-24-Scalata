@@ -14,7 +14,7 @@ import scalata.domain.util.{
 import scalata.domain.world.{GameSession, World}
 import scalata.infrastructure.view.terminal.HelpView
 
-class GameController[F[_]: Sync, I](
+class GameController[F[_]: Sync](
     askCommand: GameSession => F[PlayerCommand]
 ) extends Controller:
 

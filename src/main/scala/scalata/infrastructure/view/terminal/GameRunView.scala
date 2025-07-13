@@ -7,7 +7,7 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{Direction, PlayerCommand, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
-class GameRunView[F[_]: Sync, I](val view: GameView[F, I]):
+class GameRunView[F[_]: Sync](val view: GameView[F, String]):
 
   def ask(gameSession: GameSession): F[PlayerCommand] =
     val banner = displayGameState(gameSession = gameSession) + "\n\n" +
@@ -20,8 +20,8 @@ class GameRunView[F[_]: Sync, I](val view: GameView[F, I]):
 
   private def loop: F[PlayerCommand] = Shared.run(view, parse)
 
-  private def parse(raw: I): Option[PlayerCommand] =
-    raw.toString.toLowerCase.split("\\s+").toList match
+  private def parse(raw: String): Option[PlayerCommand] =
+    raw.toLowerCase.split("\\s+").toList match
       case direction @ ("w" | "a" | "s" | "d") :: Nil =>
 
         Direction
