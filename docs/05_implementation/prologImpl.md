@@ -64,42 +64,6 @@ def mkPrologEngine(clauses: String*): Term => LazyList[SolveInfo] = {
 3. **Null Avoidance**: Uses `Option` types for safe value handling
 4. **Memoization**: Leverages Scala's lazy evaluation for performance
 
-## Breadth-First Search Implementation
-
-### Algorithm Design
-
-The implementation demonstrates a **reverse breadth-first search** for pathfinding:
-
-```prolog
-build_distances(Start) :-
-    retractall(distance(_,_)),
-    assertz(distance(Start,0)),
-    bfs([Start-0], [Start]).
-
-bfs([], _).
-bfs([Pos-D | Tail], Seen0) :-
-    D1 is D + 1,
-    findall(N-D1,
-        (neigh(Pos,N), 
-        \+ memberchk(N,Seen0)),
-        NewPairs),
-    forall(member(P-C, NewPairs),
-    (\+ distance(P,_) -> assertz(distance(P,C)); true)),
-    extract_positions(NewPairs, NewNodes),
-    append(Seen0, NewNodes, Seen1),
-    append(Tail, NewPairs, Queue1),
-    bfs(Queue1, Seen1).
-```
-
-### Algorithm Properties
-
-The BFS implementation provides:
-
-- **Completeness**: Finds solutions even in infinite spaces
-- **Optimality**: Guarantees shortest paths
-- **Memory efficiency**: Queue-based exploration
-- **Duplicate prevention**: Visited node tracking
-
 ## Dynamic Fact Creation
 
 ### From Scala to Prolog
@@ -135,6 +99,42 @@ build_distances(Start) :-
     - `assertz/2` adds the seed fact.
     - `bfs/2` recursively **asserts** `distance(Pos,Cost)` for every tile it reaches.
 3. These dynamic facts serve as a shared cost map for all enemies in that frame.
+
+## Path-finding Logic
+
+Reverse Breadth-First Search grows outward from the player:
+### Algorithm Design
+
+```prolog
+build_distances(Start) :-
+    retractall(distance(_,_)),
+    assertz(distance(Start,0)),
+    bfs([Start-0], [Start]).
+
+bfs([], _).
+bfs([Pos-D | Tail], Seen0) :-
+    D1 is D + 1,
+    findall(N-D1,
+        (neigh(Pos,N), 
+        \+ memberchk(N,Seen0)),
+        NewPairs),
+    forall(member(P-C, NewPairs),
+    (\+ distance(P,_) -> assertz(distance(P,C)); true)),
+    extract_positions(NewPairs, NewNodes),
+    append(Seen0, NewNodes, Seen1),
+    append(Tail, NewPairs, Queue1),
+    bfs(Queue1, Seen1).
+```
+
+### Algorithm Properties
+
+The BFS implementation provides:
+
+- **Completeness**: Finds solutions even in infinite spaces
+- **Optimality**: Guarantees shortest paths
+- **Memory efficiency**: Queue-based exploration
+- **Duplicate prevention**: Visited node tracking
+
 
 ## Move Extraction Pipeline
 
