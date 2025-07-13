@@ -25,12 +25,18 @@ The project is built around **Cats Effect's IO monad**, which provides:
 - **Resource safety**: Built-in support for resource management and cancellation
 
 ```scala
-import cats.effect.{IO, IOApp, ExitCode}
-import cats.syntax.all._
+import cats.effect.{ExitCode, IO, IOApp}
+import scalata.domain.util.GameControllerState
+import scalata.infrastructure.controller.GameEngine
+import scalata.infrastructure.view.terminal.Shared
 
-object Main extends IOApp:
+object CliApp extends IOApp:
+
+  private val view = ConsoleView[IO]()
+
   def run(args: List[String]): IO[ExitCode] =
-    gameLoop.as(ExitCode.Success)  // Effects only execute here
+    GameEngine[IO, String]()
+      .gameLoop(controllers = Shared.getControllersMap[IO, String](view))
 ```
 
 
@@ -39,9 +45,9 @@ object Main extends IOApp:
 The cornerstone of the monad implementation is the **GameView trait**, designed with effect polymorphism to abstract over different effect types:
 
 ```scala
-trait GameView[F[_]]:
+trait GameView[F[_], I]:
   def display[A](text: A): F[Unit]
-  def getInput: F[String]
+  def getInput: F[I]
   def displayError[A](message: A): F[Unit]
   def clearScreen: F[Unit]
 ```
@@ -58,16 +64,16 @@ This design enables:
 The console implementation demonstrates proper effect capture using the `Sync` typeclass:
 
 ```scala
-final class ConsoleView[F[_]: Sync] extends GameView[F]:
-  override def display[A](text: A): F[Unit] =
-    clearScreen *> Sync[F].delay(println(text.toString))
-
+final class ConsoleView[F[_]: Sync] extends GameView[F, String]:
+  override def display[String](text: String): F[Unit] =
+    clearScreen *> Sync[F].delay(println(text))
+    
   override def getInput: F[String] =
     Sync[F].blocking(Option(scala.io.StdIn.readLine()).getOrElse("").trim)
-
-  override def displayError[A](msg: A): F[Unit] =
+    
+  override def displayError[String](msg: String): F[Unit] =
     Sync[F].delay(println(s"Error: $msg"))
-
+    
   override def clearScreen: F[Unit] =
     Sync[F].delay(print("\u001b[2J\u001b[H"))
 ```
@@ -82,49 +88,53 @@ Key implementation details:
 
 ## Advanced Monad Patterns
 
-### State Management with Ref
+### State management with `NonEmptyList`
 
-The project uses **Cats Effect's Ref** for concurrent-safe state management:
+The game session keeps a *versioned* history inside an immutable `cats.data.NonEmptyList`, 
+itself a lawful **Monad**. Each operation returns a fresh `GameSession`; no mutation occurs.
 
 ```scala
-case class GameState(board: Vector[Vector[Cell]], turn: Player)
-case class History(current: GameState, past: List[GameState])
+// Save current snapshot to the head of the history
+def store: GameSession =
+  copy(history = NonEmptyList(getSession, history.toList))
 
-def makeMove(ref: Ref[IO, History], move: Move): IO[Unit] =
-  ref.update { h =>
-    val next = h.current.apply(move)
-    h.copy(current = next, past = h.current :: h.past)
-  }
-
-def undo(ref: Ref[IO, History]): IO[Unit] =
-  ref.modify {
-    case History(_, prev :: rest) => (History(prev, rest), ())
-    case h                        => (h, ())
+// Revert to the previous snapshot (or add an UndoError note if none remain)
+def undo: GameSession =
+  history.tail.toNel.fold(
+    updateGameState(getGameState.withNote(GameError.UndoError().message))
+  ){ t =>
+    copy(
+      world     = t.head._1,
+      gameState = t.head._2,
+      history   = t
+    )
   }
 ```
 
-This approach provides:
+#### Why this works
 
-- **Atomic operations**: `modify` and `update` are thread-safe
-- **Immutable state**: All transformations create new state objects
-- **Undo functionality**: History tracking enables game state rollback
-
+- **Monad–friendly** `NonEmptyList`’s `flatMap` lets you chain `store`, `undo`, and custom transforms in a for-comprehension.
+- **Immutable snapshots** Every call produces a new value; earlier states stay intact.
+- **Compile-time safety** History can never be empty, eliminating “empty stack” runtime errors.
+- **Simple undo/redo** `store` pushes, `undo` pops—pure, side-effect-free logic.
+- **Concurrency ready** Wrap the whole session in a `Ref[IO, GameSession]` to make updates atomic when multiple fibers are involved.
 
 ### Error Handling and Validation
 
 The monad implementation includes comprehensive error handling:
 
 ```scala
-def processInput: IO[PlayerClasses] =
-  view.getInput.flatMap { raw =>
-    raw.split("\\s+").toList match {
-      case "m" :: Nil => IO.pure(PlayerClasses.Mage)
-      case "b" :: Nil => IO.pure(PlayerClasses.Barbarian)
-      case "a" :: Nil => IO.pure(PlayerClasses.Assassin)
-      case _ =>
-        view.displayError("Try again!") *> processInput
-    }
-  }
+gameView.getInput.flatMap: raw =>
+  parse(raw) match
+    case Some(out) => Sync[F].pure(out)
+    case None => gameView.displayError("Try again!") *> run(gameView, parse)
+
+override protected def parse(raw: I): Option[PlayerClasses] =
+  raw.toString.trim.toLowerCase match
+    case "m" => Some(PlayerClasses.Mage)
+    case "b" => Some(PlayerClasses.Barbarian)
+    case "a" => Some(PlayerClasses.Assassin)
+    case _   => None
 ```
 
 Features:
@@ -139,26 +149,29 @@ Features:
 The main game loop demonstrates advanced monadic composition:
 
 ```scala
-def gameLoop[F[_]: Sync](
-    gamePhaseService: GamePhaseService,
-    worldBuilder: GameBuilder,
-    view: GameView[F]
-): F[Unit] =
-  for {
-    controller <- determineController(gamePhaseService.getCurrentPhase)
-    result     <- controller.start(worldBuilder)
-    _          <- result match {
-      case GameResult.Success((nextPhase, newWorld), _) =>
-        gameLoop(gamePhaseService.transitionTo(nextPhase), newWorld, view)
-      case GameResult.Error(_) =>
-        Sync[F].unit
-    }
-  } yield ()
+class GameEngine[F[_]: Sync, I]:
+    final def gameLoop(
+        gamePhaseService: GamePhaseService = GamePhaseService(),
+        gameBuilder: GameBuilder = GameBuilder(None),
+        controllers: GameControllerState => Controller[F]
+    ): F[ExitCode] =
+      
+      val controller = controllers(gamePhaseService.getCurrentPhase)
+    
+      controller
+        .start(gameBuilder)
+        .flatMap:
+      case GameResult.Success((nextPhase, w), _) =>
+        gameLoop(
+          gamePhaseService.transitionTo(nextPhase),
+          w,
+          controllers
+        )
+      case GameResult.Error(_) => ExitCode.Success.pure[F]
 ```
 
 This pattern shows:
 
-- **For-comprehension syntax**: Clean sequential composition of effects
 - **Recursive monadic loops**: Stack-safe game state transitions
 - **Effect polymorphism**: Works with any `F[_]` that has a `Sync` instance
 
@@ -193,32 +206,12 @@ Infrastructure Layer (Concrete Effects)
 3. **Flexible Infrastructure**: Multiple UI implementations possible
 4. **Technology Independence**: Can swap effect systems without domain changes
 
-## Platform Compatibility and Build Configuration
-
-### Cross-Platform Input Handling
-
-The implementation handles platform-specific console differences:
-
-```scala
-// build.sbt configuration
-Compile / run / fork         := true    // Separate JVM for proper stdin
-Compile / run / connectInput := true    // Forward terminal input
-ThisBuild / useSuperShell    := false   // Disable sbt progress bar
-```
-
-Key considerations:
-
-- **Windows compatibility**: Handles MinTTY/Git Bash limitations
-- **Input forwarding**: Ensures stdin reaches the forked JVM
-- **Defensive null handling**: Prevents crashes from closed input streams
-
-
-### Testing Infrastructure
+## Testing Infrastructure
 
 The monad design enables comprehensive testing:
 
 ```scala
-final class TestView(input: String) extends GameView[IO]:
+final class TestView(input: String) extends GameView[IO, String]:
   def display[A](text: A): IO[Unit] = IO.unit
   def getInput: IO[String] = IO.pure(input)
   def displayError[A](message: A): IO[Unit] = IO.unit
@@ -241,7 +234,6 @@ The monad implementation in Scalata demonstrates:
 3. **Resource Safety**: Proper handling of console I/O and system resources
 4. **Composability**: Complex game logic built from simple, composable effects
 5. **Testability**: Comprehensive testing through effect substitution
-6. **Platform Compatibility**: Robust handling of different terminal environments
 
 This implementation serves as a practical example of how modern functional programming 
 techniques can be applied to game development while maintaining clean architecture principles 
