@@ -4,44 +4,11 @@ layout: default
 parent: Implementation
 ---
 
-# Prolog Integration for Game AI: A Comprehensive University Report
+# Prolog Integration for Enemy Game AI
 
-## Introduction
-
-Prolog, short for "PROgramming in LOGic," is a declarative logic programming language that has found 
-significant application in artificial intelligence and game development. 
-This report examines the implementation of Prolog-based systems for game AI, specifically 
-focusing on pathfinding algorithms and enemy behavior using the tuProlog framework integrated with Scala.
-
-## Prolog Programming Language Overview
-
-### Core Characteristics
-
-Prolog is a **logic-based, declarative programming language** that fundamentally 
-differs from imperative languages. Key characteristics include:
-
-- **Declarative paradigm**: Programs specify what problems to solve rather than how to solve them
-- **Pattern matching**: Sophisticated unification mechanism for term comparison
-- **Backtracking**: Automatic exploration of solution alternatives
-- **Horn clauses**: Based on first-order logic principles
-
-
-### Unification Mechanism
-
-Unification is the core mechanism in Prolog that enables pattern matching and 
-variable binding. When two terms are unified, Prolog finds substitutions that make them identical:
-
-```prolog
-% Example unification
-foo(X, b) = foo(a, Y)
-% Results in: X = a, Y = b
-```
-
-The unification process involves:
-
-1. Comparing term structures
-2. Binding variables to appropriate values
-3. Ensuring consistent substitutions across all variables
+## Overview
+The Scalata codebase embeds a **tuProlog** engine to drive game-AI logic.  
+Logic rules live in Prolog; state mutation, rendering, and I/O remain pure Scala.
 
 ## tuProlog Framework Architecture
 
@@ -59,7 +26,6 @@ with object-oriented languages. Key features include:
 ### Core Components
 
 The tuProlog architecture consists of:
-
 
 | Component | Description |
 | :-- | :-- |
@@ -91,7 +57,6 @@ def mkPrologEngine(clauses: String*): Term => LazyList[SolveInfo] = {
 }
 ```
 
-
 ### Key Design Decisions
 
 1. **LazyList Usage**: Provides memory-efficient streaming of solutions
@@ -115,16 +80,16 @@ bfs([], _).
 bfs([Pos-D | Tail], Seen0) :-
     D1 is D + 1,
     findall(N-D1,
-        (neigh(Pos,N), \+ memberchk(N,Seen0)),
+        (neigh(Pos,N), 
+        \+ memberchk(N,Seen0)),
         NewPairs),
     forall(member(P-C, NewPairs),
-        (\+ distance(P,_) -> assertz(distance(P,C)); true)),
+    (\+ distance(P,_) -> assertz(distance(P,C)); true)),
     extract_positions(NewPairs, NewNodes),
     append(Seen0, NewNodes, Seen1),
     append(Tail, NewPairs, Queue1),
     bfs(Queue1, Seen1).
 ```
-
 
 ### Algorithm Properties
 
@@ -135,37 +100,112 @@ The BFS implementation provides:
 - **Memory efficiency**: Queue-based exploration
 - **Duplicate prevention**: Visited node tracking
 
+## Dynamic Fact Creation
 
-## Game AI Application
+### From Scala to Prolog
 
-### Enemy Pathfinding System
+The helper `createFacts` serialises the current room into Prolog statements:
 
-The system implements intelligent enemy behavior through:
+```scala
+facts ++= s"grid_size(${w},${h})."
+facts ++= s"player(pos(${px},${py}))."
+facts ++= s"obstacle(pos(${ox},${oy}))."          // one per wall / item
+facts ++= s"enemy(${id},pos(${ex},${ey}))."
+```
 
-1. **Distance Field Generation**: Creates cost maps from player position
-2. **Optimal Move Selection**: Chooses moves that minimize distance to player
-3. **Collision Avoidance**: Prevents enemy overlap through reservation system
-4. **Dynamic Updates**: Recalculates paths based on game state changes
+These strings are concatenated with the rule set and loaded as a fresh **Theory** every tick, 
+so the engine always works on the latest snapshot.
 
-### Multi-Enemy Coordination
+### Inside Prolog
+
+```prolog
+:- dynamic(distance/2, obstacle/1, enemy/2).
+
+build_distances(Start) :-
+    retractall(distance(_,_)),          % purge stale data
+    assertz(distance(Start,0)),         % seed player tile
+    bfs([Start-0], [Start]).            % fill the field
+```
+
+*What happens*
+
+1. `:- dynamic(...)` tells tuProlog that the listed predicates can change at run time.
+2. Each game frame:
+    - `retractall/1` removes the previous distance field.
+    - `assertz/2` adds the seed fact.
+    - `bfs/2` recursively **asserts** `distance(Pos,Cost)` for every tile it reaches.
+3. These dynamic facts serve as a shared cost map for all enemies in that frame.
+
+## Move Extraction Pipeline
+
+### 1 – Collect candidate moves (in Prolog)
+
+```prolog
+best_moves_all(Moves) :-
+    player(P),
+    findall(move(Id,Cur,Next,Cost),
+      ( enemy(Id,Cur),
+        \+ neigh(Cur,P),          % avoid entering the player's square
+        neigh(Cur,Next),
+        distance(Next,Cost)
+      ),
+    Moves).
+```
+
+The predicate walks each enemy’s four neighbours, attaches the pre-computed `Cost`, and returns a flat **Prolog list of `move/4` structures**.
+
+### 2 – Fetch moves (in Scala)
+
+```scala
+val mVar = Var("M")
+engine(Struct("best_moves_all", mVar)).headOption.foreach { info =>
+  val rawList = info.getVarValue("M").asInstanceOf[Struct]
+  rawList.listIterator().asScala.foreach { term =>
+    val mv = term.asInstanceOf[Struct]
+    moves ::= Move(
+      id   = mv.getArg(0).getTerm.toString,
+      cur  = asPoint(mv.getArg(1)),
+      next = asPoint(mv.getArg(2)),
+      cost = asInt(mv.getArg(3))
+    )
+  }
+}
+```
+
+*Highlights*
+- `SolveInfo` delivers the binding `M = [...]`.
+- Standard tuProlog list iterators stream each `move/4` without converting the entire list to Scala first.
+- Helper converters (`asPoint`, `asInt`) enforce type safety.
+
+### 3 – Group & choose moves (Scala)
 
 The implementation includes sophisticated coordination mechanisms:
 
 ```scala
-def decideMoves(moves: List[Move]): Map[String, Point2D] = {
-  val grouped = moves.groupMap(_.id)(_.next)
-  val order = grouped.toList.sortBy(_._2.size).map(_._1)
+private def groupMoves(moves: List[Move]): Map[String, List[Point2D]] =
+  moves
+    .groupMap(_.id)(m => (m.next, m.cost))
+    .map((id, moves) =>
+      val min = moves.map(_._2).min
+      id -> moves.filter(_._2.equals(min)).map(_._1)
+    )
+
+private def decideMoves(
+  moves: Map[String, List[Point2D]]
+): Map[String, Point2D] =
   
-  val (_, chosen) = order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])) {
-    case ((reserved, acc), id) =>
-      val firstFree = grouped(id).find(!reserved(_))
-      firstFree
-        .map(p => (reserved + p, acc.updated(id, p)))
-        .getOrElse((reserved, acc))
-  }
+  val order = moves.toList.sortBy(_._2.size).map(_._1)
+  val (_, chosen) =
+    order.foldLeft((Set.empty[Point2D], Map.empty[String, Point2D])):
+      case ((reserved, steps), id) =>
+        moves(id).find(!reserved(_)) match
+          case Some(p) => (reserved + p, steps.updated(id, p))
+          case None    => (reserved, steps)
+    
   chosen
-}
 ```
+
+`decideMoves` iterates enemies in constraint order, reserving tiles as it goes to eliminate collisions.
 
 
 ### Priority System
@@ -216,41 +256,3 @@ LazyList usage provides significant advantages:
 - **Bounded memory**: Prevents out-of-memory errors
 - **On-demand computation**: Calculates only needed elements
 - **Garbage collection friendly**: Efficient resource utilization
-
-
-## Future Directions
-
-### Potential Enhancements
-
-1. **Parallel Processing**: Multi-threaded enemy calculations
-2. **Machine Learning Integration**: Adaptive behavior patterns
-3. **Dynamic Difficulty**: Skill-based pathfinding adjustments
-4. **Advanced Coordination**: Flocking and formation behaviors
-
-### Research Opportunities
-
-- **Hybrid algorithms**: Combining A* with Prolog reasoning
-- **Temporal logic**: Time-based behavior modeling
-- **Constraint satisfaction**: Complex multi-objective optimization
-
-
-## Conclusion
-
-The integration of Prolog with Scala for game AI development demonstrates the powerful 
-combination of declarative logic programming with functional programming paradigms. 
-The tuProlog framework provides an excellent foundation for this integration, 
-offering lightweight deployment and seamless interoperability.
-
-The breadth-first search implementation showcases Prolog's strength in graph traversal 
-and pathfinding applications, while the Scala wrapper ensures type safety and performance optimization. 
-The resulting system provides intelligent, coordinated enemy behavior suitable for real-time game environments.
-
-Key contributions of this work include:
-
-- **Robust integration pattern** for Prolog-Scala interoperability
-- **Exception-safe streaming** of Prolog solutions
-- **Efficient pathfinding algorithms** for game AI
-- **Coordinated multi-agent behavior** systems
-
-This approach opens new possibilities for AI development in games, combining the expressiveness 
-of logic programming with the performance characteristics of modern functional languages.
