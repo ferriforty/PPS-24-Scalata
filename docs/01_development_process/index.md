@@ -42,6 +42,8 @@ and any obstacles are addressed promptly.
 - **Sprint Retrospective**  
   The overall development process is assessed to identify improvements for the next sprint.
 
+👉 [View each sprint kanban board and full backlog here](../boards)
+
 ---
 
 ## Test-Driven Development (TDD)

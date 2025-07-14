@@ -32,4 +32,4 @@ As the player progresses:
 
 The project follows an **agile methodology**, organized into four sprints of approximately 15 hours each. Work is tracked using a **Kanban board** created in Excel, which helps in planning short-term goals and monitoring project progress.
 
-👉 [Learn more about the development methodology](01_development_process)
+👉 [Learn more about the development methodology](boards)
