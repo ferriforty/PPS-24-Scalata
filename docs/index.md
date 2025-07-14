@@ -6,10 +6,8 @@ nav_order: 1
 
 # Project: Scalata
 
-**Group member**:  
-Ettore Farinelli – [ettore.farinelli@studio.unibo.it](mailto:ettore.farinelli@studio.unibo.it)  
-**Deadline**: July 19, 2025
-
+**Author**:  
+Ettore Farinelli – [ettore.farinelli@studio.unibo.it](mailto:ettore.farinelli@studio.unibo.it)
 ---
 
 ## Overview
@@ -34,4 +32,4 @@ As the player progresses:
 
 The project follows an **agile methodology**, organized into four sprints of approximately 15 hours each. Work is tracked using a **Kanban board** created in Excel, which helps in planning short-term goals and monitoring project progress.
 
-👉 [Learn more about the development methodology](boards)
+👉 [Learn more about the development methodology](01_development_process)

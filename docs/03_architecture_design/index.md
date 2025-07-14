@@ -6,7 +6,7 @@ nav_order: 4
 
 # Design Architecture
 
-The architectural design of **Scalata** is organized into two main layers: the **Engine** and the **Application**. 
+The architectural design of **Scalata** is organized into two main layers: the **Domain** and the **Application**. 
 The architecture follows **Domain-Driven Design (DDD)** principles and uses the **Model-View-Controller (MVC)** pattern  
 to ensure a clean separation of responsibilities. 
 It also incorporates design patterns like the **Builder Pattern** for constructing complex world structures.
