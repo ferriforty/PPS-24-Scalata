@@ -13,7 +13,7 @@ class EnemyMovementUseCaseTest extends AnyFlatSpec with Matchers:
   "Enemy" should "move" in:
     val enemy = EnemyFactory().create(Pig, "1")
     val player = PlayerFactory().create(Mage)
-    val gameSession = GameBuilder(Some(player)).build()
+    val gameSession = GameBuilder(Some(player)).build(System.currentTimeMillis())
 
     val world = gameSession.getWorld
     val currentRoom = gameSession.getWorld

@@ -13,7 +13,7 @@ class PlayerAttackUseCaseTest extends AnyFlatSpec with Matchers:
   "Player" should "damage enemy" in:
     val enemy = EnemyFactory().create(Pig)
     val player = PlayerFactory().create(Mage)
-    val gameSession = GameBuilder(Some(player)).build()
+    val gameSession = GameBuilder(Some(player)).build(System.currentTimeMillis())
     val direction = Direction.East
 
     val world = gameSession.getWorld
