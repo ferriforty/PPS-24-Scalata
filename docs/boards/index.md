@@ -1,6 +1,7 @@
 ---
 title: Boards
 layout: default
+nav_exclude: true
 ---
 
 # Boards
