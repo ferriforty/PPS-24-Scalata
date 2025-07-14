@@ -7,10 +7,10 @@ val WORLD_DIMENSIONS = (50, 20)
 val NUM_ROWS_DUNGEON = 2
 val MAX_PADDING = WORLD_DIMENSIONS._2 / (NUM_ROWS_DUNGEON * 2 + 1)
 val MIN_PADDING = 1
-val MAX_DIFFICULTY = 10
+val MAX_DIFFICULTY = 10.0
 val MIN_ENEMIES = 1.0
 val MAX_ENEMIES = 3.0
-val POTION_WEIGHT = 0.9
+val POTION_WEIGHT = 0.8
 
 def gaussianBetween(from: Double, to: Double, difficulty: Int) =
   val mean = from + (difficulty / MAX_DIFFICULTY) * (to - from)

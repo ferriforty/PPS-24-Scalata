@@ -20,7 +20,7 @@ final case class ExitDoor(
       GameBuilder(
         player = Some(gameSession.getWorld.getPlayer),
         difficulty =
-          (gameSession.getWorld.getDifficulty + 1).min(MAX_DIFFICULTY),
+          (gameSession.getWorld.getDifficulty + 1).min(MAX_DIFFICULTY.toInt),
         level = gameSession.getGameState.currentLevel + 1
       ).build()
     )

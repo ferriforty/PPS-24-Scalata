@@ -157,6 +157,7 @@ object FloorGenerator:
       matrixRooms: List[List[String]],
       difficulty: Int
   ): List[Enemy] =
+
     val numEnemies = gaussianBetween(MIN_ENEMIES, MAX_ENEMIES, difficulty)
     val enemiesPosition = Random
       .shuffle(for
