@@ -15,9 +15,9 @@ enum PlayerClasses:
 
   def visibility: Int =
     this match
-      case PlayerClasses.Mage      => 5
-      case PlayerClasses.Barbarian => 6
-      case PlayerClasses.Assassin  => 3
+      case PlayerClasses.Mage      => 6
+      case PlayerClasses.Barbarian => 7
+      case PlayerClasses.Assassin  => 4
 
   override def toString: String = "@"
 

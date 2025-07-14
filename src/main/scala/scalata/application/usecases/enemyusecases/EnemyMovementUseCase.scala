@@ -2,6 +2,7 @@ package scalata.application.usecases.enemyusecases
 
 import alice.tuprolog.*
 import scalata.application.usecases.CreatureUseCase
+import scalata.domain.entities.Player
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.Scala2P
 import scalata.domain.util.Scala2P.{*, given}
@@ -54,23 +55,24 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
         |extract_positions([P-_|T], [P|R]) :- extract_positions(T, R).
         |
         |best_moves_all(Moves) :-
-        |   player(P),
+        |   player(P, V),
         |   findall(move(Id, Cur, Next, Cost),
         |     (
         |       enemy(Id, Cur),
         |       \+ neigh(Cur, P),
         |       neigh(Cur, Next),
-        |       distance(Next, Cost)
+        |       distance(Next, Cost),
+        |       Cost < V
         |    ),
         |    Moves).
         |""".stripMargin
-    val playerPos = gameSession.getWorld.getPlayer.position
+    val player = gameSession.getWorld.getPlayer
     val padding = currentRoom.topLeft
-    val facts = createFacts(currentRoom, playerPos, padding)
+    val facts = createFacts(currentRoom, player, padding)
 
     val engine: Term => LazyList[SolveInfo] = mkPrologEngine(facts + rules)
     val startPos = Term.createTerm(
-      s"pos(${playerPos.x - padding.x},${playerPos.y - padding.y})"
+      s"pos(${player.position.x - padding.x},${player.position.y - padding.y})"
     )
 
     val input = Struct("build_distances", startPos)
@@ -79,7 +81,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     val decidedMoves = decideMoves(
       groupMoves(
         fetchMoves(engine)
-      ).filterNot((_, m) => m.contains(playerPos))
+      ).filterNot((_, m) => m.contains(player.position))
     )
 
     currentRoom.withEnemies(
@@ -91,15 +93,16 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     )
 
   private def createFacts(
-      currentRoom: Room,
-      playerPos: Point2D,
-      padding: Point2D
+   currentRoom: Room,
+   player: Player,
+   padding: Point2D
   ): String =
     val facts = new StringBuilder
     val size = currentRoom.size
 
     facts ++= s"grid_size(${size._1},${size._2}).\n"
-    facts ++= s"player(pos(${playerPos.x - padding.x},${playerPos.y - padding.y})).\n"
+    facts ++=
+      s"player(pos(${player.position.x - padding.x},${player.position.y - padding.y}), ${player.visibility()}).\n"
 
     currentRoom.items.foreach(i =>
       facts ++=
@@ -112,7 +115,7 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
           s"obstacle(pos(${e.position.x - padding.x},${e.position.y - padding.y})).\n"
     )
 
-    facts ++= s"distance(pos(${playerPos.x - padding.x},${playerPos.y - padding.y}), 0).\n"
+    facts ++= s"distance(pos(${player.position.x - padding.x},${player.position.y - padding.y}), 0).\n"
     facts.toString()
 
   private case class Move(
