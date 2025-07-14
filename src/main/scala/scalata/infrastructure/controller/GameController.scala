@@ -5,7 +5,13 @@ import cats.syntax.all.*
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.{GameControllerState, GameError, GameResult, MAX_DIFFICULTY, PlayerCommand}
+import scalata.domain.util.{
+  GameControllerState,
+  GameError,
+  GameResult,
+  MAX_DIFFICULTY,
+  PlayerCommand
+}
 import scalata.domain.world.{GameSession, World, GameState}
 import scalata.infrastructure.view.terminal.HelpView
 
@@ -25,8 +31,7 @@ class GameController[F[_]: Sync](
     GameRunningUseCase()
       .execTurn(gameSession, askCommand(gameSession))
       .flatMap:
-        case GameResult.Success(gs, None)
-          if !gs.getWorld.getPlayer.isAlive =>
+        case GameResult.Success(gs, None) if !gs.getWorld.getPlayer.isAlive =>
           GameResult
             .success(
               (
@@ -37,7 +42,7 @@ class GameController[F[_]: Sync](
             .pure[F]
 
         case GameResult.Success(gs, None)
-          if gs.getGameState.currentLevel == gameSession.getGameState.currentLevel + 1 =>
+            if gs.getGameState.currentLevel == gameSession.getGameState.currentLevel + 1 =>
           gameLoop(
             GameBuilder(
               player = Some(gs.getWorld.getPlayer),

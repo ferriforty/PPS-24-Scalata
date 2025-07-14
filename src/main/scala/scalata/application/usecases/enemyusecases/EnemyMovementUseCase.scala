@@ -93,9 +93,9 @@ class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
     )
 
   private def createFacts(
-   currentRoom: Room,
-   player: Player,
-   padding: Point2D
+      currentRoom: Room,
+      player: Player,
+      padding: Point2D
   ): String =
     val facts = new StringBuilder
     val size = currentRoom.size
