@@ -4,9 +4,9 @@ import cats.effect.IO
 import cats.syntax.all.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameResult}
 import cats.effect.unsafe.implicits.global
+import scalata.application.services.GameBuilder
 import scalata.infrastructure.cli.view.TestView
 import scalata.infrastructure.controller.GameOverController
 import scalata.infrastructure.view.terminal.GameOverView

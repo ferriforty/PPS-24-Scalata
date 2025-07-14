@@ -5,13 +5,8 @@ import cats.syntax.all.*
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
 import scalata.domain.entities.Player
-import scalata.domain.util.{
-  GameControllerState,
-  GameError,
-  GameResult,
-  PlayerCommand
-}
-import scalata.domain.world.{GameSession, World}
+import scalata.domain.util.{GameControllerState, GameError, GameResult, MAX_DIFFICULTY, PlayerCommand}
+import scalata.domain.world.{GameSession, World, GameState}
 import scalata.infrastructure.view.terminal.HelpView
 
 class GameController[F[_]: Sync](
@@ -21,7 +16,7 @@ class GameController[F[_]: Sync](
   final override def start(
       gameBuilder: GameBuilder
   ): F[GameResult[(GameControllerState, GameBuilder)]] =
-    gameLoop(gameBuilder.build())
+    gameLoop(gameBuilder.build(System.currentTimeMillis()))
 
   private def gameLoop(
       gameSession: GameSession
@@ -30,19 +25,8 @@ class GameController[F[_]: Sync](
     GameRunningUseCase()
       .execTurn(gameSession, askCommand(gameSession))
       .flatMap:
-        case GameResult.Success(
-              GameSession(
-                World(
-                  Player(_, _, _, 0, _, _, _, _, _),
-                  _,
-                  _,
-                  _
-                ),
-                _,
-                _
-              ),
-              None
-            ) =>
+        case GameResult.Success(gs, None)
+          if !gs.getWorld.getPlayer.isAlive =>
           GameResult
             .success(
               (
@@ -51,6 +35,17 @@ class GameController[F[_]: Sync](
               )
             )
             .pure[F]
+
+        case GameResult.Success(gs, None)
+          if gs.getGameState.currentLevel == gameSession.getGameState.currentLevel + 1 =>
+          gameLoop(
+            GameBuilder(
+              player = Some(gs.getWorld.getPlayer),
+              difficulty =
+                (gs.getWorld.getDifficulty + 1).min(MAX_DIFFICULTY.toInt),
+              level = gs.getGameState.currentLevel
+            ).build(System.currentTimeMillis())
+          )
 
         case GameResult.Success(gs, None) =>
           if gs.getGameState.note.isBlank then gameLoop(gs.store)

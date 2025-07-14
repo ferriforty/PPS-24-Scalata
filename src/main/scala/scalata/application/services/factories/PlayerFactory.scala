@@ -2,7 +2,7 @@ package scalata.application.services.factories
 
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Player
-import scalata.domain.util.{GameResult, PlayerClasses}
+import scalata.domain.util.PlayerClasses
 
 class PlayerFactory extends EntityFactory[PlayerFactory, Player, PlayerClasses]:
   def create(playerClass: PlayerClasses, id: String = "p1"): Player =

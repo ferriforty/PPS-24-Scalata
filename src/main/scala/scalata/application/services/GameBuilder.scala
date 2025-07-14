@@ -1,7 +1,7 @@
 package scalata.application.services
 
 import scalata.domain.entities.Player
-import scalata.domain.world.{FloorGenerator, GameSession, World}
+import scalata.domain.world.GameSession
 
 final case class GameBuilder(
     player: Option[Player],
@@ -18,12 +18,12 @@ final case class GameBuilder(
   def withLevel(level: Int): GameBuilder =
     copy(level = level)
 
-  def build(): GameSession =
+  def build(seed: Long): GameSession =
     FloorGenerator.generateFloor(
       player.getOrElse(
         throw new IllegalStateException("player not set in world builder")
       ),
       difficulty,
-      System.currentTimeMillis(),
+      seed,
       level
     )

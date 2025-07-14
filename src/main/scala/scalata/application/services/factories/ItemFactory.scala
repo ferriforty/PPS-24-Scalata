@@ -3,12 +3,7 @@ package scalata.application.services.factories
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Item
 import scalata.domain.entities.items.*
-import scalata.domain.util.{
-  ItemClasses,
-  POTION_WEIGHT,
-  gaussianBetween,
-  weightedRandom
-}
+import scalata.domain.util.{ItemClasses, POTION_WEIGHT, gaussianBetween, weightedRandom}
 
 import scala.util.Random
 

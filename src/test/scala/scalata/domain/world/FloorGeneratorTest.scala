@@ -3,19 +3,11 @@ package scalata.domain.world
 import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import scalata.application.services.FloorGenerator
 import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
-import scalata.domain.util.{
-  Direction,
-  ItemClasses,
-  MAX_PADDING,
-  MIN_PADDING,
-  NUM_ROWS_DUNGEON,
-  Geometry,
-  ROOMS,
-  WORLD_DIMENSIONS
-}
+import scalata.domain.util.{Direction, Geometry, ItemClasses, MAX_PADDING, MIN_PADDING, NUM_ROWS_DUNGEON, ROOMS, WORLD_DIMENSIONS}
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 

@@ -9,6 +9,8 @@ final case class GameState(
 
   def withNote(note: String): GameState =
     copy(note = note)
+    
+  def nextLevel: GameState = copy(currentLevel = currentLevel + 1)
 
   def setRoom(newRoom: String): GameState =
     copy(currentRoom = newRoom, visitedRooms = visitedRooms + newRoom)

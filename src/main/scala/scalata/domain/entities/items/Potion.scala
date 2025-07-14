@@ -1,7 +1,7 @@
 package scalata.domain.entities.items
 
 import scalata.domain.entities.components.{Pickable, Usable}
-import scalata.domain.entities.{Enemy, Entity, Item, Player}
+import scalata.domain.entities.{Item, Player}
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession

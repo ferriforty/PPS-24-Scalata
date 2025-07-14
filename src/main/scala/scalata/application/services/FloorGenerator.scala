@@ -1,9 +1,10 @@
-package scalata.domain.world
+package scalata.application.services
 
 import scalata.application.services.factories.{EnemyFactory, ItemFactory}
 import scalata.domain.entities.{Enemy, Item, Player}
-import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.*
+import scalata.domain.util.Geometry.Point2D
+import scalata.domain.world.{GameSession, GameState, Room, World}
 
 import scala.util.Random
 
