@@ -1,10 +1,9 @@
 package scalata.infrastructure.controller
 
-import cats.effect.kernel.Sync
 import scalata.application.services.GameBuilder
 import scalata.domain.util.{GameControllerState, GameResult}
 
-trait Controller[F[_]: Sync]:
+trait Controller[F[_]]:
   def start(
       gameBuilder: GameBuilder
   ): F[GameResult[(GameControllerState, GameBuilder)]]

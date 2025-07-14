@@ -16,7 +16,7 @@ import scalata.infrastructure.view.terminal.HelpView
 
 class GameController[F[_]: Sync](
     askCommand: GameSession => F[PlayerCommand]
-) extends Controller:
+) extends Controller[F]:
 
   final override def start(
       gameBuilder: GameBuilder

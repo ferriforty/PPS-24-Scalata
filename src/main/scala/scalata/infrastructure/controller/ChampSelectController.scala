@@ -7,7 +7,7 @@ import scalata.domain.util.{GameControllerState, GameResult, PlayerClasses}
 
 class ChampSelectController[F[_]: Sync](
     askClass: F[PlayerClasses]
-) extends Controller:
+) extends Controller[F]:
 
   override def start(
       gameBuilder: GameBuilder
