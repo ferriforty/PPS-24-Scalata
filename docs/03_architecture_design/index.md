@@ -56,6 +56,7 @@ immutable data to meet performance constraints.
 existing core code.
 
 ## Extensibility Scenarios
+
 | Scenario              | Required Change                                                   | Impact Radius         |
 |-----------------------|-------------------------------------------------------------------|-----------------------|
 | Add GUI (Swing/Web)   | Implement new *input & output adapters* against existing ports.   | Adapters only         |
