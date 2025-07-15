@@ -34,12 +34,6 @@ from an outer layer, satisfying the Dependency Inversion Principle.
 
 ![plot](./DDD-scalata.png)
 
-## Dynamic View – Typical Turn Sequence
-
-![plot](./sequence_arch_sclata.png)
-
-*Single-threaded execution* guarantees deterministic order; hot paths (floor generation, AI) stick to 
-immutable data to meet performance constraints.
 
 ## Domain-Driven Design Elements
 
