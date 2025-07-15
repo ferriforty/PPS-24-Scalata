@@ -32,7 +32,7 @@ from an outer layer, satisfying the Dependency Inversion Principle.
 
 ## Static View (Hexagon)
 
-![plot](./DDD_hexagonal.svg)
+![plot](./DDD-scalata.png)
 
 ## Dynamic View – Typical Turn Sequence
 
