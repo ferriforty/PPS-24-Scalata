@@ -29,3 +29,6 @@ final case class Enemy(
 
   override def attack(opponent: Player): Player =
     opponent.takeDamage(attackPower)
+
+  override def toString: String =
+    s"$name: $enemyType (HP: $health/$maxHealth, ATK: $attackPower)"

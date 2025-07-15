@@ -53,3 +53,8 @@ final case class Player(
   def reach(): Integer = this.role.reach
 
   def visibility(): Integer = this.role.visibility
+
+  def playerSymbol: String = "@"
+
+  override def toString: String =
+    s"$name: ${role.toString} (HP: $health/$maxHealth, ATK: $attackPower)"

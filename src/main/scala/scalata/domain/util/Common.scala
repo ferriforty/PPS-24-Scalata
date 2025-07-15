@@ -10,7 +10,8 @@ val MIN_PADDING = 1
 val MAX_DIFFICULTY = 10.0
 val MIN_ENEMIES = 1.0
 val MAX_ENEMIES = 3.0
-val POTION_WEIGHT = 0.8
+val POTION_WEIGHT = 0.65
+val DUST_WEIGHT = 0.4
 
 def gaussianBetween(from: Double, to: Double, difficulty: Int) =
   val mean = from + (difficulty / MAX_DIFFICULTY) * (to - from)

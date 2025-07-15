@@ -19,8 +19,6 @@ enum PlayerClasses:
       case PlayerClasses.Barbarian => 7
       case PlayerClasses.Assassin  => 4
 
-  override def toString: String = "@"
-
 enum EnemyClasses:
   case Goblin
   case Pig

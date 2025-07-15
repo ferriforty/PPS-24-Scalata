@@ -56,7 +56,7 @@ class GameRunView[F[_]: Sync](val view: GameView[F, String]):
       Some("Press [H] for help"),
       Option.when(note.nonEmpty)(s"Note: $note"),
       Some(s"Location: ${gameSession.getGameState.currentRoom}"),
-      Some(s"HP: ${player.health}/${player.maxHealth}"),
+      Some(player),
       player.weapon.map(w => s"Weapon: ${w.name} (damage: ${w.damage})"),
       Option.when(player.inventory.nonEmpty)(
         s"Inventory: ${player.inventory.map(_.name).mkString(", ")}"
@@ -88,7 +88,7 @@ class GameRunView[F[_]: Sync](val view: GameView[F, String]):
           room.isInside(point) && state.visitedRooms.contains(room.id)
         ) match
           case Some(room) =>
-            if world.player.position == point then world.player.role.toString
+            if world.player.position == point then world.player.playerSymbol
             else
               getEnemySymbol(room, point)
                 .orElse(getItemSymbol(room, point))

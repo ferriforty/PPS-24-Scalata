@@ -3,14 +3,7 @@ package scalata.application.services.factories
 import scalata.application.services.EntityFactory
 import scalata.domain.entities.Item
 import scalata.domain.entities.items.*
-import scalata.domain.util.{
-  ItemClasses,
-  POTION_WEIGHT,
-  gaussianBetween,
-  weightedRandom
-}
-
-import scala.util.Random
+import scalata.domain.util.{DUST_WEIGHT, ItemClasses, POTION_WEIGHT, gaussianBetween, weightedRandom}
 
 class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
 
@@ -24,9 +17,8 @@ class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
       case 2 => create(ItemClasses.BigPotion, id)
 
   private def createWeaponBox(difficulty: Int, id: String): Item =
-    Random.nextGaussian().round.toInt.max(0).min(1) match
-      case 0 => create(ItemClasses.Dust, id)
-      case 1 => createWeapon(difficulty, id)
+    if weightedRandom(DUST_WEIGHT) then create(ItemClasses.Dust, id)
+    else createWeapon(difficulty, id)
 
   private def createWeapon(difficulty: Int, id: String): Item =
     gaussianBetween(1.0, 3.0, difficulty) match
