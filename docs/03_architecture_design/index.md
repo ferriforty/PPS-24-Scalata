@@ -56,12 +56,12 @@ immutable data to meet performance constraints.
 existing core code.
 
 ## Extensibility Scenarios
-| Scenario            | Required Change                                                 | Impact Radius         |
-|---------------------|-----------------------------------------------------------------|-----------------------|
-| Add GUI (Swing/Web) | Implement new *input & output adapters* against existing ports. | Adapters only         |
-| New Item type       | Add concrete `Item` subclass & entry in `ItemFactory`.          | Domain + factory      |
-| Boss AI             | New use-case handler plus strategy injected into `AIEngine`.    | Application layer     |
-| Persist replays     | Create `ReplayRepository` (output port) + adapter to file/DB.   | Application + adapter |
+| Scenario              | Required Change                                                   | Impact Radius         |
+|-----------------------|-------------------------------------------------------------------|-----------------------|
+| Add GUI (Swing/Web)   | Implement new *input & output adapters* against existing ports.   | Adapters only         |
+| New Item type         | Add concrete `Item` subclass & entry in `ItemFactory`.            | Domain + factory      |
+| Boss AI               | New use-case handler plus strategy injected into `AIEngine`.      | Application layer     |
+| Persist replays       | Create `ReplayRepository` (output port) + adapter to file/DB.     | Application + adapter |
 
 Thanks to the Ports-and-Adapters approach, each scenario remains localized and does **not** ripple into the domain core.
 
