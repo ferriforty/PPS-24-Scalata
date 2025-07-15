@@ -1,3 +1,51 @@
+## [1.0.0](https://github.com/ferriforty/PPS-24-Scalata/compare/v0.2.0...v1.0.0) (2025-07-15)
+
+### ⚠ BREAKING CHANGES
+
+* **release:** Release version 1.0.0
+
+### Features
+
+* **enemy:** Add Scala2P and init EnemyMovementUseCase ([03a13c3](https://github.com/ferriforty/PPS-24-Scalata/commit/03a13c32029dc01904418f31991993fc7b830870))
+* **enemy:** Add visibility filter for the enemies, now they dont see enemies far away ([e134049](https://github.com/ferriforty/PPS-24-Scalata/commit/e13404970e48e4f5fd3d97583ed28f92f6ea9b86))
+* **enemy:** Init EnemyMovementUseCase, ready to be implemented in prolog ([e9fcd84](https://github.com/ferriforty/PPS-24-Scalata/commit/e9fcd84e192e3a59553a77b21a53b1c2a590ae31))
+* **enemy:** Movement enemy done in prolog ([c0902f9](https://github.com/ferriforty/PPS-24-Scalata/commit/c0902f9dd5ccd7b43a2c44771d10c3b0ae0cb40f))
+* **entity:** Add and implement Item trait and Weapon, Add List of enemies and items in room ([9ed6546](https://github.com/ferriforty/PPS-24-Scalata/commit/9ed6546b1e9311cca483b322a3f814e78a027ddb))
+* **entity:** Add Components for items ([efbc129](https://github.com/ferriforty/PPS-24-Scalata/commit/efbc1292c229ebfb3e65506d7c7cff87ab799157))
+* **entity:** Add Door and sign items ([c10ed83](https://github.com/ferriforty/PPS-24-Scalata/commit/c10ed833d654f4b335a92cbf5e5b23254aa79341))
+* **entity:** Add Enemy factory and create inteface for factories ([31b3147](https://github.com/ferriforty/PPS-24-Scalata/commit/31b314795dbf3bbb70224a02d4e515f61fe9bc64))
+* **entity:** Define Enemy entity and add Combact component ([1065084](https://github.com/ferriforty/PPS-24-Scalata/commit/1065084161ff8a746cc73b57a0028a48117805fa))
+* **entity:** Enemy Attack Use Case implement ([49f5efc](https://github.com/ferriforty/PPS-24-Scalata/commit/49f5efc6f346171371616bca9290ab107781d139))
+* **entity:** Implement interact use case and refactor GameError ([d21acfa](https://github.com/ferriforty/PPS-24-Scalata/commit/d21acfae4034cdba681aad65643ec67630234b46))
+* **gameloop:** Impl GameOver state and refactor scalafmt ([e442bd3](https://github.com/ferriforty/PPS-24-Scalata/commit/e442bd30b3fefe974eb703a801e5ef445f94f962))
+* **player:** Add F-Bounded polymorphism to components ([282e9e6](https://github.com/ferriforty/PPS-24-Scalata/commit/282e9e6f10eda59de1feaaf95774d54fe59616d4))
+* **player:** Add player commands and adapt GameRunning controller ([cfb1dda](https://github.com/ferriforty/PPS-24-Scalata/commit/cfb1dda92918c5c35906ce912a4fcb152b9100dc))
+* **player:** Add Usable given component and implement it for usable items ([973da68](https://github.com/ferriforty/PPS-24-Scalata/commit/973da6857f78bd09dbeb9aefbc3343c0b1790fca))
+* **player:** Define Player UseCases ([5aa23dd](https://github.com/ferriforty/PPS-24-Scalata/commit/5aa23dda4079759e8c5b0b8e3183c48087e01e18))
+* **player:** Implement Alive component for player and test it ([79b0671](https://github.com/ferriforty/PPS-24-Scalata/commit/79b0671b4743e16b25ff5067ec20634117fdad05))
+* **player:** Implement new level generation when interacting with exitdoor ([737fc30](https://github.com/ferriforty/PPS-24-Scalata/commit/737fc3090bdb3e8ec1bf689df799ea26d614c19b))
+* **player:** Implement player movement use case ([606d5f9](https://github.com/ferriforty/PPS-24-Scalata/commit/606d5f93ddd44c8125da2f71201cb93fe531a6b5))
+* **release:** Release version 1.0.0 ([ba3f0e4](https://github.com/ferriforty/PPS-24-Scalata/commit/ba3f0e4452955851bc4617836f865f32b7faff2b))
+* **view:** Add gamestate view ([f0f69d7](https://github.com/ferriforty/PPS-24-Scalata/commit/f0f69d7aac2d8a5315362851fe1437e577245caa))
+* **view:** Add View for displaying enemies and items ([90667cb](https://github.com/ferriforty/PPS-24-Scalata/commit/90667cbdcf00496b3bafbd4dd4e405ad103369e4))
+* **world:** Add Door and sign creation to FloorGeneration ([8e67f77](https://github.com/ferriforty/PPS-24-Scalata/commit/8e67f771bc251661f6fbe02f3ab0bc409f51ad74))
+* **world:** Add generation of enemies in floorgeneration ([95bad4e](https://github.com/ferriforty/PPS-24-Scalata/commit/95bad4e5d81f73b3f903382173a55aba982fc7c3))
+* **world:** Add ItemFactory adn dust and potion items ([45f0466](https://github.com/ferriforty/PPS-24-Scalata/commit/45f0466dafbc64ce10d4be4f77dc24a4bfceeaa0))
+* **world:** Add message of undoError ([d1c3b6a](https://github.com/ferriforty/PPS-24-Scalata/commit/d1c3b6a2fa1df00d414784dd83ae5652373f0615))
+* **world:** Implement generation of items and enemies in the FloorGenerator ([6082488](https://github.com/ferriforty/PPS-24-Scalata/commit/6082488911e25518f7a6ef950521e28a3548f962))
+* **world:** Implement Undo in gameSession ([eb1175d](https://github.com/ferriforty/PPS-24-Scalata/commit/eb1175d74c54ee3ad31135970009ec5482129fa8))
+
+### Bug Fixes
+
+* **enemy:** Fix the movement of the enemies adjusting decision making ([acd7b7d](https://github.com/ferriforty/PPS-24-Scalata/commit/acd7b7d09ff730a632c15d4ae21813bbb36ead24))
+* **enemy:** Movement fix, now works perfectly ([d2d5bbf](https://github.com/ferriforty/PPS-24-Scalata/commit/d2d5bbfb5c4859b1b985f4bf32510f4fa4047aec))
+* **test:** fix in test to work with new EnemyMovementUseCase ([e5f7831](https://github.com/ferriforty/PPS-24-Scalata/commit/e5f78319789fd3de1bc28a2fafb675ec83244851))
+* **test:** fix test on gameError change ([72f20d5](https://github.com/ferriforty/PPS-24-Scalata/commit/72f20d5c8088ce0aafc0351a4c2774a9a3307570))
+* **test:** small fix in infinite loop test in gamecontroller ([6d06b3e](https://github.com/ferriforty/PPS-24-Scalata/commit/6d06b3ecfa416e4cab45ee7ae9a05a801f3a0a30))
+* **view:** Fix bug, stdline not working in bash ([cf2a81e](https://github.com/ferriforty/PPS-24-Scalata/commit/cf2a81e5c1182c002254854f81149eea14d5ac63))
+* **world:** Fix in the creation of enemies ([6823d05](https://github.com/ferriforty/PPS-24-Scalata/commit/6823d05079ce70e1eb573dcf5921ed21e6599941))
+* **world:** Small fix for the randoms ([ed7701d](https://github.com/ferriforty/PPS-24-Scalata/commit/ed7701d75a763eb89550450a1143951e871ef6db))
+
 # [0.3.0](https://github.com/ferriforty/PPS-24-Scalata/compare/v0.2.0...v0.3.0) (2025-07-08)
 
 
