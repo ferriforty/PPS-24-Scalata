@@ -18,11 +18,11 @@ Success is measured by:
 
 ## 2  Stakeholders
 
-| Role                              | Interest                                                              |
-|-----------------------------------|-----------------------------------------------------------------------|
-| Student developer (Product Owner) | Completes academic objectives and gains experience.                   |
-| Players (classmates, professors)  | Enjoy challenging, fair gameplay and evaluate code quality.           |
-| Course examiners                  | Assess engineering artefacts (SRS, design, tests) against guidelines. |
+| Role                                  | Interest                                                              |
+|---------------------------------------|-----------------------------------------------------------------------|
+| **Student developer (Product Owner)** | Completes academic objectives and gains experience.                   |
+| **Players (classmates, professors)**  | Enjoy challenging, fair gameplay and evaluate code quality.           |
+| **Course examiners**                  | Assess engineering artefacts (SRS, design, tests) against guidelines. |
 
 ## 3  Domain Model (informative)
 
