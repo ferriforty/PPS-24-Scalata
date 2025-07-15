@@ -4,9 +4,9 @@ layout: default
 nav_order: 3
 ---
 
-## Requirements
+# Requirements
 
-### 1  Vision
+## 1  Vision
 
 Deliver an infinitely replayable *text-based roguelike* where every floor of an endless tower is procedurally 
 generated and challenge escalates through tougher enemies, scarcer loot and occasional boss encounters. 
@@ -16,7 +16,7 @@ Success is measured by:
 -  extensibility—new content can be added without touching core logic,
 -  ≥ 80% automated test coverage.
 
-### 2  Stakeholders
+## 2  Stakeholders
 
 | Role                              | Interest                                                              |
 |-----------------------------------|-----------------------------------------------------------------------|
@@ -24,7 +24,7 @@ Success is measured by:
 | Players (classmates, professors)  | Enjoy challenging, fair gameplay and evaluate code quality.           |
 | Course examiners                  | Assess engineering artefacts (SRS, design, tests) against guidelines. |
 
-### 3  Domain Model (informative)
+## 3  Domain Model (informative)
 
 | Entity            | Description                                                        |
 |-------------------|--------------------------------------------------------------------|
@@ -37,11 +37,11 @@ Success is measured by:
 | **World**         | Aggregate of floors visited in the current run.                    |
 | **GameSession**   | Immutable snapshot: world + game state history (for undo).         |
 
-### 4  Functional Requirements (FR)
+## 4  Functional Requirements (FR)
 
 Each requirement is testable and prefixed **FR-x.y** for traceability.
 
-#### 4.1 Player Interaction
+### 4.1 Player Interaction
 - **FR-P.01** The player shall move one grid cell per turn in the four cardinal directions using 
 both *wasd* keys and full words (“north”, “south”, …).
 - **FR-P.02** The player shall attempt a melee attack in a chosen direction; damage = base + weapon bonus.
@@ -55,7 +55,7 @@ with incremented difficulty.
 - **FR-P.08** The player shall undo the latest successful turn back to the run’s root state, 
 unless already at root (error raised).
 
-#### 4.2 World Generation & Progression
+### 4.2 World Generation & Progression
 - **FR-W.01** For each new floor, the system shall generate 4–8 rooms laid out in a 2 × N matrix, 
 guaranteeing full connectivity.
 - **FR-W.02** The generator shall ensure exactly one staircase in the last room and no unreachable areas.
@@ -66,14 +66,14 @@ bounds 1–3 (see code constant `gaussianBetween`).
 - **FR-W.05** When a numeric seed is supplied, two executions with the same seed and difficulty 
 shall produce identical floor layouts and enemy placements.
 
-#### 4.3 Enemy
+### 4.3 Enemy
 - **FR-E.01** Each living enemy shall decide one action per turn (move or attack) after the player acts 
 (turn-based loop).
 - **FR-E.02** Enemies shall use breadth-first search over the room grid to select the shortest walkable 
 path toward the player if within visibility radius.
 - **FR-E.03** If adjacent to the player, an enemy shall perform a melee attack and remain in place.
 
-#### 4.4 Game State Management
+### 4.4 Game State Management
 - **FR-S.01** The system shall maintain an immutable history of `(World, GameState)` snapshots for 
 every successful turn.
 - **FR-S.02** An *undo* command shall roll back to the previous snapshot; a second consecutive 
@@ -81,20 +81,20 @@ every successful turn.
 - **FR-S.03** On fatal player death, the system shall display “Game Over” and prevent further input 
 until a new game is started.
 
-#### 4.5 User Interface & Feedback
+### 4.5 User Interface & Feedback
 - **FR-UI.01** The terminal view shall render the current room with ASCII symbols.
 - **FR-UI.02** Status bar shall display current health, equipped weapon, inventory count, 
 floor number and last event note.
 - **FR-UI.03** Error messages (e.g., invalid input, blocked path) shall appear within one line prefixed “! ”.
 - **FR-UI.04** The *clear* command shall redraw the entire viewport without altering game state.
 
-#### 4.6 Error Handling
+### 4.6 Error Handling
 - **FR-EH.01** On command parsing failure, the system shall return `GameResult.Error(InvalidInput)` 
 without changing world state.
 - **FR-EH.02** Attempting to use an item not owned shall raise `ItemNotOwned`, preserving state.
 - **FR-EH.03** Requests to move into walls, closed doors or occupied cells shall raise `InvalidDirection`.
 
-### 5  Non-Functional Requirements (NFR)
+## 5  Non-Functional Requirements (NFR)
 
 | ID            | Category    | Requirement                                                                                                                  |
 |---------------|-------------|------------------------------------------------------------------------------------------------------------------------------|
