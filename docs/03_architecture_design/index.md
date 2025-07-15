@@ -3,67 +3,76 @@ title: Design Architecture
 layout: default
 nav_order: 4
 ---
-
 # Design Architecture
 
-The architectural design of **Scalata** is organized into two main layers: the **Domain** and the **Application**. 
-The architecture follows **Domain-Driven Design (DDD)** principles and uses the **Model-View-Controller (MVC)** pattern  
-to ensure a clean separation of responsibilities. 
-It also incorporates design patterns like the **Builder Pattern** for constructing complex world structures.
+## Architectural Overview
+The project adopts a **Hexagonal (Ports-and-Adapters) Architecture** **combined with Domain-Driven Design (DDD)**.  
+This pairing isolates the pure *domain* model at the centre of the hexagon while structuring the codebase 
+around well-defined bounded contexts and ubiquitous language, ensuring:
 
----
+- **Loose coupling** between business rules and I/O mechanisms.
+- **Straightforward automated testing** of the core, thanks to side effect–free domain code.
+- **Easy replacement or evolution** of user interfaces and external services without impacting the domain 
+or its ubiquitous language.
+- **Clear, expressive models** that mirror business concepts, making the game logic easier to reason about 
+and extend.
 
-## 📐 General Architecture Overview
+## Package Structure & Responsibilities
 
-GRAPH TO-DO
+| Layer / Package                                                   | Main Responsibility                                                                                   | Key Classes (examples)                                                                                                 |
+|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| **Domain (`scalata.domain`)**                                     | Immutable business objects and rules; no side-effects.                                                | `Player`, `Enemy`, `Item`, `Room`, `World`, `GameSession`, `GameState`, value objects (`Direction`, `Point2D`).        |
+| **Application (`scalata.application`)**                           | Pure application services & use-cases that orchestrate domain entities and encapsulate the game loop. | `FloorGenerator`, use-cases (`GameRunningUseCase`, `EnemyMovementUseCase`), factories (`EnemyFactory`, `ItemFactory`). |
+| **Application - Input Ports**                                     | Abstract contracts that describe *what* the core can do.                                              | Traits exposed by use-cases (e.g., `CreatureUseCase`, `GameView`).                                                     |
+| **Input Adapters**                                                | Translate external input into port calls (e.g., CLI & JLine controllers).                             | `ConsoleView`, `JLineView`, `MenuController`, `GameController`.                                                        |
+| **Infrastructure (`scalata.infrastructure.view`, `…controller`)** | Concrete UI and system services.                                                                      | CLI/JLine launchers.                                                                                                   |
 
+All dependencies point *inwards*: domain → application → ports → adapters. No inner layer imports symbols 
+from an outer layer, satisfying the Dependency Inversion Principle.
 
----
+## Static View (Hexagon)
 
-## ⚙️ Engine
+![plot](./DDD-scalata.png)
 
-The Engine is the core of the system and is implemented using **Domain-Driven Design (DDD)** principles. 
-It is responsible for handling the game world logic and simulation, independent of any graphical interface.
+## Dynamic View – Typical Turn Sequence
 
-### 📦 Domain Model
+![plot](./sequence_arch_sclata.png)
 
-This layer contains:
+*Single-threaded execution* guarantees deterministic order; hot paths (floor generation, AI) stick to 
+immutable data to meet performance constraints.
 
-- **Entities**: World elements such as terrains, objects, and characters.
-- **Value Objects**: Data structures with no identity (e.g. coordinates, colors).
-- **Aggregates**: Logical groupings of entities with a root for consistency.
-- **Repositories**: Interfaces for accessing aggregates (not implemented directly in engine).
+## Domain-Driven Design Elements
 
-### 🧠 Application Services
+1. **Entities** – `Player`, `Enemy`, `Item` (with subclasses `Potion`, `Weapon`, …).
+2. **Value Objects** – `Point2D`, `Direction`, `PlayerCommand`.
+3. **Aggregates** – `World` (root) containing `Room`s and `Player`.
+4. **Domain Services** – `CombatEngine`, geometry utilities.
+5. **Repositories / Persistence** – not yet needed; state is held in-memory via `GameSession`.
 
-These represent use cases that orchestrate the domain logic. They provide:
+## Adherence to Clean Architecture Principles
+- **DIP & ISP**: input/output ports are small, focused traits; adapters implement them, keeping the domain pure.
+- **SRP**: each component handles a single concern (parsing, rendering, AI, etc.).
+- **Open/Closed**: new UI (e.g., Swing front-end) can be added as another adapter without modifying 
+existing core code.
 
-- World creation and initialization
-- Game loop progression
-- Event handling
-- Player actions processing
+## Extensibility Scenarios
+| Scenario            | Required Change                                                 | Impact Radius         |
+|---------------------|-----------------------------------------------------------------|-----------------------|
+| Add GUI (Swing/Web) | Implement new *input & output adapters* against existing ports. | Adapters only         |
+| New Item type       | Add concrete `Item` subclass & entry in `ItemFactory`.          | Domain + factory      |
+| Boss AI             | New use-case handler plus strategy injected into `AIEngine`.    | Application layer     |
+| Persist replays     | Create `ReplayRepository` (output port) + adapter to file/DB.   | Application + adapter |
 
-### 📢 Domain Events
+Thanks to the Ports-and-Adapters approach, each scenario remains localized and does **not** ripple into the domain core.
 
-Key events are emitted during the simulation to signal changes:
+### Summary of Benefits
+- **Testability** – pure domain code, deterministic RNG seeds, and a single-threaded loop simplify unit 
+& property tests.
+- **Maintainability** – strict package boundaries and scalafmt keep the codebase clean.
+- **Scalability** – performance hotspots are confined to `AIEngine` and `FloorGenerator`, 
+allowing future parallelization under the same ports.
+- **Portability** – runs on any JVM 17+ environment; UI adapters can target console or desktop 
+without changing the game rules.
 
-- `WorldUpdatedEvent`
-- `LevelCompletedEvent`
-- `EntityMovedEvent`
-- `AchievementUnlockedEvent`
-
-These can be subscribed to by the Application layer for reactive UI updates.
-
----
-
-## 🏗️ Builder Pattern
-
-The **Builder Pattern** is used to construct complex `World` instances by composing various optional elements 
-(NPCs, terrain, collectibles).
-
-### ✅ Benefits:
-- Step-by-step construction
-- Separation of construction from representation
-- Reusability of builder logic for different world configurations
-
-
+This design positions *Scalata* for incremental growth—new gameplay mechanics and presentation layers 
+can be added with confidence that existing behaviour will remain stable.
