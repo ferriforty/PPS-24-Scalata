@@ -6,7 +6,7 @@ nav_order: 4
 # Design Architecture
 
 ## Architectural Overview
-The project adopts a **Hexagonal (Ports-and-Adapters) Architecture** **combined with Domain-Driven Design (DDD)**.  
+The project adopts a **Hexagonal Architecture** **combined with Domain-Driven Design (DDD)**.  
 This pairing isolates the pure *domain* model at the centre of the hexagon while structuring the codebase 
 around well-defined bounded contexts and ubiquitous language, ensuring:
 
@@ -32,7 +32,7 @@ from an outer layer, satisfying the Dependency Inversion Principle.
 
 ## Static View (Hexagon)
 
-![plot](./DDD-scalata.png)
+![plot](./DDD_hexagonal.svg)
 
 ## Dynamic View – Typical Turn Sequence
 
