@@ -2,7 +2,6 @@ ThisBuild / version := "1.0.0"
 
 ThisBuild / scalaVersion := "3.3.6"
 
-
 lazy val root = (project in file("."))
   .settings(
     name := "PPS-24-Scalata",
@@ -11,7 +10,12 @@ lazy val root = (project in file("."))
     Global / useSuperShell        := false ,
     Global / onChangedBuildSource := ReloadOnSourceChanges,
     coverageExcludedPackages      := ".*view.*",
-    assembly / mainClass := Some("scalata.infrastructure.view.terminal.jline.JLineApp"),
+
+    //JLINE APP
+    //assembly / mainClass := Some("scalata.infrastructure.view.terminal.jline.JLineApp"),
+
+    // CLI APP
+    assembly / mainClass := Some("scalata.infrastructure.view.terminal.cli.CliApp"),
 
     libraryDependencies ++= Seq(
       "org.jline" % "jline" % "3.30.4",
