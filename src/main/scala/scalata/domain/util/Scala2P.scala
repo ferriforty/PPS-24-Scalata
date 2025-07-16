@@ -21,10 +21,10 @@ object Scala2P:
     val engine = Prolog()
     engine.setTheory(Theory(clauses.mkString(" ")))
     goal =>
-      LazyList.unfold(Option(engine.solve(goal))) {
+      LazyList.unfold(Option(engine.solve(goal))):
         case Some(info) if info.isSuccess =>
           val next =
             if info.hasOpenAlternatives then Some(engine.solveNext()) else None
           Some(info -> next)
         case _ => None
-      }
+

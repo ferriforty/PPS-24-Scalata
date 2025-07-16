@@ -1,9 +1,8 @@
 package scalata.application.services
 
-import org.scalatest.BeforeAndAfter
+import org.scalatest.{BeforeAndAfter, Tag}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.FloorGenerator
 import scalata.application.services.factories.PlayerFactory
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
@@ -82,3 +81,10 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
         .filter(r => r._1 == gameSession.getWorld.roomsArrangement.head.head)
         .exists(p => p._2.items.exists(i => i.itemClass == ItemClasses.Sign))
     )
+
+  it should "generate in less then 100ms" taggedAs Tag("Non-Functional") in:
+    val start = System.nanoTime()
+    FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
+    val ms = (System.nanoTime() - start) / 1e6
+    assert(ms < 100)
+
