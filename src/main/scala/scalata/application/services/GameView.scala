@@ -2,14 +2,14 @@ package scalata.application.services
 
 import cats.syntax.all.*
 
-/** Abstraction for **presenting the game** and **collecting player input**.
+/** Abstract UI bridge.
  *
- * A `GameView` is a _port_ in the Hexagonal architecture: the Domain/Application
- * layers depend only on this interface, while concrete adapters (CLI, Swing,
- * web, tests) live in the outer Infrastructure layer.
+ * The trait is effect-polymorphic: every action yields a value in the
+ * effect&nbsp;<code>F[_]</code> (e.g.&nbsp;<code>IO</code>).
  *
- * @tparam F the effect type (e.g. `cats.effect.IO`) used to sequence side effects
- * @tparam I the input type (usually `String`, but a richer ADT is also possible)
+ * @tparam F effect type constructor (<code>cats.effect.IO</code>, etc.)
+ * @tparam I raw input representation (e.g.&nbsp;<code>String</code>,
+ *           scan-coded key, structured AST)
  */
 trait GameView[F[_], I]:
 
