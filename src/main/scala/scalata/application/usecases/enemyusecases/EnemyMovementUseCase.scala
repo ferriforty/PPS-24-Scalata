@@ -8,7 +8,36 @@ import scalata.domain.util.Scala2P
 import scalata.domain.util.Scala2P.{*, given}
 import scalata.domain.world.{GameSession, Room}
 
+/** Calculates one **AI movement step** for every living enemy inside the
+ * supplied room.
+ *
+ * <h4>Key steps</h4>
+ * <ul>
+ * <li><b>Generate Prolog facts</b>
+ * – encode the grid size, obstacles (items + other enemies),
+ * enemies’ positions and the player location/visibility.</li>
+ * <li><b>Run Prolog rules</b> (breadth-first search)
+ * – compute the cost-to-player for every reachable tile and derive
+ * <code>best_moves_all/1</code>.</li>
+ * <li><b>Conflict resolution</b>
+ * – group candidate moves per enemy, keep only the cheapest ones, then
+ * greedily pick non-overlapping destinations.</li>
+ * <li><b>Apply moves</b>
+ * – return a new {@link scalata.domain.world.Room} with updated enemy
+ * positions.</li>
+ * </ul>
+ *
+ * The function is **pure**: it builds a Prolog engine, computes the moves and
+ * returns a modified room; the original room and session remain unchanged.
+ */
 class EnemyMovementUseCase extends CreatureUseCase[Room, Room]:
+
+  /** Decide the next tile for every enemy.
+   *
+   * @param currentRoom room whose enemies must move
+   * @param gameSession full session (needed for player stats)
+   * @return a copy of <code>currentRoom</code> with enemies moved one step
+   */
   override def execute(currentRoom: Room, gameSession: GameSession): Room =
 
     val rules: String =
