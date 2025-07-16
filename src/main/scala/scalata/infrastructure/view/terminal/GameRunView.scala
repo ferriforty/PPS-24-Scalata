@@ -7,6 +7,18 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{Direction, PlayerCommand, WORLD_DIMENSIONS}
 import scalata.domain.world.{GameSession, Room, World}
 
+/** **Game Running screen**.
+ *
+ * The view extends the generic [[scalata.infrastructure.view.View View]]
+ * template, supplying:
+ * • an ASCII banner that lists available possible inputs;
+ * • a `parse` implementation that maps raw user input.
+ *
+ * @param view low-level [[scalata.application.services.GameView GameView]]
+ *             through which all rendering and input occur (dependency-injected
+ *             so that we stay UI-agnostic).
+ * @tparam F effect type (e.g. `IO`)
+ */
 class GameRunView[F[_]: Sync](val view: GameView[F, String]):
 
   def ask(gameSession: GameSession): F[PlayerCommand] =

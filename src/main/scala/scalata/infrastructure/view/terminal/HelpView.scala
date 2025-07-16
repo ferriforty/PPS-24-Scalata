@@ -1,5 +1,6 @@
 package scalata.infrastructure.view.terminal
 
+/** Help String */
 object HelpView:
   val helpText: String = "\n" +
     """[W/A/S/D]  Move

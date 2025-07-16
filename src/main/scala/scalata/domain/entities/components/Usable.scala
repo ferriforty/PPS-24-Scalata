@@ -1,7 +1,7 @@
 package scalata.domain.entities.components
 
 import scalata.domain.entities.items.{Dust, Potion, Weapon}
-import scalata.domain.entities.{Entity, Item, Player}
+import scalata.domain.entities.{Entity, Item}
 
 import scala.compiletime.{summonFrom, summonInline}
 

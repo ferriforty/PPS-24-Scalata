@@ -1,6 +1,6 @@
 package scalata.application.services
 
-import scalata.domain.util.{GameControllerState, GameResult}
+import scalata.domain.util.GameControllerState
 
 case class GamePhaseService(
     currentPhase: GameControllerState = GameControllerState.Menu

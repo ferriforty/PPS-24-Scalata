@@ -4,7 +4,6 @@ import cats.effect.Sync
 import cats.syntax.all.*
 import scalata.application.services.GameBuilder
 import scalata.application.usecases.GameRunningUseCase
-import scalata.domain.entities.Player
 import scalata.domain.util.{
   GameControllerState,
   GameError,
@@ -12,7 +11,7 @@ import scalata.domain.util.{
   MAX_DIFFICULTY,
   PlayerCommand
 }
-import scalata.domain.world.{GameSession, World, GameState}
+import scalata.domain.world.GameSession
 import scalata.infrastructure.view.terminal.HelpView
 
 class GameController[F[_]: Sync](

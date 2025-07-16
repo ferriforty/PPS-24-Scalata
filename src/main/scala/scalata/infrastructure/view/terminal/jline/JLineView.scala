@@ -6,6 +6,13 @@ import org.jline.terminal.{Terminal, TerminalBuilder}
 import org.jline.utils.NonBlockingReader
 import scalata.application.services.GameView
 
+/** Console implementation of [[GameView]] using JLin.
+ *
+ * Uses ANSI escape sequences to clear the screen and reads input via
+ * JLine library, which is blocking.
+ *
+ * @see GameView for method-level semantics
+ */
 final class JLineView[F[_]: Sync] private (
     private val term: Terminal,
     private val reader: NonBlockingReader
@@ -13,9 +20,11 @@ final class JLineView[F[_]: Sync] private (
 
   private val keys = Set('w', 'a', 's', 'd', 'W', 'A', 'S', 'D')
 
+  /** @inheritdoc */
   def display[A](text: A): F[Unit] =
     clearScreen >> Sync[F].blocking(term.writer.println(text))
 
+  /** @inheritdoc */
   def getInput: F[String] =
     Sync[F].blocking:
       val out = term.writer
@@ -42,9 +51,11 @@ final class JLineView[F[_]: Sync] private (
             ch = reader.read()
         line.toString.trim
 
+  /** @inheritdoc */
   def displayError[A](msg: A): F[Unit] =
     Sync[F].blocking(term.writer.println(s"Error: $msg"))
 
+  /** @inheritdoc */
   def clearScreen: F[Unit] =
     Sync[F].blocking(term.puts(org.jline.utils.InfoCmp.Capability.clear_screen))
 

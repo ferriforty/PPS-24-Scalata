@@ -2,7 +2,6 @@ package scalata.infrastructure.cli.controller
 
 import cats.effect.IO
 import cats.syntax.all.*
-import cats.effect.IO
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import scalata.domain.util.{GameControllerState, GameError, GameResult}

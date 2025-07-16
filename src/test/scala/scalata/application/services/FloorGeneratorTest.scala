@@ -13,8 +13,6 @@ import scalata.domain.util.EnemyClasses.Pig
 import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
 import scalata.application.usecases.GameRunningUseCase
-import scalata.infrastructure.cli.view.TestView
-import scalata.infrastructure.view.terminal.GameRunView
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
