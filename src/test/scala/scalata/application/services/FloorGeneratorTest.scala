@@ -136,5 +136,5 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
     val delta = after - baseline
 
     val timeMs = (System.nanoTime() - start) / 1e6
-    assert(delta < 64,  s"Footprint grew $delta MB, expected <64 MB")
+    assert(delta < 64, s"Footprint grew $delta MB, expected <64 MB")
     assert(timeMs < 2000)
