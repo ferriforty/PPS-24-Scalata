@@ -96,6 +96,13 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
     assert(ms < 100)
 
   it should "handle 1000 enemies" taggedAs Tag("Non-Functional") in:
+
+    def usedMB: Long =
+      (Runtime.getRuntime.totalMemory - Runtime.getRuntime.freeMemory) / (1024 * 1024)
+
+    System.gc()
+    val baseline = usedMB
+
     val currentRoom = gameSession.getWorld
       .getRoom(
         gameSession.getGameState.currentRoom
@@ -125,8 +132,9 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
       IO.pure(PlayerCommand.Movement(South))
     )
 
-    val usedMemory =
-      (Runtime.getRuntime.totalMemory - Runtime.getRuntime.freeMemory) / (1024 * 1024)
+    val after = usedMB
+    val delta = after - baseline
+
     val timeMs = (System.nanoTime() - start) / 1e6
-    assert(usedMemory < 512)
+    assert(delta < 64,  s"Footprint grew $delta MB, expected <64 MB")
     assert(timeMs < 2000)
