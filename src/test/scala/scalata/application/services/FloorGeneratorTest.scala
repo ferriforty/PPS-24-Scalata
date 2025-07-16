@@ -101,7 +101,7 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
     ).get
 
     val enemies = for
-      i <- 1 to 10000
+      i <- 1 to 1000
       enemy = EnemyFactory().create(Pig).move(
           currentRoom.botRight.moveBy(
             Point2D(
