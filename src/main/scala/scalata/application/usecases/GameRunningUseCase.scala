@@ -15,8 +15,32 @@ import scalata.application.usecases.playerusecases.{
 import scalata.domain.util.{GameError, GameResult, PlayerCommand}
 import scalata.domain.world.GameSession
 
+
+/** Use-case that executes a **full game turn**:
+ *
+ * <h4>Flow</h4>
+ * <ol>
+ * <li><b>Parse player command</b> &nbsp;→&nbsp; run the matching player use-case.</li>
+ * <li><b>On success</b> &nbsp;→&nbsp; apply two enemy phases in order:
+ * <ul>
+ * <li><code>EnemyAttackUseCase</code></li>
+ * <li><code>EnemyMovementUseCase</code></li>
+ * </ul>
+ * </li>
+ * <li><b>Error commands</b> (<i>quit / undo / help</i>) return a corresponding
+ * <code>GameError</code>.</li>
+ * </ol>
+ *
+ */
 class GameRunningUseCase:
 
+  /** Execute a single turn:
+   * @param gameSession immutable snapshot before the turn starts
+   * @param command     effect that yields a parsed [[PlayerCommand]]
+   * @tparam F effect type with a [[cats.Monad]] instance (e.g. <code>IO</code>)
+   * @return a [[scalata.domain.util.GameResult]] containing the updated
+   *         [[scalata.domain.world.GameSession]] or a domain error
+   */
   final def execTurn[F[_]: Monad](
       gameSession: GameSession,
       command: F[PlayerCommand]
