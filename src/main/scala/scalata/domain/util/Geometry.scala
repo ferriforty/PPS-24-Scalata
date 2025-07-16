@@ -1,14 +1,12 @@
 package scalata.domain.util
 
 /** Lightweight 2-D integer geometry using an <i>opaque type</i>.
- *
- * <ul>
- * <li><b>Point2D</b> is represented as a tuple <code>(x, y)</code> but the
- * tuple is hidden outside the module.</li>
- * <li>Convenience ops: Manhattan distance, 4-neighbour listing,
- * axis-aligned range and vector addition.</li>
- * </ul>
- */
+  *
+  * <ul> <li><b>Point2D</b> is represented as a tuple <code>(x, y)</code> but
+  * the tuple is hidden outside the module.</li> <li>Convenience ops: Manhattan
+  * distance, 4-neighbour listing, axis-aligned range and vector addition.</li>
+  * </ul>
+  */
 object Geometry:
   opaque type Point2D = (Int, Int)
 
@@ -41,7 +39,9 @@ object Geometry:
     def neighboursFiltered(f: Point2D => Boolean): List[Point2D] =
       neighbours.filter(f)
 
-    /** All integer points in the axis-aligned rectangle from this to <code>dest</code>. */
+    /** All integer points in the axis-aligned rectangle from this to
+      * <code>dest</code>.
+      */
     def rangeTo(dest: Point2D): List[Point2D] =
       (for
         i <- if p.x <= dest.x then p.x to dest.x else p.x to dest.x by -1

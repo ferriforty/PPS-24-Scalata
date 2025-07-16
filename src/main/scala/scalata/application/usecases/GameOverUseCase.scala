@@ -9,11 +9,15 @@ import scalata.domain.util.{GameControllerState, GameError, GameResult}
 class GameOverUseCase:
 
   /** Evaluate the player’s choice and emit the next step.
-   *
-   * @param input       effect that yields <code>true</code> to restart or <code>false</code> to quit
-   * @param gameBuilder builder carried forward when the game restarts
-   * @tparam F effect type with a <code>cats.Monad</code> instance
-   */
+    *
+    * @param input
+    *   effect that yields <code>true</code> to restart or <code>false</code> to
+    *   quit
+    * @param gameBuilder
+    *   builder carried forward when the game restarts
+    * @tparam F
+    *   effect type with a <code>cats.Monad</code> instance
+    */
   def gameOver[F[_]: Monad](
       input: F[Boolean],
       gameBuilder: GameBuilder

@@ -7,11 +7,10 @@ import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
 /** Small, throw-away item with no direct effect.
- *
- * <ul>
- * <li><b>Usable</b> – using it simply discards the item (flavour only).</li>
- * </ul>
- */
+  *
+  * <ul> <li><b>Usable</b> – using it simply discards the item (flavour
+  * only).</li> </ul>
+  */
 final case class Dust(
     override val id: String,
     override val position: Option[Point2D] = None,

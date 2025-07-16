@@ -16,9 +16,9 @@ val MAX_ENEMIES = 3.0
 val POTION_WEIGHT = 0.65
 val DUST_WEIGHT = 0.4
 
-/** Sample an integer in <code>[from, to]</code> following a Gaussian
- * curve whose mean shifts with <code>difficulty</code>.
- */
+/** Sample an integer in <code>[from, to]</code> following a Gaussian curve
+  * whose mean shifts with <code>difficulty</code>.
+  */
 def gaussianBetween(from: Double, to: Double, difficulty: Int) =
   val mean = from + (difficulty / MAX_DIFFICULTY) * (to - from)
   val stdDev = 0.8

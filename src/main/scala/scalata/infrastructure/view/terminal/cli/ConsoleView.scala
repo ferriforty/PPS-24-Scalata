@@ -5,12 +5,13 @@ import cats.implicits.catsSyntaxApplyOps
 import scalata.application.services.GameView
 
 /** Console implementation of [[GameView]].
- *
- * Uses ANSI escape sequences to clear the screen and reads input via
- * `StdIn.readLine()`, which is blocking.
- *
- * @see GameView for method-level semantics
- */
+  *
+  * Uses ANSI escape sequences to clear the screen and reads input via
+  * `StdIn.readLine()`, which is blocking.
+  *
+  * @see
+  *   GameView for method-level semantics
+  */
 final class ConsoleView[F[_]: Sync] extends GameView[F, String]:
   /** @inheritdoc */
   override def display[String](text: String): F[Unit] =

@@ -7,16 +7,13 @@ import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
 /** Equippable weapon.
- *
- * <h4>Key points</h4>
- * <ul>
- * <li><b>damage</b> – base attack value added to the player’s own power.</li>
- * <li><b>Pickable</b> – calling <code>interact</code> removes the item
- * from the floor and places it in the player inventory.</li>
- * <li><b>Usable</b> – the given instance in the companion equips the weapon
- * and then deletes it from the bag (one-slot logic).</li>
- * </ul>
- */
+  *
+  * <h4>Key points</h4> <ul> <li><b>damage</b> – base attack value added to the
+  * player’s own power.</li> <li><b>Pickable</b> – calling <code>interact</code>
+  * removes the item from the floor and places it in the player inventory.</li>
+  * <li><b>Usable</b> – the given instance in the companion equips the weapon
+  * and then deletes it from the bag (one-slot logic).</li> </ul>
+  */
 final case class Weapon(
     override val id: String,
     override val position: Option[Point2D] = None,

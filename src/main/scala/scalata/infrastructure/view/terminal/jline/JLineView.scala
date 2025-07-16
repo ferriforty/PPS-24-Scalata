@@ -7,12 +7,13 @@ import org.jline.utils.NonBlockingReader
 import scalata.application.services.GameView
 
 /** Console implementation of [[GameView]] using JLin.
- *
- * Uses ANSI escape sequences to clear the screen and reads input via
- * JLine library, which is blocking.
- *
- * @see GameView for method-level semantics
- */
+  *
+  * Uses ANSI escape sequences to clear the screen and reads input via JLine
+  * library, which is blocking.
+  *
+  * @see
+  *   GameView for method-level semantics
+  */
 final class JLineView[F[_]: Sync] private (
     private val term: Terminal,
     private val reader: NonBlockingReader

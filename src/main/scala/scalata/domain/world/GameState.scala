@@ -1,16 +1,15 @@
 package scalata.domain.world
 
 /** Immutable snapshot of the player’s progress on the current run.
- *
- * <ul>
- * <li><b>currentRoom</b> id of the room the player is standing in.</li>
- * <li><b>visitedRooms</b> set of room ids already explored on this floor.</li>
- * <li><b>currentLevel</b> tower floor index (starts at <code>1</code>).</li>
- * <li><b>note</b> short message shown to the user (help, errors, etc.).</li>
- * </ul>
- *
- * All mutators return a new <code>GameState</code>; no in-place changes.
- */
+  *
+  * <ul> <li><b>currentRoom</b> id of the room the player is standing in.</li>
+  * <li><b>visitedRooms</b> set of room ids already explored on this floor.</li>
+  * <li><b>currentLevel</b> tower floor index (starts at <code>1</code>).</li>
+  * <li><b>note</b> short message shown to the user (help, errors, etc.).</li>
+  * </ul>
+  *
+  * All mutators return a new <code>GameState</code>; no in-place changes.
+  */
 final case class GameState(
     currentRoom: String,
     visitedRooms: Set[String] = Set.empty,

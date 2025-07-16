@@ -9,30 +9,32 @@ import scalata.domain.world.{GameSession, GameState, Room, World}
 import scala.util.Random
 
 /** Procedural generator that builds one <b>tower floor</b> together with the
- * initial [[GameSession]] snapshot for that level.
- *
- * <h4>Overview</h4>
- * <ol>
- * <li>Shuffle room names and arrange them in a <code>matrixRooms</code>
- * grid (rows&nbsp;×&nbsp;columns) so the dungeon is always rectangular.</li>
- * <li>Create every [[Room]] with random padding so shapes vary between runs.</li>
- * <li>Populate rooms (except the spawn room) with enemies and items whose
- * number scales with <code>difficulty</code>.</li>
- * <li>Insert a <i>Sign</i> in the spawn room and an <i>Exit Door</i> in the
- * last room to let the player advance to the next floor.</li>
- * <li>Return a fully initialised [[GameSession]] that already contains
- * one entry in the undo history (<code>GameSession.init</code>).</li>
- * </ol>
- */
+  * initial [[GameSession]] snapshot for that level.
+  *
+  * <h4>Overview</h4> <ol> <li>Shuffle room names and arrange them in a
+  * <code>matrixRooms</code> grid (rows&nbsp;×&nbsp;columns) so the dungeon is
+  * always rectangular.</li> <li>Create every [[Room]] with random padding so
+  * shapes vary between runs.</li> <li>Populate rooms (except the spawn room)
+  * with enemies and items whose number scales with
+  * <code>difficulty</code>.</li> <li>Insert a <i>Sign</i> in the spawn room and
+  * an <i>Exit Door</i> in the last room to let the player advance to the next
+  * floor.</li> <li>Return a fully initialised [[GameSession]] that already
+  * contains one entry in the undo history (<code>GameSession.init</code>).</li>
+  * </ol>
+  */
 object FloorGenerator:
 
   /** Create a new floor and wrap it in a [[GameSession]].
-   *
-   * @param player     hero to place in the starting room
-   * @param difficulty global difficulty (1–10) controlling spawn rates
-   * @param seed       random seed for reproducible layouts
-   * @param level      tower floor index (starts at&nbsp;1)
-   */
+    *
+    * @param player
+    *   hero to place in the starting room
+    * @param difficulty
+    *   global difficulty (1–10) controlling spawn rates
+    * @param seed
+    *   random seed for reproducible layouts
+    * @param level
+    *   tower floor index (starts at&nbsp;1)
+    */
   def generateFloor(
       player: Player,
       difficulty: Int,

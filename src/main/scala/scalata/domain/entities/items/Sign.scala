@@ -5,9 +5,9 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
-/** Floor decoration that displays the current tower level when the
- * player interacts with it.
- */
+/** Floor decoration that displays the current tower level when the player
+  * interacts with it.
+  */
 final case class Sign(
     override val id: String,
     override val position: Option[Point2D] = None,

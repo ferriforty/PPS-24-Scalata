@@ -6,13 +6,11 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.PlayerClasses
 
 /** Playable hero.
- *
- * <ul>
- * <li>Stats depend on the chosen [[scalata.domain.util.PlayerClasses role]]
- * (reach, visibility).</li>
- * <li>Pure API: every mutator returns a new <code>Player</code>.</li>
- * </ul>
- */
+  *
+  * <ul> <li>Stats depend on the chosen
+  * [[scalata.domain.util.PlayerClasses role]] (reach, visibility).</li>
+  * <li>Pure API: every mutator returns a new <code>Player</code>.</li> </ul>
+  */
 final case class Player(
     override val id: String,
     override val name: String = "Hero",

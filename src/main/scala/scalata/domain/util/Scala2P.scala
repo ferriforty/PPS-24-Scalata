@@ -3,13 +3,11 @@ package scalata.domain.util
 import alice.tuprolog.*
 import scalata.domain.util.Geometry.Point2D
 
-/** Thin helper around <i>tuProlog</i> that:
- * <ul>
- * <li>adds Scala → Prolog implicit conversions (<code>String</code>, <code>Seq</code>);</li>
- * <li>provides extractors (<code>asInt</code>, <code>asPoint</code>);</li>
- * <li>builds a reusable Prolog engine with arbitrary clauses.</li>
- * </ul>
- */
+/** Thin helper around <i>tuProlog</i> that: <ul> <li>adds Scala → Prolog
+  * implicit conversions (<code>String</code>, <code>Seq</code>);</li>
+  * <li>provides extractors (<code>asInt</code>, <code>asPoint</code>);</li>
+  * <li>builds a reusable Prolog engine with arbitrary clauses.</li> </ul>
+  */
 object Scala2P:
   given Conversion[String, Term] = Term.createTerm(_)
 
@@ -26,10 +24,10 @@ object Scala2P:
       asInt(t.asInstanceOf[Struct].getArg(1).getTerm)
     )
 
-  /** Build a Prolog engine seeded with <code>clauses</code>.
-   * Returns a function that, given a goal term, yields a lazy stream of
-   * <code>SolveInfo</code> solutions.
-   */
+  /** Build a Prolog engine seeded with <code>clauses</code>. Returns a function
+    * that, given a goal term, yields a lazy stream of <code>SolveInfo</code>
+    * solutions.
+    */
   def mkPrologEngine(clauses: String*): Term => LazyList[SolveInfo] =
     val engine = Prolog()
     engine.setTheory(Theory(clauses.mkString(" ")))

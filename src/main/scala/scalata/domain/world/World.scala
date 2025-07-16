@@ -4,12 +4,10 @@ import scalata.domain.entities.Player
 import scalata.domain.util.Direction
 
 /** Immutable game world.
- *
- * <p>
- * Holds the current <b>player</b>, global <b>difficulty</b>,
- * every generated <b>room</b> and their arrangement grid.
- * </p>
- */
+  *
+  * <p> Holds the current <b>player</b>, global <b>difficulty</b>, every
+  * generated <b>room</b> and their arrangement grid. </p>
+  */
 final case class World(
     player: Player,
     difficulty: Int = 1,
