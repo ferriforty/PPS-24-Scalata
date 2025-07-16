@@ -28,7 +28,7 @@ As the player progresses:
 
 ---
 
-## ScalaDoc
+## Scala Docs
 
 [Complete Scala doc for scalata](scalaDoc)
 
