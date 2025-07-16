@@ -4,6 +4,17 @@ import scalata.domain.entities.components.{Alive, Combatant, Movable}
 import scalata.domain.util.EnemyClasses
 import scalata.domain.util.Geometry.Point2D
 
+/** Hostile creature.
+ *
+ * <ul>
+ * <li><b>enemyType</b> – family/glyph (goblin, pig, …).</li>
+ * <li><b>position</b> – current tile.</li>
+ * <li><b>health / maxHealth</b> – hit-points pool.</li>
+ * <li><b>attackPower</b> – raw damage inflicted to a player.</li>
+ * </ul>
+ *
+ * All mutators return a new <code>Enemy</code>; no in-place changes.
+ */
 final case class Enemy(
     override val id: String,
     override val name: String,
