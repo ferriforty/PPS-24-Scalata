@@ -95,25 +95,29 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
     val ms = (System.nanoTime() - start) / 1e6
     assert(ms < 100)
 
-  it should "handle 1000 enemies" taggedAs Tag("Non-Functional") in :
-    val currentRoom = gameSession.getWorld.getRoom(
-      gameSession.getGameState.currentRoom
-    ).get
+  it should "handle 1000 enemies" taggedAs Tag("Non-Functional") in:
+    val currentRoom = gameSession.getWorld
+      .getRoom(
+        gameSession.getGameState.currentRoom
+      )
+      .get
 
     val enemies = for
       i <- 1 to 1000
-      enemy = EnemyFactory().create(Pig).move(
+      enemy = EnemyFactory()
+        .create(Pig)
+        .move(
           currentRoom.botRight.moveBy(
-            Point2D(
-              -(i % currentRoom.size._1),
-              -(i % currentRoom.size._2))
+            Point2D(-(i % currentRoom.size._1), -(i % currentRoom.size._2))
           )
-      )
+        )
     yield enemy
 
-    val filledGS = gameSession.updateWorld(gameSession.getWorld.updateRoom(
-      currentRoom.withEnemies(enemies.toList)
-    ))
+    val filledGS = gameSession.updateWorld(
+      gameSession.getWorld.updateRoom(
+        currentRoom.withEnemies(enemies.toList)
+      )
+    )
 
     val start = System.nanoTime()
     GameRunningUseCase().execTurn(
@@ -121,9 +125,8 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
       IO.pure(PlayerCommand.Movement(South))
     )
 
-    val usedMemory = (Runtime.getRuntime.totalMemory - Runtime.getRuntime.freeMemory) / (1024 * 1024)
+    val usedMemory =
+      (Runtime.getRuntime.totalMemory - Runtime.getRuntime.freeMemory) / (1024 * 1024)
     val timeMs = (System.nanoTime() - start) / 1e6
     assert(usedMemory < 512)
     assert(timeMs < 2000)
-
-

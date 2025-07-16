@@ -37,14 +37,17 @@ class GameControllerTest extends AnyFlatSpec with Matchers:
       GameController(GameRunView[IO](testView).ask)
         .start(gameBuilder = GameBuilder(None))
 
-  "The game" should
-    "handle invalid inputs (e.g., wrong command, syntax error) without crashing or altering game state." taggedAs 
-    Tag("Non-Functional") in:
-    
-    val invalidInputs = List("!", "move 999", "lojump", "use ", "equip spear!", "#@!drop", "")
-    val gameBuilder =  GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
+  "The game" should "handle invalid inputs (e.g., wrong command, syntax error) without crashing or altering game state." taggedAs Tag(
+    "Non-Functional"
+  ) in:
+
+    val invalidInputs =
+      List("!", "move 999", "lojump", "use ", "equip spear!", "#@!drop", "")
+    val gameBuilder =
+      GameBuilder(Some(PlayerFactory().create(PlayerClasses.Mage)))
 
     invalidInputs.foreach: input =>
-      noException should be thrownBy GameController(GameRunView[IO](TestView(input)).ask)
+      noException should be thrownBy GameController(
+        GameRunView[IO](TestView(input)).ask
+      )
         .start(gameBuilder = gameBuilder)
-

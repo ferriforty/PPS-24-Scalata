@@ -27,4 +27,3 @@ object Scala2P:
             if info.hasOpenAlternatives then Some(engine.solveNext()) else None
           Some(info -> next)
         case _ => None
-

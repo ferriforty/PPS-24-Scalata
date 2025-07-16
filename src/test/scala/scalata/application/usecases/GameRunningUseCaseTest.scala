@@ -25,20 +25,25 @@ class GameRunningUseCaseTest extends AnyFlatSpec with Matchers:
     PlayerCommand.Movement(South)
   )
 
-  "turn cycle" should "executes in <10ms on average" taggedAs Tag("Non-Functional") in:
+  "turn cycle" should "executes in <10ms on average" taggedAs Tag(
+    "Non-Functional"
+  ) in:
     val start = System.nanoTime()
     val gameSession =
       GameBuilder(
         Some(PlayerFactory().create(PlayerClasses.Mage))
       ).build(System.currentTimeMillis())
 
-
-    val currentRoom = gameSession.getWorld.getRoom(
-      gameSession.getGameState.currentRoom
-    ).get
+    val currentRoom = gameSession.getWorld
+      .getRoom(
+        gameSession.getGameState.currentRoom
+      )
+      .get
 
     val enemies = List(
-      EnemyFactory().create(Pig).move(currentRoom.botRight.moveBy(Point2D(-1, -1))),
+      EnemyFactory()
+        .create(Pig)
+        .move(currentRoom.botRight.moveBy(Point2D(-1, -1))),
       EnemyFactory().create(Pig).move(currentRoom.topLeft.moveBy(Point2D(1, 2)))
     )
 
@@ -58,7 +63,9 @@ class GameRunningUseCaseTest extends AnyFlatSpec with Matchers:
     val avg = durationMs / 10000
     assert(avg <= 10)
 
-  it should "generate no more than 1 uncaught exception every 10k turns" taggedAs Tag("Non-Functional") in:
+  it should "generate no more than 1 uncaught exception every 10k turns" taggedAs Tag(
+    "Non-Functional"
+  ) in:
     var errorCount = 0
     var total = 0
     val gameSession =
