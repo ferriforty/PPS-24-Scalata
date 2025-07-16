@@ -14,7 +14,7 @@ import scalata.domain.util.{GameControllerState, GameError, GameResult}
  */
 class GameStartUseCase:
 
-  /** Evaluate the player’s answer and emit the next finite-state-machine step.
+  /** Evaluate the player’s answer and emit the next step.
    *
    * @param input        side-effecting Boolean (<b>true</b>=start, <b>false</b>=quit)
    * @param worldBuilder builder carrying the current difficulty / seed setup
