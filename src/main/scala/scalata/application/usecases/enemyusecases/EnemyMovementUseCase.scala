@@ -23,7 +23,7 @@ import scalata.domain.world.{GameSession, Room}
  * – group candidate moves per enemy, keep only the cheapest ones, then
  * greedily pick non-overlapping destinations.</li>
  * <li><b>Apply moves</b>
- * – return a new {@link scalata.domain.world.Room} with updated enemy
+ * – return a new [[scalata.domain.world.Room]] with updated enemy
  * positions.</li>
  * </ul>
  *

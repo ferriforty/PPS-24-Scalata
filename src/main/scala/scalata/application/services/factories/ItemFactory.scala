@@ -11,8 +11,30 @@ import scalata.domain.util.{
   weightedRandom
 }
 
+/** Factory that produces every kind of in-game **item**.
+ *
+ * <h4>Responsibilities</h4>
+ * <ul>
+ * <li><b>Loot box generation</b> – `createBox` decides at runtime whether the chest
+ * contains a potion, a weapon or plain dust, using weighted randomness that
+ * scales with the <code>difficulty</code> parameter.</li>
+ * <li><b>Direct creation</b> – `create` instantiates a concrete item from the
+ * [[scalata.domain.util.ItemClasses]] discriminator.</li>
+ * </ul>
+ *
+ * All methods are <em>pure</em>; they return fresh instances and never mutate shared
+ * state.
+ */
 class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
 
+  /** Create a random loot box whose contents depend on <code>difficulty</code>.
+   *
+   * <ul>
+   * <li>With probability <code>POTION_WEIGHT</code>, call
+   * [[createPotion]] (healing item).</li>
+   * <li>Otherwise call [[createWeaponBox]] (weapon or dust).</li>
+   * </ul>
+   */
   def createBox(difficulty: Int, id: String): Item =
     if weightedRandom(POTION_WEIGHT) then createPotion(difficulty, id)
     else createWeaponBox(difficulty, id)
@@ -32,6 +54,11 @@ class ItemFactory extends EntityFactory[ItemFactory, Item, ItemClasses]:
       case 2 => create(ItemClasses.Staff, id)
       case 3 => create(ItemClasses.Halberd, id)
 
+  /** Build a single item given its [[ItemClasses]] tag.
+   *
+   * @param entityType enumeration value selecting the concrete item
+   * @param id         unique identifier
+   */
   override def create(entityType: ItemClasses, id: String): Item =
     entityType match
       case ItemClasses.Halberd =>
