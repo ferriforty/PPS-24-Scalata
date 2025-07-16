@@ -1,0 +1,448 @@
+<!DOCTYPE html><html data-pathToRoot="../../../" data-rawLocation="scalata/infrastructure/view/terminal" data-dynamicSideMenu="false"><head><meta charset="utf-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta><title>scalata.infrastructure.view.terminal</title><link rel="shortcut icon" type="image/x-icon" href="../../../favicon.ico"></link><script type="text/javascript" src="../../../scripts/theme.js"></script><script type="text/javascript" src="../../../scripts/searchData.js" defer="true"></script><script type="text/javascript" src="../../../scripts/scastieConfiguration.js" defer="true"></script><link rel="stylesheet" href="../../../styles/theme/bundle.css"></link><link rel="stylesheet" href="../../../styles/theme/components/bundle.css"></link><link rel="stylesheet" href="../../../styles/theme/components/button/bundle.css"></link><link rel="stylesheet" href="../../../styles/theme/layout/bundle.css"></link><link rel="stylesheet" href="../../../styles/nord-light.css"></link><link rel="stylesheet" href="../../../styles/dotty-icons.css"></link><link rel="stylesheet" href="../../../styles/filter-bar.css"></link><link rel="stylesheet" href="../../../styles/code-snippets.css"></link><link rel="stylesheet" href="../../../styles/searchbar.css"></link><link rel="stylesheet" href="../../../styles/social-links.css"></link><link rel="stylesheet" href="../../../styles/versions-dropdown.css"></link><link rel="stylesheet" href="../../../styles/content-contributors.css"></link><link rel="stylesheet" href="../../../styles/fontawesome.css"></link><script type="text/javascript" src="../../../hljs/highlight.pack.js" defer="true"></script><script type="text/javascript" src="../../../scripts/hljs-scala3.js" defer="true"></script><script type="text/javascript" src="../../../scripts/ux.js" defer="true"></script><script type="text/javascript" src="../../../scripts/common/component.js" defer="true"></script><script type="text/javascript" src="../../../scripts/common/utils.js" defer="true"></script><script type="text/javascript" src="../../../scripts/components/FilterBar.js" defer="true"></script><script type="text/javascript" src="../../../scripts/components/DocumentableList.js" defer="true"></script><script type="text/javascript" src="../../../scripts/components/Input.js" defer="true"></script><script type="text/javascript" src="../../../scripts/components/FilterGroup.js" defer="true"></script><script type="text/javascript" src="../../../scripts/components/Filter.js" defer="true"></script><script type="text/javascript" src="../../../scripts/scaladoc-scalajs.js" defer="true"></script><script type="text/javascript" src="../../../scripts/contributors.js" defer="true"></script><script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" defer="true"></script><script type="text/javascript" src="https://d3js.org/d3.v6.min.js" defer="true"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/graphlib-dot@0.6.2/dist/graphlib-dot.min.js" defer="true"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.1/dagre-d3.min.js" defer="true"></script><script type="text/javascript" src="https://scastie.scala-lang.org/embedded.js" defer="true"></script><script type="text/javascript" src="../../../scripts/data.js" defer="true"></script><link rel="stylesheet" href="../../../styles/apistyles.css"></link><script>var pathToRoot = "../../../";</script></head><body><div id=""><div id="header" class="body-small"><div class="header-container-left"><a href="../../../" class="logo-container"><span class="project-name h300">PPS-24-Scalata</span></a><span onclick="dropdownHandler(event)" class="text-button with-arrow" id="dropdown-trigger"><a></a></span><div id="version-dropdown" class="dropdown-menu"></div></div><div class="header-container-right"><button id="search-toggle" class="icon-button"></button><span id="theme-toggle" class="icon-button"></span><span id="mobile-menu-toggle" class="icon-button hamburger"></span></div></div><div id="mobile-menu"><div class="mobile-menu-header body-small"><span class="mobile-menu-logo"><span class="project-name h300">PPS-24-Scalata</span></span><button id="mobile-menu-close" class="icon-button close"></button></div><div class="mobile-menu-container body-medium"><input id="mobile-scaladoc-searchbar-input" class="scaladoc-searchbar-input" type="search" placeholder="Find anything"></input><span id="mobile-theme-toggle" class="mobile-menu-item mode"></span></div></div><span id="mobile-sidebar-toggle" class="floating-button"></span><div id="leftColumn" class="body-small"><div class="switcher-container"><a id="api-nav-button" class="switcher h100 selected" href="../../../index.html">API</a></div><nav id="api-nav" class="side-menu"><div class="ni n0 expanded"><span class="nh h100 expanded cs"><button class="ar icon-button expanded"></button><a href="../../../scalata.html"><span class="micon pa"></span><span>scalata</span></a></span><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../../application.html"><span class="micon pa"></span><span>application</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../../application/services.html"><span class="micon pa"></span><span>services</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../application/services/factories.html"><span class="micon pa"></span><span>factories</span></a></span><div class="ni n4 "><span class="nh "><a href="../../application/services/factories/EnemyFactory.html"><span class="micon cl"></span><span>EnemyFactory</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/services/factories/ItemFactory.html"><span class="micon cl"></span><span>ItemFactory</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/services/factories/PlayerFactory.html"><span class="micon cl"></span><span>PlayerFactory</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../../application/services/EntityFactory.html"><span class="micon tr"></span><span>EntityFactory</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/services/FloorGenerator$.html"><span class="micon ob"></span><span>FloorGenerator</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/services/GameBuilder.html"><span class="micon cl"></span><span>GameBuilder</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/services/GamePhaseService.html"><span class="micon cl"></span><span>GamePhaseService</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/services/GameView.html"><span class="micon tr"></span><span>GameView</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../../application/usecases.html"><span class="micon pa"></span><span>usecases</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../application/usecases/enemyusecases.html"><span class="micon pa"></span><span>enemyusecases</span></a></span><div class="ni n4 "><span class="nh "><a href="../../application/usecases/enemyusecases/EnemyAttackUseCase.html"><span class="micon cl"></span><span>EnemyAttackUseCase</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/usecases/enemyusecases/EnemyMovementUseCase.html"><span class="micon cl"></span><span>EnemyMovementUseCase</span></a></span></div></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../application/usecases/playerusecases.html"><span class="micon pa"></span><span>playerusecases</span></a></span><div class="ni n4 "><span class="nh "><a href="../../application/usecases/playerusecases/PlayerAttackUseCase.html"><span class="micon cl"></span><span>PlayerAttackUseCase</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/usecases/playerusecases/PlayerInteractUseCase.html"><span class="micon cl"></span><span>PlayerInteractUseCase</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/usecases/playerusecases/PlayerInventoryUseCase.html"><span class="micon cl"></span><span>PlayerInventoryUseCase</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../application/usecases/playerusecases/PlayerMovementUseCase.html"><span class="micon cl"></span><span>PlayerMovementUseCase</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../../application/usecases/ChampSelectUseCase.html"><span class="micon cl"></span><span>ChampSelectUseCase</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/usecases/CreatureUseCase.html"><span class="micon tr"></span><span>CreatureUseCase</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/usecases/GameOverUseCase.html"><span class="micon cl"></span><span>GameOverUseCase</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/usecases/GameRunningUseCase.html"><span class="micon cl"></span><span>GameRunningUseCase</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../application/usecases/GameStartUseCase.html"><span class="micon cl"></span><span>GameStartUseCase</span></a></span></div></div></div><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../../domain.html"><span class="micon pa"></span><span>domain</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities.html"><span class="micon pa"></span><span>entities</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities/components.html"><span class="micon pa"></span><span>components</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Alive.html"><span class="micon tr"></span><span>Alive</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Combatant.html"><span class="micon tr"></span><span>Combatant</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Interactable.html"><span class="micon tr"></span><span>Interactable</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Inventory.html"><span class="micon tr"></span><span>Inventory</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Movable.html"><span class="micon tr"></span><span>Movable</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Pickable.html"><span class="micon tr"></span><span>Pickable</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Usable.html"><span class="micon tr"></span><span>Usable</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/components/Usable$.html"><span class="micon ob"></span><span>Usable</span></a></span></div></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities/items.html"><span class="micon pa"></span><span>items</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/entities/items/Dust.html"><span class="micon cl"></span><span>Dust</span></a></span></div><div class="ni n4"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities/items/Dust$.html"><span class="micon ob"></span><span>Dust</span></a></span><div class="ni n5 "><span class="nh "><a href="../../domain/entities/items/Dust$$given_Usable_Dust_Player$.html"><span class="micon ob"></span><span>given_Usable_Dust_Player</span></a></span></div></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/items/ExitDoor.html"><span class="micon cl"></span><span>ExitDoor</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/items/Potion.html"><span class="micon cl"></span><span>Potion</span></a></span></div><div class="ni n4"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities/items/Potion$.html"><span class="micon ob"></span><span>Potion</span></a></span><div class="ni n5 "><span class="nh "><a href="../../domain/entities/items/Potion$$given_Usable_Potion_Player$.html"><span class="micon ob"></span><span>given_Usable_Potion_Player</span></a></span></div></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/items/Sign.html"><span class="micon cl"></span><span>Sign</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/entities/items/Weapon.html"><span class="micon cl"></span><span>Weapon</span></a></span></div><div class="ni n4"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/entities/items/Weapon$.html"><span class="micon ob"></span><span>Weapon</span></a></span><div class="ni n5 "><span class="nh "><a href="../../domain/entities/items/Weapon$$given_Usable_Weapon_Player$.html"><span class="micon ob"></span><span>given_Usable_Weapon_Player</span></a></span></div></div></div><div class="ni n3 "><span class="nh "><a href="../../domain/entities/Enemy.html"><span class="micon cl"></span><span>Enemy</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/entities/Entity.html"><span class="micon tr"></span><span>Entity</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/entities/Item.html"><span class="micon tr"></span><span>Item</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/entities/Player.html"><span class="micon cl"></span><span>Player</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/util.html"><span class="micon pa"></span><span>util</span></a></span><div class="ni n3 "><span class="nh "><a href="../../domain/util/Direction$.html"><span class="micon ob"></span><span>Direction</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/Direction.html"><span class="micon en"></span><span>Direction</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/EnemyClasses.html"><span class="micon en"></span><span>EnemyClasses</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/GameControllerState.html"><span class="micon en"></span><span>GameControllerState</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/GameError.html"><span class="micon tr"></span><span>GameError</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/util/GameError$.html"><span class="micon ob"></span><span>GameError</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$GameOver.html"><span class="micon cl"></span><span>GameOver</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$Help.html"><span class="micon cl"></span><span>Help</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$InvalidDirection.html"><span class="micon cl"></span><span>InvalidDirection</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$InvalidInput.html"><span class="micon cl"></span><span>InvalidInput</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$ItemNotOwned.html"><span class="micon cl"></span><span>ItemNotOwned</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$ItemNotPresent.html"><span class="micon cl"></span><span>ItemNotPresent</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$Undo.html"><span class="micon cl"></span><span>Undo</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameError$$UndoError.html"><span class="micon cl"></span><span>UndoError</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/GameResult.html"><span class="micon tr"></span><span>GameResult</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/util/GameResult$.html"><span class="micon ob"></span><span>GameResult</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameResult$$Error.html"><span class="micon cl"></span><span>Error</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/GameResult$$Success.html"><span class="micon cl"></span><span>Success</span></a></span></div></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/util/Geometry$.html"><span class="micon ob"></span><span>Geometry</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/util/Geometry$$Point2D$.html"><span class="micon ob"></span><span>Point2D</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/ItemClasses.html"><span class="micon en"></span><span>ItemClasses</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/PlayerClasses.html"><span class="micon en"></span><span>PlayerClasses</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/PlayerCommand.html"><span class="micon tr"></span><span>PlayerCommand</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/util/PlayerCommand$.html"><span class="micon ob"></span><span>PlayerCommand</span></a></span><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Attack.html"><span class="micon cl"></span><span>Attack</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Help$.html"><span class="micon ob"></span><span>Help</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Interact.html"><span class="micon cl"></span><span>Interact</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Movement.html"><span class="micon cl"></span><span>Movement</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Quit$.html"><span class="micon ob"></span><span>Quit</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Undo$.html"><span class="micon ob"></span><span>Undo</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../../domain/util/PlayerCommand$$Use.html"><span class="micon cl"></span><span>Use</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../../domain/util/Scala2P$.html"><span class="micon ob"></span><span>Scala2P</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../../domain/world.html"><span class="micon pa"></span><span>world</span></a></span><div class="ni n3 "><span class="nh "><a href="../../domain/world/GameSession.html"><span class="micon cl"></span><span>GameSession</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/world/GameSession$.html"><span class="micon ob"></span><span>GameSession</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/world/GameState.html"><span class="micon cl"></span><span>GameState</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/world/Room.html"><span class="micon cl"></span><span>Room</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../../domain/world/World.html"><span class="micon cl"></span><span>World</span></a></span></div></div></div><div class="ni n1 expanded"><span class="nh h100 expanded cs"><button class="ar icon-button expanded"></button><a href="../../infrastructure.html"><span class="micon pa"></span><span>infrastructure</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../controller.html"><span class="micon pa"></span><span>controller</span></a></span><div class="ni n3 "><span class="nh "><a href="../controller/ChampSelectController.html"><span class="micon cl"></span><span>ChampSelectController</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../controller/Controller.html"><span class="micon tr"></span><span>Controller</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../controller/GameController.html"><span class="micon cl"></span><span>GameController</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../controller/GameEngine.html"><span class="micon cl"></span><span>GameEngine</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../controller/GameOverController.html"><span class="micon cl"></span><span>GameOverController</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../controller/MenuController.html"><span class="micon cl"></span><span>MenuController</span></a></span></div></div><div class="ni n2 expanded"><span class="nh h100 expanded cs"><button class="ar icon-button expanded"></button><a href="../view.html"><span class="micon pa"></span><span>view</span></a></span><div class="ni n3 expanded"><span class="nh h100 selected"><button class="ar icon-button expanded"></button><a href="#"><span class="micon pa"></span><span>terminal</span></a></span><div class="ni n4"><span class="nh "><button class="ar icon-button "></button><a href="terminal/cli.html"><span class="micon pa"></span><span>cli</span></a></span><div class="ni n5 "><span class="nh "><a href="terminal/cli/CliApp$.html"><span class="micon ob"></span><span>CliApp</span></a></span></div><div class="ni n5 "><span class="nh "><a href="terminal/cli/ConsoleView.html"><span class="micon cl"></span><span>ConsoleView</span></a></span></div></div><div class="ni n4"><span class="nh "><button class="ar icon-button "></button><a href="terminal/jline.html"><span class="micon pa"></span><span>jline</span></a></span><div class="ni n5 "><span class="nh "><a href="terminal/jline/JLineApp$.html"><span class="micon ob"></span><span>JLineApp</span></a></span></div><div class="ni n5 "><span class="nh "><a href="terminal/jline/JLineView.html"><span class="micon cl"></span><span>JLineView</span></a></span></div><div class="ni n5 "><span class="nh "><a href="terminal/jline/JLineView$.html"><span class="micon ob"></span><span>JLineView</span></a></span></div></div><div class="ni n4 "><span class="nh "><a href="terminal/ChampSelectView.html"><span class="micon cl"></span><span>ChampSelectView</span></a></span></div><div class="ni n4 "><span class="nh "><a href="terminal/GameOverView.html"><span class="micon cl"></span><span>GameOverView</span></a></span></div><div class="ni n4 "><span class="nh "><a href="terminal/GameRunView.html"><span class="micon cl"></span><span>GameRunView</span></a></span></div><div class="ni n4 "><span class="nh "><a href="terminal/HelpView$.html"><span class="micon ob"></span><span>HelpView</span></a></span></div><div class="ni n4 "><span class="nh "><a href="terminal/MenuView.html"><span class="micon cl"></span><span>MenuView</span></a></span></div><div class="ni n4 "><span class="nh "><a href="terminal/Shared$.html"><span class="micon ob"></span><span>Shared</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="View.html"><span class="micon tr"></span><span>View</span></a></span></div></div></div></div></nav></div><div id="footer" class="body-small"><div class="left-container">Generated with</div><div class="right-container"><div class="text"></div></div><div class="text-mobile"></div></div><div id="scaladoc-searchBar"></div><div id="main"><div class="breadcrumbs container"><a href="../../../index.html">PPS-24-Scalata</a>/<a href="../../../scalata.html">scalata</a>/<a href="../../infrastructure.html">scalata.infrastructure</a>/<a href="../view.html">scalata.infrastructure.view</a>/<a href="terminal.html">scalata.infrastructure.view.terminal</a></div><div id="content" class="body-medium"><div><div class="cover-header">
+ <span class="icon"><span class="micon pa"></span></span>
+ <h1 class="h600 single">scalata.infrastructure.view.terminal</h1>
+</div>
+<div class="fqname body-large">
+ <span></span>
+</div>
+<div class="main-signature mono-small-block">
+ <div class="signature">
+  <span class="modifiers"></span><span class="kind"><span t="k">package </span></span><a href="terminal.html" t="n" class="documentableName ">scalata.infrastructure.view.terminal</a>
+ </div>
+</div>
+<section id="members-list">
+ <h2 class="h500">Members list</h2>
+ <div class="documentableFilter">
+  <div class="filtersContainer"></div><input class="filterableInput" placeholder="Filter by any phrase" data-test-id="filterBarInput" type="search"><button class="clearButton label-only-button" data-test-id="filterBarClearButton">Clear all</button>
+ </div>
+ <div class="membersList expand">
+  <div class="tabs">
+   <div class="contents">
+    <section id="Packages">
+     <div data-togglable="packages" class="tab expand">
+      <div class="documentableList expand">
+       <div class="documentableList-expander">
+        <button class="icon-button show-content expand"></button>
+        <h3 class="groupHeader h400">Packages</h3>
+       </div>
+       <div class="documentableElement">
+        <div class="documentableElement-expander">
+         <div class="header monospace mono-medium">
+          <div class="signature">
+           <span class="modifiers"></span><span class="kind"><span t="k">package </span></span><a href="terminal/cli.html" t="n" class="documentableName ">scalata.infrastructure.view.terminal.cli</a>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="documentableElement">
+        <div class="documentableElement-expander">
+         <div class="header monospace mono-medium">
+          <div class="signature">
+           <span class="modifiers"></span><span class="kind"><span t="k">package </span></span><a href="terminal/jline.html" t="n" class="documentableName ">scalata.infrastructure.view.terminal.jline</a>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="Type-members">
+     <div data-togglable="Type members" class="tab expand">
+      <div class="member-group-header">
+       <h3 data-togglable="Type members" class="h400">Type members</h3>
+      </div>
+      <section id="Classlikes">
+       <div class="documentableList expand">
+        <div class="documentableList-expander">
+         <button class="icon-button show-content expand"></button>
+         <h4 class="groupHeader h200">Classlikes</h4>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="signature-short"><span class="modifiers"></span><span class="kind"><span t="k">class </span></span><a href="terminal/ChampSelectView.html" t="n" class="documentableName ">ChampSelectView</a>[<span t="k"></span><span data-unresolved-link="" t="t">F</span>[<span t="t">_</span>]](<span t="k"></span><span t="k">val </span><span data-unresolved-link="" t="n">view</span>: <a href="../../application/services/GameView.html" t="t">GameView</a>[<span data-unresolved-link="" t="t">F</span>, <span data-unresolved-link="" t="t">String</span>])(<span t="k">implicit </span><span t="k"></span><span data-unresolved-link="" t="n">evidence$1</span>: <span data-unresolved-link="" t="t">Sync</span>[<span data-unresolved-link="" t="t">F</span>])<span t="k"> extends </span><a href="View.html" t="t">View</a>[<a href="terminal/ChampSelectView.html" t="t">ChampSelectView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <a href="../../domain/util/PlayerClasses.html" t="t">PlayerClasses</a>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]</span><span class="signature-long"></span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p><strong>Champion-selection screen</strong>.</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p><strong>Champion-selection screen</strong>.</p>
+              <p>The view extends the generic <a href="View.html">View</a> template, supplying: • an ASCII banner that lists available possible inputs; • a <code>parse</code> implementation that maps raw user input.</p>
+             </div>
+             <h2 class="h200">Type parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               F
+              </dt>
+              <dd class="body-medium">
+               <p>effect type (e.g. <code>IO</code>)</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Value parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               view
+              </dt>
+              <dd class="body-medium">
+               <p>low-level <a href="../../application/services/GameView.html">GameView</a> through which all rendering and input occur (dependency-injected so that we stay UI-agnostic).</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 trait <a href="View.html" t="n">View</a>[<a href="terminal/ChampSelectView.html" t="t">ChampSelectView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <a href="../../domain/util/PlayerClasses.html" t="t">PlayerClasses</a>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="signature-short"><span class="modifiers"></span><span class="kind"><span t="k">class </span></span><a href="terminal/GameOverView.html" t="n" class="documentableName ">GameOverView</a>[<span t="k"></span><span data-unresolved-link="" t="t">F</span>[<span t="t">_</span>]](<span t="k"></span><span t="k">val </span><span data-unresolved-link="" t="n">view</span>: <a href="../../application/services/GameView.html" t="t">GameView</a>[<span data-unresolved-link="" t="t">F</span>, <span data-unresolved-link="" t="t">String</span>])(<span t="k">implicit </span><span t="k"></span><span data-unresolved-link="" t="n">evidence$1</span>: <span data-unresolved-link="" t="t">Sync</span>[<span data-unresolved-link="" t="t">F</span>])<span t="k"> extends </span><a href="View.html" t="t">View</a>[<a href="terminal/GameOverView.html" t="t">GameOverView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <span data-unresolved-link="" t="t">Boolean</span>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]</span><span class="signature-long"></span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p><strong>Game over screen</strong>.</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p><strong>Game over screen</strong>.</p>
+              <p>The view extends the generic <a href="View.html">View</a> template, supplying: • an ASCII banner that lists available possible inputs; • a <code>parse</code> implementation that maps raw user input.</p>
+             </div>
+             <h2 class="h200">Type parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               F
+              </dt>
+              <dd class="body-medium">
+               <p>effect type (e.g. <code>IO</code>)</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Value parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               view
+              </dt>
+              <dd class="body-medium">
+               <p>low-level <a href="../../application/services/GameView.html">GameView</a> through which all rendering and input occur (dependency-injected so that we stay UI-agnostic).</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 trait <a href="View.html" t="n">View</a>[<a href="terminal/GameOverView.html" t="t">GameOverView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <span data-unresolved-link="" t="t">Boolean</span>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">class </span></span><a href="terminal/GameRunView.html" t="n" class="documentableName ">GameRunView</a>[<span t="k"></span><span data-unresolved-link="" t="t">F</span>[<span t="t">_</span>]](<span t="k"></span><span t="k">val </span><span data-unresolved-link="" t="n">view</span>: <a href="../../application/services/GameView.html" t="t">GameView</a>[<span data-unresolved-link="" t="t">F</span>, <span data-unresolved-link="" t="t">String</span>])(<span t="k">implicit </span><span t="k"></span><span data-unresolved-link="" t="n">evidence$1</span>: <span data-unresolved-link="" t="t">Sync</span>[<span data-unresolved-link="" t="t">F</span>])
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p><strong>Game Running screen</strong>.</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p><strong>Game Running screen</strong>.</p>
+              <p>The view extends the generic <a href="View.html">View</a> template, supplying: • an ASCII banner that lists available possible inputs; • a <code>parse</code> implementation that maps raw user input.</p>
+             </div>
+             <h2 class="h200">Type parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               F
+              </dt>
+              <dd class="body-medium">
+               <p>effect type (e.g. <code>IO</code>)</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Value parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               view
+              </dt>
+              <dd class="body-medium">
+               <p>low-level <a href="../../application/services/GameView.html">GameView</a> through which all rendering and input occur (dependency-injected so that we stay UI-agnostic).</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">object </span></span><a href="terminal/HelpView$.html" t="n" class="documentableName ">HelpView</a>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p>Help String</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p>Help String</p>
+             </div>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+              <dt class="body-small">
+               Self type
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <span></span>
+                <div>
+                 <a href="terminal/HelpView$.html" t="n">HelpView</a>.<span t="k">type</span>
+                </div>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="signature-short"><span class="modifiers"></span><span class="kind"><span t="k">class </span></span><a href="terminal/MenuView.html" t="n" class="documentableName ">MenuView</a>[<span t="k"></span><span data-unresolved-link="" t="t">F</span>[<span t="t">_</span>]](<span t="k"></span><span t="k">val </span><span data-unresolved-link="" t="n">view</span>: <a href="../../application/services/GameView.html" t="t">GameView</a>[<span data-unresolved-link="" t="t">F</span>, <span data-unresolved-link="" t="t">String</span>])(<span t="k">implicit </span><span t="k"></span><span data-unresolved-link="" t="n">evidence$1</span>: <span data-unresolved-link="" t="t">Sync</span>[<span data-unresolved-link="" t="t">F</span>])<span t="k"> extends </span><a href="View.html" t="t">View</a>[<a href="terminal/MenuView.html" t="t">MenuView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <span data-unresolved-link="" t="t">Boolean</span>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]</span><span class="signature-long"></span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p><strong>Menu screen</strong>.</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p><strong>Menu screen</strong>.</p>
+              <p>The view extends the generic <a href="View.html">View</a> template, supplying: • an ASCII banner that lists available possible inputs; • a <code>parse</code> implementation that maps raw user input.</p>
+             </div>
+             <h2 class="h200">Type parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               F
+              </dt>
+              <dd class="body-medium">
+               <p>effect type (e.g. <code>IO</code>)</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Value parameters</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               view
+              </dt>
+              <dd class="body-medium">
+               <p>low-level <a href="../../application/services/GameView.html">GameView</a> through which all rendering and input occur (dependency-injected so that we stay UI-agnostic).</p>
+              </dd>
+             </dl>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 trait <a href="View.html" t="n">View</a>[<a href="terminal/MenuView.html" t="t">MenuView</a>[<span t="t">F</span>], <span data-unresolved-link="" t="t">String</span>, <span data-unresolved-link="" t="t">Boolean</span>, <span data-unresolved-link="" t="t">String</span>, <span t="t">F</span>]
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">object </span></span><a href="terminal/Shared$.html" t="n" class="documentableName ">Shared</a>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="documentableBrief doc">
+             <p>Terminal-view helper utilities shared.</p>
+            </div>
+            <div class="cover">
+             <div class="doc">
+              <p>Terminal-view helper utilities shared.</p>
+              <p>Responsibilities <br>
+                • Wire a map <code>GameControllerState ⇒ Controller[F]</code> so that the <a href="../controller/GameEngine.html">GameEngine</a><br>
+                can route the state machine to the correct controller. • Provide a generic <code>run</code> loop that repeatedly asks the user for input until the supplied <code>parse</code> function succeeds. <br>
+                • Offer small helper parsers (e.g. <code>booleanParse</code>) used by several interactive screens.</p>
+             </div>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+              <dt class="body-small">
+               Self type
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <span></span>
+                <div>
+                 <a href="terminal/Shared$.html" t="n">Shared</a>.<span t="k">type</span>
+                </div>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
+     </div>
+    </section>
+   </div>
+  </div>
+ </div>
+</section></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#members-list">Members list</a><ul><li><a href="#Packages">Packages</a></li><li><a href="#Type-members">Type members</a><ul><li><a href="#Classlikes">Classlikes</a></li></ul></li></ul></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><div class="text"></div></div><div class="text-mobile"></div></div></div></div></body></html>

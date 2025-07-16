@@ -28,6 +28,10 @@ As the player progresses:
 
 ---
 
+## ScalaDoc
+
+[Complete Scala doc for scalata](scalaDoc)
+
 ## Development Process
 
 The project follows an **agile methodology**, organized into four sprints of approximately 15 hours each. Work is tracked using a **Kanban board** created in Excel, which helps in planning short-term goals and monitoring project progress.
