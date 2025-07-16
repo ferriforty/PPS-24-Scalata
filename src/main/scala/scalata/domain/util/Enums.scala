@@ -2,6 +2,7 @@ package scalata.domain.util
 
 import scalata.domain.util.Geometry.Point2D
 
+/** All hero archetypes with combat stats. */
 enum PlayerClasses:
   case Mage
   case Barbarian
@@ -19,6 +20,7 @@ enum PlayerClasses:
       case PlayerClasses.Barbarian => 7
       case PlayerClasses.Assassin  => 4
 
+/** Enemy families rendered by a single‐char glyph. */
 enum EnemyClasses:
   case Goblin
   case Pig
@@ -28,6 +30,7 @@ enum EnemyClasses:
       case EnemyClasses.Goblin => "g"
       case EnemyClasses.Pig    => "p"
 
+/** Item types; all print as <code>#</code> in the ASCII view. */
 enum ItemClasses:
   case Halberd
   case Staff
@@ -40,6 +43,7 @@ enum ItemClasses:
 
   override def toString: String = "#"
 
+/** High-level controller states handled by the GameEngine. */
 enum GameControllerState:
   case Menu
   case ChampSelect
@@ -73,6 +77,7 @@ object Direction:
   def fromStringWASD(s: String): Option[Direction] =
     wasdMap.get(s.toLowerCase)
 
+/** Cardinal directions plus helpers. */
 enum Direction(val dx: Int, val dy: Int):
   case North extends Direction(0, -1)
   case South extends Direction(0, 1)
@@ -89,6 +94,7 @@ enum Direction(val dx: Int, val dy: Int):
 
   def doorMat: Point2D = Point2D(-dx, -dy)
 
+/** ADT for every user command parsed from the view layer. */
 sealed trait PlayerCommand
 
 object PlayerCommand:

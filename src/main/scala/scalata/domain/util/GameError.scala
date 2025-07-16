@@ -1,5 +1,15 @@
 package scalata.domain.util
 
+/** Enumeration of domain-level errors exchanged between
+ * use-cases, controllers and the view layer.
+ *
+ * <h4>Contract</h4>
+ * Each error provides:
+ * <ul>
+ * <li><code>message</code> – short, end-user text shown in the UI.</li>
+ * <li><code>errorCode</code> – stable identifier useful for logs or tests.</li>
+ * </ul>
+ */
 sealed trait GameError:
   def message: String
 
