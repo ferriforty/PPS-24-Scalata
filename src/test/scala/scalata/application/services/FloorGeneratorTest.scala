@@ -1,13 +1,20 @@
 package scalata.application.services
 
+import cats.effect.IO
 import org.scalatest.{BeforeAndAfter, Tag}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import scalata.application.services.factories.PlayerFactory
+import scalata.application.services.factories.{EnemyFactory, PlayerFactory}
 import scalata.domain.entities.Player
 import scalata.domain.util.PlayerClasses.Mage
 import scalata.domain.util.*
+import scalata.domain.util.Direction.South
+import scalata.domain.util.EnemyClasses.Pig
+import scalata.domain.util.Geometry.Point2D
 import scalata.domain.world.GameSession
+import scalata.application.usecases.GameRunningUseCase
+import scalata.infrastructure.cli.view.TestView
+import scalata.infrastructure.view.terminal.GameRunView
 
 class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
 
@@ -87,4 +94,36 @@ class FloorGeneratorTest extends AnyFlatSpec with Matchers with BeforeAndAfter:
     FloorGenerator.generateFloor(TestPlayer, TestDifficulty, 0, TestLevel)
     val ms = (System.nanoTime() - start) / 1e6
     assert(ms < 100)
+
+  it should "handle 1000 enemies" taggedAs Tag("Non-Functional") in :
+    val currentRoom = gameSession.getWorld.getRoom(
+      gameSession.getGameState.currentRoom
+    ).get
+
+    val enemies = for
+      i <- 1 to 10000
+      enemy = EnemyFactory().create(Pig).move(
+          currentRoom.botRight.moveBy(
+            Point2D(
+              -(i % currentRoom.size._1),
+              -(i % currentRoom.size._2))
+          )
+      )
+    yield enemy
+
+    val filledGS = gameSession.updateWorld(gameSession.getWorld.updateRoom(
+      currentRoom.withEnemies(enemies.toList)
+    ))
+
+    val start = System.nanoTime()
+    GameRunningUseCase().execTurn(
+      filledGS,
+      IO.pure(PlayerCommand.Movement(South))
+    )
+
+    val usedMemory = (Runtime.getRuntime.totalMemory - Runtime.getRuntime.freeMemory) / (1024 * 1024)
+    val timeMs = (System.nanoTime() - start) / 1e6
+    assert(usedMemory < 512)
+    assert(timeMs < 2000)
+
 
