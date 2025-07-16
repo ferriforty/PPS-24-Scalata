@@ -94,11 +94,18 @@ without changing world state.
 - **FR-EH.02** Attempting to use an item not owned shall raise `ItemNotOwned`, preserving state.
 - **FR-EH.03** Requests to move into walls, closed doors or occupied cells shall raise `InvalidDirection`.
 
-## 5  Non-Functional Requirements (NFR)
+## 5. Non-Functional Requirements (NFR)
 
-| ID            | Category    | Requirement                                                                                                                  |
-|---------------|-------------|------------------------------------------------------------------------------------------------------------------------------|
-| **NFR-US.01** | Usability   | *Help* command must list all valid verbs and examples.                                                                       |
-| **NFR-US.02** | Usability   | Novice players must complete tutorial floor in ≤ 5 min (observational study).                                                |
-| **NFR-RE.01** | Reliability | Game shall not crash on malformed input; unhandled exceptions count ≤ 1 per 10 000 commands during test suite.               |
-| **NFR-PE.01** | Performance | Floor generation time  Procedural generation, permadeath and turn-based loops are the canonical pillars of roguelike design. |
+| ID            | Category        | Requirement                                                                                                                          |
+|---------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| **NFR-US.01** | Usability       | The game must support a `help` command that prints all available player actions, grouped by category, with examples of usage.        |
+| **NFR-US.02** | Usability       | A novice player must be able to complete the tutorial floor (Level 1) in under **5 minutes** on 90% of test runs.                    |
+| **NFR-RE.01** | Reliability     | The game must handle invalid inputs (e.g., wrong command, syntax error) without crashing or altering game state.                     |
+| **NFR-RE.02** | Reliability     | Uncaught runtime exceptions must not exceed **1 per 10,000** executed commands during integration tests.                             |
+| **NFR-PE.01** | Performance     | Procedural generation of a new floor must complete in under **100 milliseconds** on a 2.0 GHz CPU with ≤ 512 MB RAM.                 |
+| **NFR-PE.02** | Performance     | Resolution of a full game turn (player + up to 10 enemy AIs) must complete in under **10 milliseconds** per turn.                    |
+| **NFR-TE.01** | Testability     | The codebase must achieve at least **80% line coverage** and **60% branch coverage** as measured by Scoverage.                       |
+| **NFR-MA.01** | Maintainability | All public APIs must be documented using Scaladoc; the code must be formatted with Scalafmt and contain no TODOs in committed files. |
+| **NFR-EX.01** | Extensibility   | New enemy or item types must be addable exclusively by extending factory methods, without altering any existing Domain class.        |
+| **NFR-PO.01** | Portability     | The application must be executable on Windows, macOS, and Linux using **OpenJDK 17+**, with no OS-specific dependencies.             |
+| **NFR-SC.01** | Scalability     | The game engine must support generating levels with **up to 1000 enemies** without exceeding 512 MB RAM or 2 seconds of turn time.   |
