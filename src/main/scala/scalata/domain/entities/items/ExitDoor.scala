@@ -5,6 +5,13 @@ import scalata.domain.util.Geometry.Point2D
 import scalata.domain.util.{GameResult, ItemClasses}
 import scalata.domain.world.GameSession
 
+/** Door that moves the player to the next floor when interacted with.
+ *
+ * <ul>
+ * <li><b>interact</b> – increments <code>currentLevel</code> in the session’s
+ * <code>GameState</code> and returns a successful
+ * [[scalata.domain.util.GameResult]].</li>
+ */
 final case class ExitDoor(
     override val id: String,
     override val position: Option[Point2D] = None,
@@ -21,4 +28,5 @@ final case class ExitDoor(
       )
     )
 
+  /** @inheritdoc */
   override def spawn(pos: Option[Point2D]): ExitDoor = setPosition(pos)
