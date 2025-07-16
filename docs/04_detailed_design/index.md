@@ -4,8 +4,6 @@ layout: default
 nav_order: 5
 ---
 
-Here is the requested English translation.
-
 # Detailed Design
 
 This chapter outlines the detailed design choices implemented in the Scalata project, diving into the code-base 
@@ -116,8 +114,6 @@ giving a project like **Scalata** a clear, test-friendly structure.
 3. Connect the outside world (UI, databases, Prolog engine, files, network, etc.) through thin 
 **Infrastructure adapters** that implement or drive the ports declared in the Application layer.
 
-![plot](Domain.png)
-
 #### 2  Dependency rules
 - **Only inward references**: infrastructure → application → domain (never the opposite).
 - **Domain** has *no* dependency on external libraries except for lightweight FP datatypes; 
@@ -133,10 +129,9 @@ changing or replacing it never ripples back into core logic.
 |--------------------------|-------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
 | **Isolation & testing**  | Domain and Application layers are pure; they can be unit- or property-tested without running the console, AI, or file system. | `EnemyMovementUseCase` is tested with a TestView stub; no ANSI rendering is involved.                           |
 | **Pluggable interfaces** | A new presentation layer (e.g., GUI, web) is a *single* adapter implementing `GameView`; no other code changes.               | Swap `ConsoleView` with a future ScalaFX view by wiring it in `Main.scala`.                                     |
-| **Safe evolution**       | Outer-layer refactors cannot break domain invariants because dependencies are one-way.                                        | Prolog engine can be replaced by an A* path-finder written in Scala without touching `Enemy` or `World`.        |
+| **Safe evolution**       | Outer-layer refactors cannot break domain invariants because dependencies are one-way.                                        | Prolog engine can be replaced by an A* path-finder written in Scala without touching `Enemy`.                   |
 | **Clear ownership**      | Each concern has a unique home—business rules in Domain, workflows in Application, devices in Infrastructure.                 | Inventory capacity logic lives in `Player`.                                                                     |
 | **Tech agnosticism**     | Core stays independent from frameworks, keeping compile times low and portability high.                                       | Domain compiles on Scala JVM, ScalaJS, or Native if desired.                                                    |
-| **Parallel development** | Teams can work on layers concurrently with mock implementations.                                                              | While one teammate designs a GUI adapter, another improves `FloorGenerator`—no merge conflicts on shared files. |
 
 #### 4  Typical workflow of a game turn
 
@@ -215,7 +210,7 @@ Displays the current tower level without mutating the world state.
 
 Moves the player to the next floor and increments `GameState.currentLevel` on success.
 
-## 2 Cross-cutting Capabilities (Traits)
+### 2 Cross-cutting Capabilities (Traits)
 
 | Capability   | Purpose                   | Key Methods                                                                  |
 |--------------|---------------------------|------------------------------------------------------------------------------|
@@ -230,7 +225,7 @@ Moves the player to the next floor and increments `GameState.currentLevel` on su
 These traits are **orthogonal**; concrete entities mix only the capabilities they need, 
 keeping the model lean and extensible.
 
-## 3 Design Principles Adopted
+### 3 Design Principles Adopted
 
 * **Immutability first** – every state change returns a fresh value object; no in-place mutation.
 * **Type-class architecture** – separates *data* (case classes) from *behaviour* (traits), 
@@ -238,9 +233,119 @@ promoting reuse and testability.
 * **Compile-time safety** – enumerations and generic constraints prevent invalid combinations 
 (e.g., a non-pickable Sign cannot be mis-used).
 
+## Detailed Design – View Layer
+
+The *view* package renders the game on a text console and gathers user input while remaining 
+**UI-technology agnostic**.  
+It is split into three concentric circles:
+
+1. **UI-independent façade** (`GameView`)
+2. **UI-specific adaptors** (`ConsoleView`, `JLineView`)
+3. **High-level screens** (`MenuView`, `GameRunView`, …) that orchestrate banner creation and input parsing.
+
+### 1 Core Abstractions
+
+#### 1.1 `GameView[F, I]`
+A *polymorphic interface* that lifts all I/O operations into any effect `F` supporting `cats.effect.Sync`:
+
+| Operation                 | Purpose                 |
+|---------------------------|-------------------------|
+| `display[A](text: A)`     | Write arbitrary content |
+| `getInput`                | Read a line (blocking)  |
+| `displayError[A](msg: A)` | Highlight invalid input |
+| `clearScreen`             | full refresh            |
+
+`GameView` is the **sole contract** known by upper layers (controllers). 
+Everything below it can change without ripple effects.
+
+#### 1.2 `View`
+A *template* that factors common logic for interactive screens:
+
+* **Banner** generation (`banner` val)
+* **Raw-to-domain parsing** (`parse`)
+* **Loop** that re-asks until parsing succeeds (`Shared.run`)
+
+It is parameterised on:
+
+```
+V = concrete subclass
+I = raw input
+O = domain output
+E = error type shown to the user
+F = effect
+```
+
+![plot](ViewGameView.png)
+
+### 2 Low-Level I/O Adaptors
+
+| Class            | Technology         | Responsibilities                                                  |
+|------------------|--------------------|-------------------------------------------------------------------|
+| `ConsoleView[F]` | **StdIn / StdOut** | Implements `GameView` with plain Scala I/O and ANSI clear-screen. |
+| `JLineView[F]`   | **JLine v3**       | Rich terminal (non-blocking reader, key echo control).            |
+
+![plot](ConsoleView.png)
+
+**Design highlights**
+
+* Both classes *bridge* the abstract `GameView` interface: 
+the rest of the codebase stays unchanged when swapping I/O backend.
+* `JLineView` guards the `Terminal` inside a `Resource`, 
+applying the **RAII** pattern to avoid file-descriptor leaks.
+
+### 3 Interactive Screens
+
+Every screen subclasses `View`, specialises `banner` and `parse`, and exposes an `ask` method to its controller.
+
+| Screen            | Domain output   | Short description                                                   |
+|-------------------|-----------------|---------------------------------------------------------------------|
+| `MenuView`        | `Boolean`       | “Start game? y/n”                                                   |
+| `ChampSelectView` | `PlayerClasses` | Choose class (Mage, Barbarian, Assassin)                            |
+| `GameRunView`     | `PlayerCommand` | Main gameplay HUD; prints world map and interprets complex commands |
+| `GameOverView`    | `Boolean`       | Ask to return to menu                                               |
+| `HelpView`        | n/a             | Static help string                                                  |
 
 
+#### 3.1 `GameRunView` – key points
+* Builds an ASCII **mini-map** from `GameSession`, painting rooms, doors, items, player symbol and enemies.
+* Parses multi-token commands (`"c n"`, `"u potion"`, `"undo"` …) with pattern matching.
+* Encapsulates rendering helpers (`getCellDisplay`, `findDoorSymbol`, …) for *single responsibility*.
 
+![plot](GamerunView.png)
+
+### 4 Shared Utilities
+
+#### 4.1 `Shared` object
+* **Controller router** – returns the `GameControllerState ⇒ Controller[F]` map, 
+injecting the chosen `view` instance into every screen.
+* **Generic run-loop** – repeatedly queries `GameView.getInput` until `parse` succeeds.
+* **Helper parsers** – e.g., `booleanParse`.
+
+### 5 Command-Line Entry Points
+
+* `CliApp` – Bootstrap with `ConsoleView`, then hand control to `GameEngine.gameLoop`.
+* `JLineApp` – Same, but wraps `JLineView` in a `Resource` to guarantee terminal closure.
+
+### 6 Interaction Workflow
+
+1. **App** constructs a concrete `GameView` implementation.
+2. It passes that instance to `Shared.getControllersMap`, wiring every controller to 
+its corresponding *screen* (`View` subclass).
+3. `GameEngine` drives the state machine:
+  * asks the current controller ➞
+  * controller delegates to its screen’s `ask` ➞
+  * screen uses `GameView` to render banners and read input.
+4. On shutdown, resources (JLine terminal) are released automatically.
+
+### 7 Design Principles Applied
+
+* **Bridge pattern** – separates *what* the game wants to display (`GameView`) from *how* 
+it is displayed (`ConsoleView`, `JLineView`).
+* **Template Method** – `View` fixes the input loop while letting subclasses customise banner and parsing.
+* **Dependency Injection** – every screen receives a `GameView` in its constructor, enabling pure 
+unit testing with mocks.
+* **Functional purity** – all public methods remain referentially transparent; 
+side effects live inside the `F` context.
 
 
 ## Monad Pattern with Cats Effect
