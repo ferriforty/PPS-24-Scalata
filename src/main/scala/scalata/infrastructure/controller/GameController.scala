@@ -14,15 +14,32 @@ import scalata.domain.util.{
 import scalata.domain.world.GameSession
 import scalata.infrastructure.view.terminal.HelpView
 
+/** Controller that manages the **Game-Running** state.
+ *
+ * <ul>
+ * <li>Builds an initial [[GameSession]] from the supplied [[GameBuilder]].</li>
+ * <li>Runs the main turn loop by delegating to [[GameRunningUseCase]].</li>
+ * <li>Handles <code>Success</code> / <code>Error</code> outcomes and
+ * decides the next [[GameControllerState]].</li>
+ * </ul>
+ *
+ * @param askCommand side-effecting function that retrieves a
+ *                   [[PlayerCommand]] from the active view.
+ * @tparam F effect type, usually <code>IO</code>
+ */
 class GameController[F[_]: Sync](
     askCommand: GameSession => F[PlayerCommand]
 ) extends Controller[F]:
 
+  /** Entry-point called by the GameEngine. */
   final override def start(
       gameBuilder: GameBuilder
   ): F[GameResult[(GameControllerState, GameBuilder)]] =
     gameLoop(gameBuilder.build(System.currentTimeMillis()))
 
+  /** Recursive loop that processes one turn and recurses
+   * until the game ends or a controller switch is required.
+   */
   private def gameLoop(
       gameSession: GameSession
   ): F[GameResult[(GameControllerState, GameBuilder)]] =

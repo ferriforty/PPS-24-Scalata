@@ -17,5 +17,5 @@ object JLineApp extends IOApp:
 
   def run(args: List[String]): IO[ExitCode] =
     view.use: view =>
-      GameEngine[IO, String]()
+      GameEngine[IO]()
         .gameLoop(controllers = Shared.getControllersMap[IO](view))
