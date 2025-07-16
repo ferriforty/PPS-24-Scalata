@@ -143,6 +143,106 @@ changing or replacing it never ripples back into core logic.
 ![plot](../04_detailed_design/sequence_arch_sclata.png)
 
 
+## Entities
+
+The following section details the **static entities**.  
+
+![plot](Entities.png)
+
+### 1.1 Enemy
+
+A hostile creature driven by the AI.
+
+![plot](Enemy.png)
+
+**Behavioural mix-ins**
+* Alive – `takeDamage`, `heal`, `isAlive`
+* Movable – `move(newPos)`
+* Combatant – `attack(target: Player)`
+
+### 1.2 Player
+
+Embodies the user-controlled hero and owns an inventory.
+
+![plot](Player.png)
+
+**Behavioural mix-ins**
+* Alive – HP management
+* Movable – Spatial translation
+* Combatant – `attack(opponent: Enemy)`
+* Inventory – item handling (`equipWeapon`, `addItem`, …)
+
+### 1.3 Item Hierarchy
+
+All pickable or interactable objects inherit from the abstract `Item`.
+
+| «trait» Item                       |                                             |
+|------------------------------------|---------------------------------------------|
+| **id** : String                    | Persistent identifier                       |
+| **position** : Option              | *Some(p)* when on floor, `None` once picked |
+| **name** : String                  | Label shown to the player                   |
+| **itemClass** : ItemClasses        | Functional grouping (*Weapon*, *Potion*, …) |
+| **interact(session)** : GameResult | Context action (e.g., pick up)              |
+| **spawn(pos)** : Item              | Copy of the item at a new position          |
+
+![plot](Item.png)
+
+#### 1.3.1 Weapon
+
+![plot](Weapon.png)
+
+*Interactions*  
+– Pickable: transferred to inventory 
+– Usable: equips itself and removes from bag
+
+#### 1.3.2 Potion
+
+![plot](Potion.png)
+
+*Interactions*  
+– Pickable → inventory 
+– Usable → heals the owner, then destroys itself
+
+#### 1.3.3 Dust
+
+Flavour collectible with no gameplay effect; still pickable for achievements.
+
+#### 1.3.4 Sign
+
+Displays the current tower level without mutating the world state.
+
+#### 1.3.5 ExitDoor
+
+Moves the player to the next floor and increments `GameState.currentLevel` on success.
+
+## 2 Cross-cutting Capabilities (Traits)
+
+| Capability   | Purpose                   | Key Methods                                                                  |
+|--------------|---------------------------|------------------------------------------------------------------------------|
+| Alive        | Life-cycle management     | `takeDamage`, `heal`, `isAlive`                                              |
+| Movable      | Position updates          | `move(newPos)`                                                               |
+| Combatant    | Fighting interface        | `attack(target)`                                                             |
+| Inventory    | Item storage & equipment  | `equipWeapon`, `addItem`, `removeItem`                                       |
+| Interactable | World interaction hook    | `interact(session)`                                                          |
+| Pickable     | Collect item from floor   | `pick(item, session)`                                                        |
+| Usable       | Contextual use of an item | `use(item, owner)` with given instances for **Potion**, **Weapon**, **Dust** |
+
+These traits are **orthogonal**; concrete entities mix only the capabilities they need, 
+keeping the model lean and extensible.
+
+## 3 Design Principles Adopted
+
+* **Immutability first** – every state change returns a fresh value object; no in-place mutation.
+* **Type-class architecture** – separates *data* (case classes) from *behaviour* (traits), 
+promoting reuse and testability.
+* **Compile-time safety** – enumerations and generic constraints prevent invalid combinations 
+(e.g., a non-pickable Sign cannot be mis-used).
+
+
+
+
+
+
 ## Monad Pattern with Cats Effect
 
 The project leverages the **Monad** pattern via Cats Effect `IO` to handle side effects functionally:
