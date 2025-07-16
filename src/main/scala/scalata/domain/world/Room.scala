@@ -4,6 +4,25 @@ import scalata.domain.entities.{Enemy, Item}
 import scalata.domain.util.Direction
 import scalata.domain.util.Geometry.Point2D
 
+/** Immutable description of a rectangular room on a floor.
+ *
+ * <h4>Structure</h4>
+ * <ul>
+ * <li><b>id</b> unique room identifier (used by world graph).</li>
+ * <li><b>topLeft / botRight</b> corner coordinates that delimit the rectangle.</li>
+ * <li><b>exits</b> map <code>Direction → roomId</code> for door connectivity.</li>
+ * <li><b>items</b> loot on the ground.</li>
+ * <li><b>enemies</b> creatures currently inhabiting the room.</li>
+ * </ul>
+ *
+ * <h4>Main operations</h4>
+ * <ul>
+ * <li>Geometry helpers (<code>size</code>, border checks, <code>isInside</code>).</li>
+ * <li>Topology helpers (<code>getNeighbor</code>, <code>getDoorPosition</code>).</li>
+ * <li>Pure mutators that return a new room (<code>withItems</code>, <code>withEnemies</code>, <code>removeItem</code>).</li>
+ * <li>Queries for entities at a given coordinate.</li>
+ * </ul>
+ */
 final case class Room(
     id: String,
     topLeft: Point2D,
@@ -12,6 +31,7 @@ final case class Room(
     items: List[Item] = List.empty,
     enemies: List[Enemy] = List.empty
 ):
+
   def size: (Int, Int) =
     (this.botRight.x - this.topLeft.x, this.botRight.y - this.topLeft.y)
 
