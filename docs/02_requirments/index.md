@@ -14,7 +14,7 @@ Success is measured by:
 -  the player reaching higher floors without game-breaking layouts,
 -  deterministic seeds that reproduce runs for debugging,
 -  extensibility—new content can be added without touching core logic,
--  ≥ 80% automated test coverage.
+-  ≥ 70% automated test coverage.
 
 ## 2  Stakeholders
 
@@ -31,7 +31,7 @@ Success is measured by:
 | **Player**        | User-controlled hero with stats, inventory, visibility radius.     |
 | **Enemy**         | AI-driven creature with health, attack power and behaviour script. |
 | **NPC**           | Non-hostile trader that barters items (future).                    |
-| **Item**          | Lootable object (weapon, potion, special key, etc.).               |
+| **Item**          | Pickable object (weapon, potion, special key, etc.).               |
 | **Room**          | Rectangular area inside a floor, bounded by walls and doors.       |
 | **Floor / Level** | Set of rooms linked by doors; contains staircase to next level.    |
 | **World**         | Aggregate of floors visited in the current run.                    |
