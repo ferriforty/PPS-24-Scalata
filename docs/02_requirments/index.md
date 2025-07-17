@@ -9,7 +9,7 @@ nav_order: 3
 ## 1  Vision
 
 Deliver an infinitely replayable *text-based roguelike* where every floor of an endless tower is procedurally 
-generated and challenge escalates through tougher enemies, scarcer loot and occasional boss encounters. 
+generated and challenge escalates through tougher enemies and better loot. 
 Success is measured by:
 -  the player reaching higher floors without game-breaking layouts,
 -  deterministic seeds that reproduce runs for debugging,
@@ -43,11 +43,11 @@ Each requirement is testable and prefixed **FR-x.y** for traceability.
 
 ### 4.1 Player Interaction
 - **FR-P.01** The player shall move one grid cell per turn in the four cardinal directions using 
-both *wasd* keys and full words (“north”, “south”, …).
+both *wasd* keys.
 - **FR-P.02** The player shall attempt a melee attack in a chosen direction; damage = base + weapon bonus.
-- **FR-P.03** The player shall pick up an item occupying the same cell, adding it to inventory.
-- **FR-P.04** The player shall drop, use or equip inventory items by textual commands 
-(“use potion”, “equip halberd”).
+- **FR-P.03** The player shall pick up an item in a close cell interacting with it, adding it to inventory.
+- **FR-P.04** The player use inventory items by textual commands 
+(“use potion”).
 - **FR-P.05** The player shall trade items with an NPC when both occupy adjacent cells.
 - **FR-P.06** The player shall ascend when standing on a staircase, starting a new floor 
 with incremented difficulty.
@@ -60,9 +60,9 @@ unless already at root (error raised).
 guaranteeing full connectivity.
 - **FR-W.02** The generator shall ensure exactly one staircase in the last room and no unreachable areas.
 - **FR-W.03** Enemy count per room shall follow a Gaussian distribution centred on *difficulty* with 
-bounds 1–3 (see code constant `gaussianBetween`).
-- **FR-W.04** Loot rarity shall inversely correlate with difficulty: probability 
-(potion) ≥ 0.8 on level 1 and ≤ 0.2 by level 10.
+bounds 1–MAX_ENEMY.
+- **FR-W.04** Loot rarity shall correlate with difficulty: probability 
+(small potion) ≥ 0.8 on level 1 and ≤ 0.2 by level 10.
 - **FR-W.05** When a numeric seed is supplied, two executions with the same seed and difficulty 
 shall produce identical floor layouts and enemy placements.
 

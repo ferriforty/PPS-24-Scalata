@@ -142,12 +142,14 @@ The BFS implementation provides:
 
 ```prolog
 best_moves_all(Moves) :-
-    player(P),
+    player(P, V),
     findall(move(Id,Cur,Next,Cost),
-      ( enemy(Id,Cur),
+      ( 
+        enemy(Id,Cur),
         \+ neigh(Cur,P),          % avoid entering the player's square
         neigh(Cur,Next),
-        distance(Next,Cost)
+        distance(Next,Cost),
+        Cost < V
       ),
     Moves).
 ```
@@ -157,19 +159,25 @@ The predicate walks each enemy’s four neighbours, attaches the pre-computed `C
 ### 2 – Fetch moves (in Scala)
 
 ```scala
-val mVar = Var("M")
-engine(Struct("best_moves_all", mVar)).headOption.foreach { info =>
-  val rawList = info.getVarValue("M").asInstanceOf[Struct]
-  rawList.listIterator().asScala.foreach { term =>
-    val mv = term.asInstanceOf[Struct]
-    moves ::= Move(
-      id   = mv.getArg(0).getTerm.toString,
-      cur  = asPoint(mv.getArg(1)),
-      next = asPoint(mv.getArg(2)),
-      cost = asInt(mv.getArg(3))
-    )
-  }
-}
+ val mVar = Var("M")
+
+engine(Struct("best_moves_all", mVar)).headOption.fold(Nil): info =>
+  val listMoves = info.getVarValue("M").asInstanceOf[Struct]
+  if listMoves.isEmptyList then Nil
+  else
+    import scala.jdk.CollectionConverters.*
+    listMoves
+      .listIterator()
+      .asScala
+      .toList
+      .map: t =>
+        val mv = t.asInstanceOf[Struct]
+        Move(
+          mv.getArg(0).getTerm.toString,
+          asPoint(mv.getArg(1).getTerm),
+          asPoint(mv.getArg(2).getTerm),
+          asInt(mv.getArg(3).getTerm)
+        )
 ```
 
 *Highlights*

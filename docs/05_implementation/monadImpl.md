@@ -113,11 +113,11 @@ def undo: GameSession =
 
 #### Why this works
 
-- **Monad–friendly** `NonEmptyList`’s `flatMap` lets you chain `store`, `undo`, and custom transforms in a for-comprehension.
+- **Monad–friendly** `NonEmptyList`’s `flatMap` lets you chain `store`, `undo`, and custom transforms 
+in a for-comprehension.
 - **Immutable snapshots** Every call produces a new value; earlier states stay intact.
 - **Compile-time safety** History can never be empty, eliminating “empty stack” runtime errors.
 - **Simple undo/redo** `store` pushes, `undo` pops—pure, side-effect-free logic.
-- **Concurrency ready** Wrap the whole session in a `Ref[IO, GameSession]` to make updates atomic when multiple fibers are involved.
 
 ### Error Handling and Validation
 
@@ -149,7 +149,7 @@ Features:
 The main game loop demonstrates advanced monadic composition:
 
 ```scala
-class GameEngine[F[_]: Sync, I]:
+class GameEngine[F[_]: Sync]:
     final def gameLoop(
         gamePhaseService: GamePhaseService = GamePhaseService(),
         gameBuilder: GameBuilder = GameBuilder(None),
@@ -174,37 +174,6 @@ This pattern shows:
 
 - **Recursive monadic loops**: Stack-safe game state transitions
 - **Effect polymorphism**: Works with any `F[_]` that has a `Sync` instance
-
-
-## Domain-Driven Design Integration
-
-### Hexagonal Architecture Compliance
-
-The monad implementation respects DDD principles:
-
-```
-Domain Layer (Pure)
-├── GameState, Player, Move (no effects)
-└── Business rules (pure functions)
-
-Application Layer (Effect-Polymorphic)
-├── GameView[F[_]] (port definition)
-├── Use cases return F[Result]
-└── Effect orchestration
-
-Infrastructure Layer (Concrete Effects)
-├── ConsoleView extends GameView[IO]
-├── TestView extends GameView[SyncIO]
-└── Platform-specific implementations
-```
-
-
-### Benefits of This Architecture
-
-1. **Pure Domain**: Core business logic has no dependency on effects
-2. **Testable Application Layer**: Effect polymorphism enables easy mocking
-3. **Flexible Infrastructure**: Multiple UI implementations possible
-4. **Technology Independence**: Can swap effect systems without domain changes
 
 ## Testing Infrastructure
 

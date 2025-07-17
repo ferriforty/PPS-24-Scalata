@@ -239,7 +239,7 @@ The *view* package renders the game on a text console and gathers user input whi
 **UI-technology agnostic**.  
 It is split into three concentric circles:
 
-1. **UI-independent façade** (`GameView`)
+1. **UI-independent interface** (`GameView`)
 2. **UI-specific adaptors** (`ConsoleView`, `JLineView`)
 3. **High-level screens** (`MenuView`, `GameRunView`, …) that orchestrate banner creation and input parsing.
 

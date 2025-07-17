@@ -124,12 +124,6 @@ The implementation uses Scala's `lift` method for exception-safe collection acce
 - **Return Type**: Returns `Option[T]` instead of throwing exceptions
 - **Functional Composition**: Enables clean chaining with `map` and `flatMap` operations
 
-**Example Usage:**
-```scala
-matrixRooms.lift(row - 1).flatMap(_.lift(col))
-// Safe access to matrix[row-1][col] returning Option[String]
-```
-
 ## Functional Programming Patterns
 
 ### For-Comprehension Usage

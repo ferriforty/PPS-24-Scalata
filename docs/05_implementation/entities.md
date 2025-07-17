@@ -43,8 +43,6 @@ maintainable.
 - **Immutability:** Every state update produces a new value object, ensuring functional purity and 
 referential transparency.
 
-Certainly! Here is a revised version of **Section 2. Entity Creation**, adapted to explicitly document the use of **Factories** for creating entities in your project’s implementation report:
-
 ## 2. Entity Creation
 
 Entities in the system are **always instantiated via dedicated Factory classes** 

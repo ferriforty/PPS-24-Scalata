@@ -44,7 +44,8 @@ from an outer layer, satisfying the Dependency Inversion Principle.
 5. **Repositories / Persistence** – not yet needed; state is held in-memory via `GameSession`.
 
 ## Adherence to Clean Architecture Principles
-- **DIP & ISP**: input/output ports are small, focused traits; adapters implement them, keeping the domain pure.
+- **DIP & ISP**: input/output ports are small, focused traits; adapters(controllers) implement them, 
+keeping the domain pure.
 - **SRP**: each component handles a single concern (parsing, rendering, AI, etc.).
 - **Open/Closed**: new UI (e.g., Swing front-end) can be added as another adapter without modifying 
 existing core code.
