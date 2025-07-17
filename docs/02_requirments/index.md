@@ -109,3 +109,38 @@ without changing world state.
 | **NFR-EX.01** | Extensibility   | New enemy or item types must be addable exclusively by extending factory methods, without altering any existing Domain class.        |
 | **NFR-PO.01** | Portability     | The application must be executable on Windows, macOS, and Linux using **OpenJDK 17+**, with no OS-specific dependencies.             |
 | **NFR-SC.01** | Scalability     | The game engine must support generating levels with **up to 1000 enemies** without exceeding 512 MB RAM or 2 seconds of turn time.   |
+
+## 6. Technology Stack
+
+Below is the comprehensive list of technology choices and tooling adopted for the project, 
+covering both main dependencies and development workflow:
+
+- **Scala 3.3.6**
+- **SBT 1.10.1**
+- **SBT Assembly 2.3.0**  
+- **Scalatest 3.2.19**
+- **Cats Effect 3.6.2**  
+  Library for functional effect handling, enabling pure functional programming and resource safety.
+- **JLine 3.30.4**  
+  Dependable Java library for advanced console and line-oriented user input, supporting both classic CLI and 
+extended terminal experiences.
+- **tuProlog 3.3.0**  
+  Logic programming engine for Prolog-based AI, enemy decision-making, and map logic.
+- **Scoverage 2.2.2**  
+  For code coverage analysis, enforcing and tracking minimum coverage requirements project-wide.
+- **Scalafmt 2.5.2**  
+  Automated code formatter ensuring consistent code style across the team.
+- **GitHub Actions**  
+  Used to enable continuous integration, run test suites on every push, and automate releases.
+- **Immutability-first design**  
+  The entire application favors value objects and immutable data structures; 
+no mutable state is permitted in domain or use case code.
+- **Semantic Release**  
+  Automated project versioning and changelog generation to ensure clear release history.
+- **Scaladoc**  
+  All public APIs are documented using Scala’s built-in documentation tooling to ease maintainability 
+and onboarding.
+
+These technology choices were made to fulfill both the functional and non-functional requirements of the project, 
+such as performance, reliability, scalability, testability, and maintainability. The toolchain also enables high 
+code quality, continuous feedback, and future extensibility with minimal technical debt.
