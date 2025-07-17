@@ -1,7 +1,7 @@
 ---
 title: Prolog Integration
 layout: default
-parent: Implementation
+parent: Implementations
 ---
 
 # Prolog Integration for Enemy Game AI

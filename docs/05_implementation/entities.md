@@ -1,7 +1,7 @@
 ---
 title: Entities
 layout: default
-parent: Implementation
+parent: Implementations
 ---
 
 # Implementation of Entities

@@ -1,7 +1,7 @@
 ---
 title: Monad Implementation
 layout: default
-parent: Implementation
+parent: Implementations
 ---
 
 # Monad Implementation in Scalata Game Project

@@ -1,7 +1,7 @@
 ---
 title: Floor Generation
 layout: default
-parent: Implementation
+parent: Implementations
 ---
 
 # Floor Generation System Implementation
