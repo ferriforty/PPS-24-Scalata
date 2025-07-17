@@ -1,5 +1,5 @@
 ---
-title: FloorGeneration
+title: Floor Generation
 layout: default
 parent: Implementation
 ---
