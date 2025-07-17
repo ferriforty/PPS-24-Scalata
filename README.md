@@ -1,8 +1,8 @@
 # Project: Scalata
 
 **Author**:  
-Ettore Farinelli – [ettore.farinelli@studio.unibo.it](mailto:ettore.farinelli@studio.unibo.it)
-Compleye Doc: [https://ferriforty.github.io/PPS-24-Scalata/]
+Ettore Farinelli – [ettore.farinelli@studio.unibo.it](mailto:ettore.farinelli@studio.unibo.it) <br>
+Complete Doc: https://ferriforty.github.io/PPS-24-Scalata/
 ---
 
 ## Overview
