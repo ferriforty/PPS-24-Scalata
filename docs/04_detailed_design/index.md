@@ -233,7 +233,7 @@ promoting reuse and testability.
 * **Compile-time safety** – enumerations and generic constraints prevent invalid combinations 
 (e.g., a non-pickable Sign cannot be mis-used).
 
-## Detailed Design – View Layer
+## View
 
 The *view* package renders the game on a text console and gathers user input while remaining 
 **UI-technology agnostic**.  
